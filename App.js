@@ -3,6 +3,8 @@ import { Button, View, Text } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import Map from "./src/components/Map";
+import Search from "./src/components/Search";
+import SearchProvider from "./src/context/SearchContext";
 
 function HomeScreen({ navigation }) {
   return (
@@ -32,13 +34,16 @@ const Stack = createStackNavigator();
 
 function App() {
   return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home">
-        <Stack.Screen name="Home" component={HomeScreen} />
-        <Stack.Screen name="Details" component={DetailsScreen} />
-        <Stack.Screen name="Map" component={Map} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <SearchProvider>
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName="Map">
+          <Stack.Screen name="Home" component={HomeScreen} />
+          <Stack.Screen name="Details" component={DetailsScreen} />
+          <Stack.Screen name="Map" component={Map} />
+          <Stack.Screen name="Search" component={Search}/>
+        </Stack.Navigator>
+      </NavigationContainer>
+    </SearchProvider>
   );
 }
 
