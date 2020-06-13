@@ -1,5 +1,5 @@
 import React, {useEffect, useState, useContext} from 'react'
-import MapView, {PROVIDER_GOOGLE, Polyline} from "react-native-maps";
+import MapView, {PROVIDER_GOOGLE, Polyline, Marker} from "react-native-maps";
 import {View, StyleSheet, Dimensions, Text, TouchableHighlight} from "react-native";
 import tailwind from "tailwind-rn";
 import RNLocation from 'react-native-location';
@@ -529,7 +529,19 @@ const Map = ({navigation}) => {
     setTripInfo({
       distance: response.routes[0].legs[0].distance.text,
       duration: response.routes[0].legs[0].duration.text,
-      price: parseInt(response.routes[0].legs[0].distance.text) * 2
+      price: parseInt(response.routes[0].legs[0].distance.text) * 2,
+      startAddress: {
+        coords: {
+          latitude: response.routes[0].legs[0].start_location.lat,
+          longitude: response.routes[0].legs[0].start_location.lng
+        }
+      },
+      endAddress: {
+        coords: {
+          latitude: response.routes[0].legs[0].end_location.lat,
+          longitude: response.routes[0].legs[0].end_location.lng
+        }
+      }
     })
   }, []);
 
@@ -550,37 +562,43 @@ const Map = ({navigation}) => {
         }}
       >
         {
-          coordinates && coordinates.length > 0
-          && <Polyline
+          coordinates && coordinates.length > 0 &&
+          <Polyline
             coordinates={coordinates}
-            strokeColor="#000"
-            strokeWidth={2}
+            strokeColor="#434190"
+            strokeWidth={3}
           />
+        }
+        {
+          coordinates && coordinates.length > 0 &&
+          <Marker coordinate={tripInfo.startAddress.coords} title="Départ" pinColor="green"/>}
+        {
+          coordinates && coordinates.length > 0 &&
+          <Marker coordinate={tripInfo.endAddress.coords} title="Arrivé" pinColor="#434190"/>
         }
       </MapView>
 
       {
         coordinates && coordinates.length > 0
-        && <View style={{...tailwind('bg-gray-100 w-full absolute bottom-0'), height: "50%"}}>
+        &&
+        <View style={{...tailwind('bg-gray-100 w-full absolute bottom-0'), height: "50%"}}>
           <Text style={tailwind('text-indigo-800 font-bold text-lg text-center py-6')}>Récapitulatif de la course</Text>
           <View style={tailwind('bg-white p-4')}>
-            <Text style={tailwind('text-gray-700 text font-bold')}>Départ</Text>
+            <Text style={tailwind('text-gray-700 font-bold')}>Départ</Text>
             <Text style={tailwind('text-gray-600 text-sm')}>{from}</Text>
           </View>
           <View style={tailwind('bg-white p-4')}>
-            <Text style={tailwind('text-gray-700 text font-bold')}>Arrivé</Text>
+            <Text style={tailwind('text-gray-700 font-bold')}>Arrivé</Text>
             <Text style={tailwind('text-gray-600 text-sm')}>{to}</Text>
           </View>
           <View style={tailwind('flex flex-row justify-center items-center my-6')}>
             <Text style={tailwind('text-center text-indigo-800 font-bold text-lg')}>{tripInfo.distance} · {tripInfo.duration} · {tripInfo.price} €</Text>
           </View>
-
           <View style={tailwind('flex flex-row justify-center items-center')}>
             <TouchableHighlight style={{...tailwind('bg-indigo-800 py-4 rounded w-1/2')}} onPress={onPress}>
               <Text style={tailwind('text-white font-bold text-center')}> Rechercher un chauffeur </Text>
             </TouchableHighlight>
           </View>
-
         </View>
       }
 
