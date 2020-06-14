@@ -18,6 +18,10 @@ function HomeScreen({ navigation }) {
         title="Go to Map"
         onPress={() => navigation.navigate('Map')}
       />
+      <Button
+        title="Go to Search"
+        onPress={() => navigation.navigate('Search')}
+      />
     </View>
   );
 }
@@ -36,7 +40,7 @@ function App() {
   return (
     <SearchProvider>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="Map">
+        <Stack.Navigator initialRouteName="Home">
           <Stack.Screen name="Home" component={HomeScreen} />
           <Stack.Screen name="Details" component={DetailsScreen} />
           <Stack.Screen name="Map" component={Map} />

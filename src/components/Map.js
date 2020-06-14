@@ -524,22 +524,23 @@ const Map = ({navigation}) => {
     }
     getPosition();
     decodePolyline();
-    setFrom(response.routes[0].legs[0].start_address)
-    setTo(response.routes[0].legs[0].end_address)
+    const leg = response.routes[0].legs[0];
+    setFrom(leg.start_address)
+    setTo(leg.end_address)
     setTripInfo({
-      distance: response.routes[0].legs[0].distance.text,
-      duration: response.routes[0].legs[0].duration.text,
-      price: parseInt(response.routes[0].legs[0].distance.text) * 2,
+      distance: leg.distance.text,
+      duration: leg.duration.text,
+      price: parseInt(leg.distance.text) * 2,
       startAddress: {
         coords: {
-          latitude: response.routes[0].legs[0].start_location.lat,
-          longitude: response.routes[0].legs[0].start_location.lng
+          latitude: leg.start_location.lat,
+          longitude: leg.start_location.lng
         }
       },
       endAddress: {
         coords: {
-          latitude: response.routes[0].legs[0].end_location.lat,
-          longitude: response.routes[0].legs[0].end_location.lng
+          latitude: leg.end_location.lat,
+          longitude: leg.end_location.lng
         }
       }
     })
