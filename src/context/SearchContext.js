@@ -13,6 +13,7 @@ const SearchProvider = ({children}) => {
   const [currentForm, setCurrentForm] = useState("")
   const [fromSelected, setFromSelected] = useState(false)
   const [toSelected, setToSelected] = useState(false)
+  const [tripInfo, setTripInfo] = useState({})
 
   const value = {
     addresses,
@@ -28,7 +29,9 @@ const SearchProvider = ({children}) => {
     fromSelected,
     toSelected,
     setFromSelected,
-    setToSelected
+    setToSelected,
+    tripInfo,
+    setTripInfo
   }
 
   return (

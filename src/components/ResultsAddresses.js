@@ -2,12 +2,13 @@ import React, {useContext} from 'react'
 import {Text, TouchableOpacity, View} from 'react-native'
 import {END, SearchContext, START} from "../context/SearchContext";
 import tailwind from "tailwind-rn";
+import SearchResultIcon from "../assets/icons/search-result-icon.svg"
 
 const ResultsAddresses = () => {
-  const {addresses, setAddresses, currentForm, setFrom, setTo, setFromSelected, setToSelected, fromSelected, toSelected} = useContext(SearchContext)
+  const {addresses, setAddresses, currentForm, setFrom, setTo, setFromSelected, setToSelected} = useContext(SearchContext)
 
   const onPress = (address) => {
-    const strAddress = `${address.name} ${address.postcode}`;
+    const strAddress = `${address.main_text} ${address.secondary_text}`;
     if(currentForm === START){
       setFrom(strAddress);
       setFromSelected(true);
@@ -23,16 +24,19 @@ const ResultsAddresses = () => {
       {
         addresses && addresses.map((address, index) =>
           <TouchableOpacity
-            style={tailwind('p-4 bg-white border-t border-b border-gray-200')}
+            style={tailwind('p-4 bg-white border-t border-b border-gray-200 flex flex-row items-center')}
             onPress={() => onPress(address)}
             key={index}
           >
+            <View style={tailwind('mr-3')}>
+             <SearchResultIcon/>
+            </View>
             <View>
               <Text style={tailwind('text-gray-800 font-bold')}>
-                {address.name}
+                {address.main_text}
               </Text>
               <Text style={tailwind('text-gray-600 text-sm')}>
-                {address.postcode}
+                {address.secondary_text}
               </Text>
             </View>
           </TouchableOpacity>

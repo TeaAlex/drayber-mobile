@@ -1,24 +1,15 @@
 import React, {useEffect, useState, useContext} from 'react'
 import MapView, {PROVIDER_GOOGLE, Polyline, Marker} from "react-native-maps";
-import {View, StyleSheet, Dimensions, Text, TouchableHighlight} from "react-native";
+import {View, StyleSheet, Text, TouchableHighlight, TouchableOpacity} from "react-native";
 import tailwind from "tailwind-rn";
 import RNLocation from 'react-native-location';
 import polyline from "@mapbox/polyline"
 import {SearchContext} from "../context/SearchContext";
-
+import {GOOGLE_API_KEY} from 'react-native-dotenv'
+import MenuToggle from "../assets/icons/menu-toggle.svg";
 
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  mapStyle: {
-    width: Dimensions.get('window').width,
-    height: Dimensions.get('window').height,
-  },
   input: {
     ...tailwind('text-gray-700 font-bold p-4 bg-white w-2/3 rounded absolute text-center'),
     top: "-10%"
@@ -27,9 +18,7 @@ const styles = StyleSheet.create({
 
 const Map = ({navigation}) => {
 
-  const {from, to, setFrom, setTo} = useContext(SearchContext);
-
-
+  const {from, to, setFrom, setTo, tripInfo, setTripInfo} = useContext(SearchContext);
   const [position, setPosition] = useState({});
   const [coordinates, setCoordinates] = useState([]);
   const [encodedPolyline, setEncodedPolyline] = useState("}uvhHoiyNr@JNiBVqETiCPoAp@uDLyAL{C@wBOaDBC@IAEd@YfAc@?WIYMSOi@S}HGsDJeJN}IN{BXqBZwBHu@D_@Dy@DI@QEKGEMaDOmJEoC?_ABo@Hm@N_@FAJIHONeA`@mAJi@Fs@?y@KwAOu@Oc@s@qAa@s@eAmBIWu@mAkAmBo@kACS?Q@c@Ee@ISKOOIOCQDMFKNIRGl@Ff@FPBl@Gt@@fAIz@IRKPMHo@PmDk@sEs@iMoB_OaCeDm@mCq@cDgAqD{AOU_@WsE}CsGcF{J_HuU_Pu@{AOg@Ok@Kw@Ge@Me@aA}BKYOUKg@AYDMDYCc@GUOUOKSAIDMTQp@a@`ASt@OlAU|@k@~BSx@_@hBIp@Mj@Kv@CBIFEJIZA`@w@`CsBdISfAExAIBMTCZ@NUv@o@jCcBvHq@pCUj@IJ[V]L]?YCOGW[S_@yBcGi@_B@E?KEWMOKCMBORCXDXLPPBLAJLd@jA^rAn@dBj@~AJPLHHAHOf@kC");
@@ -485,7 +474,6 @@ const Map = ({navigation}) => {
     ],
     "status": "OK"
   });
-  const [tripInfo, setTripInfo] = useState({});
 
   useEffect(() => {
     const getPosition = async () => {
@@ -522,28 +510,32 @@ const Map = ({navigation}) => {
       setCoordinates(coords)
       // console.log(coordinates)
     }
-    getPosition();
-    decodePolyline();
-    const leg = response.routes[0].legs[0];
-    setFrom(leg.start_address)
-    setTo(leg.end_address)
-    setTripInfo({
-      distance: leg.distance.text,
-      duration: leg.duration.text,
-      price: parseInt(leg.distance.text) * 2,
-      startAddress: {
-        coords: {
-          latitude: leg.start_location.lat,
-          longitude: leg.start_location.lng
+    const setTrip = () => {
+      const leg = response.routes[0].legs[0];
+      setFrom(leg.start_address)
+      setTo(leg.end_address)
+      setTripInfo({
+        distance: leg.distance.text,
+        duration: leg.duration.text,
+        price: parseInt(leg.distance.text) * 2,
+        startAddress: {
+          coords: {
+            latitude: leg.start_location.lat,
+            longitude: leg.start_location.lng
+          }
+        },
+        endAddress: {
+          coords: {
+            latitude: leg.end_location.lat,
+            longitude: leg.end_location.lng
+          }
         }
-      },
-      endAddress: {
-        coords: {
-          latitude: leg.end_location.lat,
-          longitude: leg.end_location.lng
-        }
-      }
-    })
+      })
+    }
+    // getPosition();
+    // decodePolyline();
+    // setTrip();
+
   }, []);
 
   const onPress = () => {
@@ -551,53 +543,66 @@ const Map = ({navigation}) => {
   }
 
   return (
-    <View style={styles.container}>
+    <View style={tailwind('flex-1 bg-white items-center justify-center')}>
+      <TouchableOpacity
+        style={{position: 'absolute', top: 40, left: 20, zIndex: 100}}
+        onPress={() => navigation.navigate('Menu')}
+      >
+        <MenuToggle />
+      </TouchableOpacity>
       <MapView
-        style={styles.mapStyle}
+        style={tailwind('h-full w-full')}
         provider={PROVIDER_GOOGLE}
-        initialRegion={{
-          latitude: 48.8566,
-          longitude: 2.3522,
+        // initialRegion={{
+        //   latitude: 48.8566,
+        //   longitude: 2.3522,
+        //   latitudeDelta: 0.0922,
+        //   longitudeDelta: 0.0421,
+        // }}
+        region={{
+          latitude: tripInfo.startAddress.coords.latitude,
+          longitude: tripInfo.startAddress.coords.longitude,
           latitudeDelta: 0.0922,
           longitudeDelta: 0.0421,
         }}
+        loadingEnabled={true}
       >
         {
-          coordinates && coordinates.length > 0 &&
+          tripInfo && tripInfo.coords && tripInfo.coords.length > 0 &&
           <Polyline
-            coordinates={coordinates}
+            coordinates={tripInfo.coords}
             strokeColor="#434190"
             strokeWidth={3}
           />
         }
-        {
-          coordinates && coordinates.length > 0 &&
-          <Marker coordinate={tripInfo.startAddress.coords} title="Départ" pinColor="green"/>}
-        {
-          coordinates && coordinates.length > 0 &&
-          <Marker coordinate={tripInfo.endAddress.coords} title="Arrivé" pinColor="#434190"/>
-        }
+        {/*{*/}
+        {/*  coordinates && coordinates.length > 0 &&*/}
+        {/*  <Marker coordinate={tripInfo.startAddress.coords} title="Départ" pinColor="#434190"/>}*/}
+        {/*{*/}
+        {/*  coordinates && coordinates.length > 0 &&*/}
+        {/*  <Marker coordinate={tripInfo.endAddress.coords} title="Arrivé" pinColor="#434190"/>*/}
+        {/*}*/}
       </MapView>
-
       {
-        coordinates && coordinates.length > 0
-        &&
-        <View style={{...tailwind('bg-gray-100 w-full absolute bottom-0'), height: "50%"}}>
+        tripInfo && tripInfo.coords && tripInfo.coords.length > 0 &&
+        <View style={{...tailwind('bg-gray-100 w-full absolute bottom-0'), height: "48%"}}>
           <Text style={tailwind('text-indigo-800 font-bold text-lg text-center py-6')}>Récapitulatif de la course</Text>
-          <View style={tailwind('bg-white p-4')}>
-            <Text style={tailwind('text-gray-700 font-bold')}>Départ</Text>
-            <Text style={tailwind('text-gray-600 text-sm')}>{from}</Text>
-          </View>
-          <View style={tailwind('bg-white p-4')}>
-            <Text style={tailwind('text-gray-700 font-bold')}>Arrivé</Text>
-            <Text style={tailwind('text-gray-600 text-sm')}>{to}</Text>
+          <View>
+            <View style={tailwind('bg-white p-4')}>
+              <Text style={tailwind('text-gray-700 font-bold')}>Départ</Text>
+              <Text style={tailwind('text-gray-600 text-sm')}>{from}</Text>
+            </View>
+            <View style={tailwind('bg-white p-4')}>
+              <Text style={tailwind('text-gray-700 font-bold')}>Arrivé</Text>
+              <Text style={tailwind('text-gray-600 text-sm')}>{to}</Text>
+            </View>
           </View>
           <View style={tailwind('flex flex-row justify-center items-center my-6')}>
             <Text style={tailwind('text-center text-indigo-800 font-bold text-lg')}>{tripInfo.distance} · {tripInfo.duration} · {tripInfo.price} €</Text>
           </View>
           <View style={tailwind('flex flex-row justify-center items-center')}>
-            <TouchableHighlight style={{...tailwind('bg-indigo-800 py-4 rounded w-1/2')}} onPress={onPress}>
-              <Text style={tailwind('text-white font-bold text-center')}> Rechercher un chauffeur </Text>
+            <TouchableHighlight style={{...tailwind('bg-indigo-800 p-4 rounded')}} onPress={onPress}>
+              <Text style={tailwind('text-white font-bold text-center text-lg')}> Rechercher un chauffeur </Text>
             </TouchableHighlight>
           </View>
         </View>

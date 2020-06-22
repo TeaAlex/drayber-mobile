@@ -5,6 +5,8 @@ import { createStackNavigator } from '@react-navigation/stack';
 import Map from "./src/components/Map";
 import Search from "./src/components/Search";
 import SearchProvider from "./src/context/SearchContext";
+import Menu from "./src/components/Menu"
+import tailwind, {getColor} from 'tailwind-rn';
 
 function HomeScreen({ navigation }) {
   return (
@@ -21,6 +23,10 @@ function HomeScreen({ navigation }) {
       <Button
         title="Go to Search"
         onPress={() => navigation.navigate('Search')}
+      />
+      <Button
+        title="Go to Menu"
+        onPress={() => navigation.navigate('Menu')}
       />
     </View>
   );
@@ -40,11 +46,21 @@ function App() {
   return (
     <SearchProvider>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="Home">
-          <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Navigator 
+          initialRouteName="Home"
+          screenOptions={{
+            headerStyle: {
+              backgroundColor: getColor('indigo-500'),
+            },
+            headerTintColor: getColor('gray-100'),
+          }}
+        >
+          <Stack.Screen name="Home" component={HomeScreen} options={{ title: 'Accueil'}} />
           <Stack.Screen name="Details" component={DetailsScreen} />
-          <Stack.Screen name="Map" component={Map} />
-          <Stack.Screen name="Search" component={Search}/>
+          <Stack.Screen name="Map" component={Map} options={{ headerShown: false }} />
+          <Stack.Screen name="Search" component={Search} options={{ title: 'Itinéraire'}}/>
+          <Stack.Screen name="Menu"  component={Menu} options={{ title: 'Paramètres'}}
+          />
         </Stack.Navigator>
       </NavigationContainer>
     </SearchProvider>
