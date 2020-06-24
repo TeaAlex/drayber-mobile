@@ -10,6 +10,7 @@ import Login from "./src/components/Login";
 import {getColor} from 'tailwind-rn';
 import WS from "./src/components/WS";
 import UserProvider from "./src/context/UserContext";
+import Register from './src/components/Register';
 
 function HomeScreen({ navigation }) {
   return (
@@ -68,6 +69,7 @@ function App() {
             <Stack.Screen name="Map" component={Map} options={{ headerShown: false }} />
             <Stack.Screen name="Search" component={Search} options={{ title: 'Itinéraire'}}/>
             <Stack.Screen name="Menu"  component={Menu} options={{ title: 'Paramètres'}} />
+            <Stack.Screen name="Register"  component={Register} options={{ title: 'Inscription'}} />
             <Stack.Screen name="WS"  component={WS} options={{ title: 'WS'}} />
             <Stack.Screen name="Login"  component={Login} options={{ headerShown: false }} />
           </Stack.Navigator>

@@ -1,5 +1,5 @@
 import React, {useState, useContext} from 'react'
-import {View, TextInput, Button, Text} from "react-native";
+import {View, TextInput, Button, Text, TouchableOpacity} from "react-native";
 import {api} from "../utils/api";
 import AsyncStorage from '@react-native-community/async-storage';
 import {UserContext} from "../context/UserContext";
@@ -7,8 +7,8 @@ import {UserContext} from "../context/UserContext";
 
 const Login = ({navigation}) => {
 
-  const [email, setEmail] = useState('alex@alex.com');
-  const [password, setPassword] = useState('toto');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const {setUser} = useContext(UserContext);
 
   const onPress = async () => {
@@ -38,6 +38,11 @@ const Login = ({navigation}) => {
         <TextInput value={password} secureTextEntry={true} onChangeText={(text) => setPassword(text)}/>
       </View>
       <Button title="Se connecter" onPress={onPress}/>
+
+      <View >
+                <Text >Pas encore de compte? </Text>
+                <Button title="Inscrivez vous" onPress={() => navigation.navigate('Register')}/>
+            </View>
     </View>
   )
 
