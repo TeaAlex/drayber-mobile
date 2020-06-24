@@ -1,8 +1,9 @@
 import React, {useState, useContext} from 'react'
-import {View, TextInput, Button, Text, ScrollView, StyleSheet } from "react-native";
+import {View, TextInput, Button, Text, ScrollView, StyleSheet,Image } from "react-native";
 import {api} from "../utils/api";
 import {UserContext} from "../context/UserContext";
 import ImagePicker from 'react-native-image-picker'
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 const Register = ({navigation}) => {
 
@@ -10,14 +11,13 @@ const Register = ({navigation}) => {
   const [password, setPassword] = useState('');
   const [firstname, setFirstname]=useState('');
   const [lastname, setLastname]=useState('');
-  const [phone_number, setPhone_number]= useState('');
-  const [profile_picture_url, setProfilePictureUrl]= useState('');
-  const [address, setAddress]= useState('');
-  const [zip_code, setZipCode]= useState('');
-  const [city, setCity]= useState('');
-  const [birth_date, setBirthSate]= useState('');
+  const [phone_number, setPhone_number]= useState('0612345678');
+  const [profile_picture_url, setProfilePictureUrl]= useState(null);
+  const [address, setAddress]= useState('1 rue de Saint Denis');
+  const [zip_code, setZipCode]= useState('75001');
+  const [city, setCity]= useState('Paris');
+  const [birth_date, setBirthSate]= useState('1990-10-10');
   const [password_confirmation, setPasswordConfirm] = useState('');
-  const {setUser} = useContext(UserContext);
 
   const handleChoosePhoto = () => {
     const options = {
@@ -25,7 +25,7 @@ const Register = ({navigation}) => {
     }
     ImagePicker.launchImageLibrary(options, response => {
       if (response.uri) {
-        setPicture(response)
+        setProfilePictureUrl(response)
       }
     })
   }
@@ -36,13 +36,38 @@ const Register = ({navigation}) => {
       "password": password,
       "password_confirmation": password_confirmation,
       "firstname": firstname,
-      "lastname": lastname
+      "lastname": lastname,
+      "phone_number":phone_number,
+      "address": address,
+      "zip_code": zip_code,
+      "city": city,
+      "birth_date": birth_date
     }
     console.log(body);
     api('POST', '/register', body)
         .then(() => { navigation.navigate('Login') });
 
   }
+
+  // const [date, setDate] = useState(new Date());
+  // const [mode, setMode] = useState('date');
+  // const [show, setShow] = useState(false);
+
+  // const onChange = (event, selectedDate) => {
+  //   const currentDate = selectedDate || date;
+  //   setShow(Platform.OS === 'ios');
+  //   setDate(currentDate);
+  // };
+
+  // const showMode = currentMode => {
+  //   setShow(true);
+  //   setMode(currentMode);
+  // };
+
+  // const showDatepicker = () => {
+  //   showMode('date');
+  // };
+
 
   return (
     <ScrollView>
@@ -63,13 +88,11 @@ const Register = ({navigation}) => {
         <Text>Téléphone</Text>
         <TextInput style={styles.input} value={phone_number} onChangeText={(text) => setPhone_number(text)}/>
       </View>
-      {/* <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        {profile_picture_url && (<Image source={{ uri: profile_picture_url.uri }} style={{ width: 150, height: 150 }}/>)}
-       
-     <Button mode="contained" onPress={() => handleChoosePhoto()} >  Choisissez une photo </Button>
-      </View> */}
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+
       {profile_picture_url && (<Image source={{ uri: profile_picture_url.uri }} style={{ width: 150, height: 150 }}/>)}
+
+     <Button mode="contained" onPress={() => handleChoosePhoto()} title="Choisissez une photo" />
       </View>
       <View style={styles.container}>
         <Text>Adresse</Text>
@@ -86,6 +109,17 @@ const Register = ({navigation}) => {
       <View style={styles.container}>
         <Text>Date de naissance</Text>
         <TextInput style={styles.input} value={birth_date} onChangeText={(text) => setBirthSate(text)}/>
+        {/* <Button onPress={showDatepicker} title="Show date picker!" />
+        {show && (
+        <DateTimePicker
+          testID="dateTimePicker"
+          value={date}
+          mode={mode}
+          is24Hour={true}
+          display="default"
+          onChange={(date) => setBirthSate(date)}
+        />
+      )} */}
       </View>
       <View style={styles.container}>
         <Text>Mot de passe</Text>
