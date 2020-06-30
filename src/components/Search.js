@@ -12,7 +12,7 @@ const Search = (props) => {
   const {navigation} = props;
   const {from, setFrom, to, setTo, fromSelected, toSelected, setFromSelected, setToSelected, tripInfo, setTripInfo} = useContext(SearchContext);
 
-  useEffect(() => {
+  useEffect( () => {
     if (fromSelected === true && toSelected === true) {
       const search = async () => {
         const url = `https://maps.googleapis.com/maps/api/directions/json?origin=${from}&destination=${to}&key=${GOOGLE_API_KEY}`;
@@ -31,12 +31,14 @@ const Search = (props) => {
           duration: leg.duration.text,
           price: parseInt(leg.distance.text) * 2,
           startAddress: {
+            name: leg.start_address,
             coords: {
               latitude: leg.start_location.lat,
               longitude: leg.start_location.lng
             }
           },
           endAddress: {
+            name: leg.end_address,
             coords: {
               latitude: leg.end_location.lat,
               longitude: leg.end_location.lng

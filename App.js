@@ -10,6 +10,7 @@ import Login from "./src/components/Login";
 import {getColor} from 'tailwind-rn';
 import WS from "./src/components/WS";
 import UserProvider from "./src/context/UserContext";
+<<<<<<< HEAD
 import Register from './src/components/Register';
 import {UserContext} from "./src/context/UserContext";
 import AddSubscriptionScreen from './src/components/AddSubscriptionScreen';
@@ -64,6 +65,37 @@ function HomeScreen({ navigation }) {
             {/*/>*/}
         </View>
     );
+=======
+import SocketIOClient from "socket.io-client";
+import {API_URL} from "react-native-dotenv";
+
+function HomeScreen({ navigation }) {
+  return (
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <Text>Home Screen</Text>
+      <Button
+        title="Go to Details"
+        onPress={() => navigation.navigate('Details')}
+      />
+      <Button
+        title="Go to Map"
+        onPress={() => navigation.navigate('Map')}
+      />
+      <Button
+        title="Go to Search"
+        onPress={() => navigation.navigate('Search')}
+      />
+      <Button
+        title="Go to Menu"
+        onPress={() => navigation.navigate('Menu')}
+      />
+      <Button
+        title="WS"
+        onPress={() => navigation.navigate('WS')}
+      />
+    </View>
+  );
+>>>>>>> test WS
 }
 
 function DetailsScreen() {
