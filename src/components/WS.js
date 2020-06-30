@@ -7,6 +7,9 @@ import {UserContext} from "../context/UserContext";
 function WS() {
 
   const {user} = useContext(UserContext);
+  const position = {
+
+  };
   const socket = SocketIOClient(API_URL);
 
   useEffect(() => {
@@ -16,7 +19,9 @@ function WS() {
   })
 
   const onPress = () => {
-    socket.emit('press', "SENT FROM CLIENT");
+    socket.emit('press', {
+      id: user.id
+    });
   }
 
   return (

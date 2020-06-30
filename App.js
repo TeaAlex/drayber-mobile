@@ -10,6 +10,8 @@ import Login from "./src/components/Login";
 import {getColor} from 'tailwind-rn';
 import WS from "./src/components/WS";
 import UserProvider from "./src/context/UserContext";
+import SocketIOClient from "socket.io-client";
+import {API_URL} from "react-native-dotenv";
 
 function HomeScreen({ navigation }) {
   return (
@@ -31,10 +33,10 @@ function HomeScreen({ navigation }) {
         title="Go to Menu"
         onPress={() => navigation.navigate('Menu')}
       />
-      {/*<Button*/}
-      {/*  title="WS"*/}
-      {/*  onPress={() => navigation.navigate('WS')}*/}
-      {/*/>*/}
+      <Button
+        title="WS"
+        onPress={() => navigation.navigate('WS')}
+      />
     </View>
   );
 }
