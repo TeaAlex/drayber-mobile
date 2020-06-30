@@ -1,9 +1,7 @@
 import React, {useState, useContext} from 'react'
 import {View, TextInput, Button, Text, ScrollView, StyleSheet,Image } from "react-native";
 import {api} from "../utils/api";
-import {UserContext} from "../context/UserContext";
 import ImagePicker from 'react-native-image-picker'
-import DateTimePicker from '@react-native-community/datetimepicker';
 
 const Register = ({navigation}) => {
 
@@ -43,31 +41,37 @@ const Register = ({navigation}) => {
       "city": city,
       "birth_date": birth_date
     }
-    console.log(body);
-    api('POST', '/register', body)
-        .then(() => { navigation.navigate('Login') });
+
+    var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+    if(!re.test(email) || email.length === 0 ){
+      return alert("Votre email est invalide");
+    }
+    if(password.length === 0 ||
+       password_confirmation.length === 0 ||
+       firstname.length === 0 ||
+       phone_number.length === 0 ||
+       address.length === 0 ||
+       zip_code.length === 0 ||
+       city.length === 0 ||
+       birth_date.length === 0){
+
+      return alert("Tout les champs doivent être renseigner");
+    }
+
+    if(password !== password_confirmation){
+      return alert("Les deux mots de passe ne correspondent pas");
+    }
+    
+    try {
+      await api('POST', '/register', body);
+    
+      navigation.navigate('Login');
+    } catch (e) {
+      console.error(e);
+    }
 
   }
-
-  // const [date, setDate] = useState(new Date());
-  // const [mode, setMode] = useState('date');
-  // const [show, setShow] = useState(false);
-
-  // const onChange = (event, selectedDate) => {
-  //   const currentDate = selectedDate || date;
-  //   setShow(Platform.OS === 'ios');
-  //   setDate(currentDate);
-  // };
-
-  // const showMode = currentMode => {
-  //   setShow(true);
-  //   setMode(currentMode);
-  // };
-
-  // const showDatepicker = () => {
-  //   showMode('date');
-  // };
-
 
   return (
     <ScrollView>

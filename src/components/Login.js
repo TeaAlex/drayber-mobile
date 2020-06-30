@@ -7,14 +7,24 @@ import {UserContext} from "../context/UserContext";
 
 const Login = ({navigation}) => {
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('flex@flaex.fr');
+  const [password, setPassword] = useState('aaa');
   const {setUser} = useContext(UserContext);
 
   const onPress = async () => {
     const body = {
       uid: email,
       password
+    }
+
+    var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+    if(!re.test(email) || email.length === 0){
+      return alert("Votre email est invalide");
+    }
+    if(password.length === 0){
+
+      return alert("Veuillez renseigner un mot de passe");
     }
     const {token} = await api('POST', '/login', body);
     try {
