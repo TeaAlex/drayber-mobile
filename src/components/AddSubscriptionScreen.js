@@ -3,7 +3,7 @@ import AddSubscriptionView from '../components/AddSubscriptionView';
 
 const STRIPE_ERROR = 'Payment service error. Try again later.';
 const SERVER_ERROR = 'Server error. Try again later.';
-const STRIPE_PUBLISHABLE_KEY = 'pk_test_ww70oUQ44vVJ3HO4AnvglxCp';
+const STRIPE_PUBLISHABLE_KEY = 'pk_test_QhjaJ6tWeJDGHdgzrZghnovY';
 
 /**
  * The method sends HTTP requests to the Stripe API.
