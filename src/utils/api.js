@@ -26,9 +26,16 @@ const api = async (method, url, body) => {
   }
 
   try {
+    
     const response = await fetch(`${API_URL}${url}`, options);
-    const responseJSON = await response.json();
-    return responseJSON;
+    console.log(response)
+
+    if(response.ok == true && response.status >= 200 && response.status < 300) {
+      const responseJSON = await response.json();
+      return responseJSON;
+    } else {
+       return alert("Une erreur est survenue")
+    }
   } catch (e) {
     console.error(e)
   }
