@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from "react";
 import tailwind from "tailwind-rn";
-import { View, Text, TouchableHighlight } from 'react-native';
+import { View, Text, TouchableHighlight, Image } from 'react-native';
 import {UserContext} from "../context/UserContext";
 import PersonSvg from "../assets/icons/person.svg";
 import MenuItem from "./MenuItem";

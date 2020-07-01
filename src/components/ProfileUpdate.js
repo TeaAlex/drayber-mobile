@@ -16,14 +16,15 @@ const ProfileUpdate = ({navigation}) => {
   const [city, setCity]= useState(user.user.city);
   const [birth_date, setBirthSate]= useState(user.user.birth_date);
   
-
+  
   const handleChoosePhoto = () => {
     const options = {
       noData: true,
     }
     ImagePicker.launchImageLibrary(options, response => {
       if (response.uri) {
-        setProfilePictureUrl(response)
+        console.log(response);
+        setProfilePictureUrl(response.uri);
       }
     })
   }
@@ -41,7 +42,7 @@ const ProfileUpdate = ({navigation}) => {
     }
     console.log(body);
     api('PUT', '/users/update', body)
-        .then(() => { navigation.navigate('Login') });
+        .then(() => { navigation.navigate('Profile') });
 
   }
 
@@ -53,8 +54,9 @@ const ProfileUpdate = ({navigation}) => {
    const onChange = (event, selectedDate) => {
      if(event.type == "set"){
       const currentDate = selectedDate || date;
-      console.log(selectedDate.toUTCString());
-      setBirthSate(currentDate);
+      
+      const reformated = currentDate.getDate().toString() + "-" +currentDate.getMonth().toString()+ "-" + currentDate.getFullYear().toString();
+      setBirthSate(reformated);
       setShow(false);
      }else{
       setShow(false);
