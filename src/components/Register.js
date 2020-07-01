@@ -35,6 +35,7 @@ const Register = ({navigation}) => {
       "email": email,
       "password": password,
       "password_confirmation": password_confirmation,
+      
       "firstname": firstname,
       "lastname": lastname,
       "phone_number":phone_number,
