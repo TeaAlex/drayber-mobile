@@ -1,86 +1,82 @@
 import React, {useState, useContext} from 'react'
-import {View, TextInput, Button, Text, ScrollView, StyleSheet,Image } from "react-native";
+import {View, TextInput, Button, Text, ScrollView, StyleSheet,Image, Keyboard } from "react-native";
 import {api} from "../utils/api";
+import {UserContext} from "../context/UserContext";
 import ImagePicker from 'react-native-image-picker'
+import DateTimePicker from '@react-native-community/datetimepicker';
 
-const Register = ({navigation}) => {
-
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [firstname, setFirstname]=useState('');
-  const [lastname, setLastname]=useState('');
-  const [phone_number, setPhone_number]= useState('0612345678');
-  const [profile_picture_url, setProfilePictureUrl]= useState(null);
-  const [address, setAddress]= useState('1 rue de Saint Denis');
-  const [zip_code, setZipCode]= useState('75001');
-  const [city, setCity]= useState('Paris');
-  const [birth_date, setBirthSate]= useState('1990-10-10');
-  const [password_confirmation, setPasswordConfirm] = useState('');
-
+const ProfileUpdate = ({navigation}) => {
+  const {user} = useContext(UserContext);
+  const [firstname, setFirstname]=useState(user.user.firstname);
+  const [lastname, setLastname]=useState(user.user.lastname);
+  const [phone_number, setPhone_number]= useState(user.user.phone_number);
+  const [profile_picture_url, setProfilePictureUrl]= useState(user.user.profile_picture_url);
+  const [address, setAddress]= useState(user.user.address);
+  const [zip_code, setZipCode]= useState(user.user.zip_code);
+  const [city, setCity]= useState(user.user.city);
+  const [birth_date, setBirthSate]= useState(user.user.birth_date);
+  
+  
   const handleChoosePhoto = () => {
     const options = {
       noData: true,
     }
     ImagePicker.launchImageLibrary(options, response => {
       if (response.uri) {
-        setProfilePictureUrl(response)
+        console.log(response);
+        setProfilePictureUrl(response.uri);
       }
     })
   }
 
   const onPress = async () => {
     const body = {
-      "email": email,
-      "password": password,
-      "password_confirmation": password_confirmation,
-      
       "firstname": firstname,
       "lastname": lastname,
       "phone_number":phone_number,
+      "profile_picture_url": profile_picture_url,
       "address": address,
       "zip_code": zip_code,
       "city": city,
       "birth_date": birth_date
     }
-
-    var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-
-    if(!re.test(email) || email.length === 0 ){
-      return alert("Votre email est invalide");
-    }
-    if(password.length === 0 ||
-       password_confirmation.length === 0 ||
-       firstname.length === 0 ||
-       phone_number.length === 0 ||
-       address.length === 0 ||
-       zip_code.length === 0 ||
-       city.length === 0 ||
-       birth_date.length === 0){
-
-      return alert("Tout les champs doivent être renseigner");
-    }
-
-    if(password !== password_confirmation){
-      return alert("Les deux mots de passe ne correspondent pas");
-    }
-    
-    try {
-      await api('POST', '/register', body);
-    
-      navigation.navigate('Login');
-    } catch (e) {
-      console.error(e);
-    }
+    console.log(body);
+    api('PUT', '/users/update', body)
+        .then(() => { navigation.navigate('Profile') });
 
   }
+
+   const [date, setDate] = useState(new Date());
+   const [mode, setMode] = useState('date');
+   const [show, setShow] = useState(false);
+   
+
+   const onChange = (event, selectedDate) => {
+     if(event.type == "set"){
+      const currentDate = selectedDate || date;
+      
+      const reformated = currentDate.getDate().toString() + "-" +currentDate.getMonth().toString()+ "-" + currentDate.getFullYear().toString();
+      setBirthSate(reformated);
+      setShow(false);
+     }else{
+      setShow(false);
+     }
+   };
+
+   const showMode = currentMode => {
+     setShow(true);
+    setMode(currentMode);
+   };
+
+   const showDatepicker = () => {
+     showMode('date');
+   };
+   
 
   return (
     <ScrollView>
     <View style={styles.backgroundContainer}>
-      <View style={styles.container}>
-        <Text>Email</Text>
-        <TextInput style={styles.input} style={styles.input} value={email} onChangeText={(text) => setEmail(text)}/>
-      </View>
+      
       <View style={styles.container}>
         <Text>Prénom</Text>
         <TextInput style={styles.input} value={firstname} onChangeText={(text) => setFirstname(text)}/>
@@ -113,28 +109,21 @@ const Register = ({navigation}) => {
       </View>
       <View style={styles.container}>
         <Text>Date de naissance</Text>
-        <TextInput style={styles.input} value={birth_date} onChangeText={(text) => setBirthSate(text)}/>
-        {/* <Button onPress={showDatepicker} title="Show date picker!" />
+        <TextInput style={styles.input} onFocus={showDatepicker}  value={birth_date.toString()}  />
         {show && (
         <DateTimePicker
           testID="dateTimePicker"
           value={date}
           mode={mode}
           is24Hour={true}
-          display="default"
-          onChange={(date) => setBirthSate(date)}
+          display="spinner"
+          onChange={onChange}
+          
         />
-      )} */}
+      )} 
       </View>
-      <View style={styles.container}>
-        <Text>Mot de passe</Text>
-        <TextInput style={styles.input} value={password} secureTextEntry={true} onChangeText={(text) => setPassword(text)}/>
-      </View>
-      <View style={styles.container}>
-        <Text>Confirmer mot de passe</Text>
-        <TextInput style={styles.input} value={password_confirmation} secureTextEntry={true} onChangeText={(text) => setPasswordConfirm(text)}/>
-      </View>
-      <Button title="S'inscrire" onPress={onPress}/>
+      
+      <Button title="Modifier mes infos" onPress={onPress}/>
     </View>
     </ScrollView>
   )
@@ -168,4 +157,4 @@ const styles = StyleSheet.create({
 
 
 
-export default Register
+export default ProfileUpdate

@@ -11,7 +11,17 @@ import {getColor} from 'tailwind-rn';
 import WS from "./src/components/WS";
 import UserProvider from "./src/context/UserContext";
 import Register from './src/components/Register';
+<<<<<<< HEAD
+<<<<<<< HEAD
 import {UserContext} from "./src/context/UserContext";
+=======
+import Profile from './src/components/Profile';
+import ProfileUpdate from './src/components/ProfileUpdate';
+>>>>>>> Add Profile
+=======
+import Profile from './src/components/Profile';
+import ProfileUpdate from './src/components/ProfileUpdate';
+>>>>>>> 74c96aa591a622d81ae24ef28e758e58eadd0101
 
 function HomeScreen({ navigation }) {
 
@@ -35,7 +45,7 @@ function HomeScreen({ navigation }) {
       />
       <Button
         title="Go to Menu"
-        onPress={() => navigation.navigate('Menu')}
+        onPress={() => navigation.navigate('Profile')}
       />
       {/*<Button*/}
       {/*  title="WS"*/}
@@ -77,6 +87,8 @@ function App() {
             <Stack.Screen name="Register"  component={Register} options={{ title: 'Inscription'}} />
             <Stack.Screen name="WS"  component={WS} options={{ title: 'WS'}} />
             <Stack.Screen name="Login"  component={Login} options={{ headerShown: false }} />
+            <Stack.Screen name="Profile"  component={Profile} options={{  title: 'Profil'}} />
+            <Stack.Screen name="ProfileUpdate"  component={ProfileUpdate} options={{  title: 'Modifier mon Profil'}} />
           </Stack.Navigator>
         </NavigationContainer>
       </SearchProvider>
