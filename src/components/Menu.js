@@ -7,9 +7,15 @@ import PersonSvg from '../assets/icons/person.svg';
 import CreditCardSvg from '../assets/icons/credit-card-outline.svg';
 import CarSvg from '../assets/icons/automobile.svg';
 import CloseSvg from '../assets/icons/close-square-outline.svg';
+import AsyncStorage from '@react-native-community/async-storage';
 
 const Menu = ({navigation}) => {
   const color = '#586CD9';
+
+  const logout = () => {
+    AsyncStorage.removeItem('token')
+    navigation.navigate('Login')
+  }
 
   return (
     <View style={tailwind('bg-gray-100 h-full items-center w-full')}>
@@ -28,9 +34,11 @@ const Menu = ({navigation}) => {
         <MenuItem text={'Devenir chauffeur'}>
           <CarSvg width={24} height={24} fill={color} />
         </MenuItem>
+        <TouchableHighlight onPress={() => logout()}>
         <MenuItem text={'Deconnexion'}>
           <CloseSvg width={24} height={24} fill={color} />
         </MenuItem>
+        </TouchableHighlight>
       </View>
     </View>
   );
