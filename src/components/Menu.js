@@ -1,21 +1,50 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import tailwind from 'tailwind-rn';
 import {TouchableHighlight, View} from 'react-native';
-import MenuBackButton from './MenuBackButton';
 import MenuItem from './MenuItem';
 import PersonSvg from '../assets/icons/person.svg';
 import CreditCardSvg from '../assets/icons/credit-card-outline.svg';
 import CarSvg from '../assets/icons/automobile.svg';
 import CloseSvg from '../assets/icons/close-square-outline.svg';
 import AsyncStorage from '@react-native-community/async-storage';
+import {UserContext} from "./../context/UserContext";
 
 const Menu = ({navigation}) => {
   const color = '#586CD9';
+
+
+  const {user} = useContext(UserContext);
 
   const logout = () => {
     AsyncStorage.removeItem('token')
     navigation.navigate('Login')
   }
+  const switchMode = async () => {
+    const mode = await AsyncStorage.getItem('changeMode');
+    if(mode === "Client"){
+      if(user.driver){
+        if(user.driver.active_driver === true){
+          await AsyncStorage.setItem('changeMode', "Driver");
+          navigation.navigate('Home')
+        }else {
+          alert("Votre compte Driver n'est pas encore activé")
+        }
+      }
+    } else {
+      await AsyncStorage.setItem('changeMode', "Client");
+    }
+
+  }
+
+  const isDriver = () => {
+    console.log(user)
+    if(user.driver){
+      return alert("Vous êtes déjà Driver ou votre compte est en attente d'activation.")
+    } else {
+      navigation.navigate('BecomeDriver')
+    }
+  }
+  
 
   return (
     <View style={tailwind('bg-gray-100 h-full items-center w-full')}>
@@ -31,9 +60,16 @@ const Menu = ({navigation}) => {
             <CreditCardSvg width={24} height={24} fill={color} />
           </MenuItem>
         </TouchableHighlight>
+        <TouchableHighlight onPress={() => switchMode()}>
+          <MenuItem text={'Mode Driver'}>
+            <CreditCardSvg width={24} height={24} fill={color} />
+          </MenuItem>
+        </TouchableHighlight>
+        <TouchableHighlight onPress={() => isDriver()}>
         <MenuItem text={'Devenir chauffeur'}>
           <CarSvg width={24} height={24} fill={color} />
         </MenuItem>
+        </TouchableHighlight>
         <TouchableHighlight onPress={() => logout()}>
         <MenuItem text={'Deconnexion'}>
           <CloseSvg width={24} height={24} fill={color} />
