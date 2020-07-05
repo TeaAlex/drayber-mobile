@@ -9,6 +9,7 @@ import {API_URL, GOOGLE_API_KEY} from 'react-native-dotenv'
 import MenuToggle from "../assets/icons/menu-toggle.svg";
 import SocketIOClient from "socket.io-client";
 import {UserContext} from "../context/UserContext";
+import {api} from "../utils/api";
 
 
 
@@ -497,9 +498,6 @@ const Map = ({navigation}) => {
           if (latitude && longitude) {
             setPosition({ latitude, longitude });
             unsubscribe();
-            // console.log(latitude, longitude);
-            // console.log(position)
-            // console.log('unsub')
           }
         });
       }
@@ -533,40 +531,28 @@ const Map = ({navigation}) => {
             longitude: leg.end_location.lng
           }
         },
-        coords
+        coords,
+        encodedPolyline
       })
     }
     // getPosition();
     setTrip();
   }, []);
 
-  const onPress = () => {
-    const {startAddress, endAddress} = tripInfo;
-    socket.emit('press', {
+  const onPress = async () => {
+    const {distance, duration, price, startAddress, endAddress, encodedPolyline} = tripInfo
+    const payload = {
+      distance,
+      duration,
+      price,
       startAddress,
-      endAddress
-    });
-    alert('looking for a driver !');
-  }
-
-  const [showOffer, setShowOffer] = useState(false);
-  const [drivers, setDrivers] = useState([]);
-  socket.on('new-offer', data => {
-    console.log('new offer', data);
-    if (user.id === data[0]) {
-      console.log('in user');
-      setShowOffer(true);
-      setDrivers(data);
+      endAddress,
+      encodedPolyline
     }
-  });
-
-  const accept = () => {
-    console.log('accept');
-  }
-
-  const decline = () => {
-    drivers.shift();
-    socket.emit('decline-offer', drivers);
+    // console.log(JSON.stringify(payload, null, '\t'));
+    const { offer } = await api('POST', '/offer/create', {tripInfo: payload});
+    await api('POST', `/offer/${offer.id}/find-driver`);
+    console.log('create offer')
   }
 
 
@@ -604,9 +590,6 @@ const Map = ({navigation}) => {
             {
               tripInfo && tripInfo.coords && tripInfo.coords.length > 0 &&
               <View style={{...tailwind('bg-gray-100 w-full absolute bottom-0'), height: "48%"}}>
-                {
-                  showOffer && <View><Button title={"OUI"} onPress={accept}/><Button title={"NON"} onPress={decline}/></View>
-                }
                 <Text style={tailwind('text-indigo-800 font-bold text-lg text-center py-6')}>Récapitulatif de la course</Text>
                 <View>
                   <View style={tailwind('bg-white p-4')}>

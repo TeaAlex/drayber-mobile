@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import React, { useContext, useEffect, useState} from 'react'
+=======
+import React, {useEffect, useContext} from 'react';
+>>>>>>> wip
 import { Button, View, Text } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -9,6 +13,7 @@ import Menu from "./src/components/Menu";
 import Login from "./src/components/Login";
 import {getColor} from 'tailwind-rn';
 import WS from "./src/components/WS";
+<<<<<<< HEAD
 import UserProvider from "./src/context/UserContext";
 <<<<<<< HEAD
 import Register from './src/components/Register';
@@ -66,10 +71,34 @@ function HomeScreen({ navigation }) {
         </View>
     );
 =======
+=======
+import UserProvider, {UserContext} from "./src/context/UserContext";
+>>>>>>> wip
 import SocketIOClient from "socket.io-client";
 import {API_URL} from "react-native-dotenv";
+import messaging from '@react-native-firebase/messaging';
+import { useNavigation } from '@react-navigation/native';
+import Offer from "./src/components/Offer";
+
+
 
 function HomeScreen({ navigation }) {
+
+  const {user} = useContext(UserContext);
+
+  useEffect(() => {
+    const unsubscribe = messaging().onMessage(async remoteMessage => {
+      const {type} = remoteMessage.data;
+      console.log(remoteMessage);
+      if (type === "OFFER_CREATE") {
+        const offer = JSON.parse(remoteMessage.data.offer);
+        navigation.navigate('Offer', { offer })
+      }
+    });
+
+    return unsubscribe;
+  }, []);
+
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       <Text>Home Screen</Text>
@@ -109,6 +138,7 @@ function DetailsScreen() {
 const Stack = createStackNavigator();
 
 function App() {
+<<<<<<< HEAD
     return (
         <UserProvider>
             <SearchProvider>
@@ -141,6 +171,33 @@ function App() {
                 </NavigationContainer>
             </SearchProvider>
         </UserProvider>
+=======
+  return (
+    <UserProvider>
+      <SearchProvider>
+        <NavigationContainer>
+          <Stack.Navigator
+            initialRouteName="Login"
+            screenOptions={{
+              headerStyle: {
+                backgroundColor: getColor('indigo-500'),
+              },
+              headerTintColor: getColor('gray-100'),
+            }}
+          >
+            <Stack.Screen name="Home" component={HomeScreen} options={{ title: 'Accueil'}} />
+            <Stack.Screen name="Details" component={DetailsScreen} />
+            <Stack.Screen name="Map" component={Map} options={{ headerShown: false }} />
+            <Stack.Screen name="Search" component={Search} options={{ title: 'Itinéraire'}}/>
+            <Stack.Screen name="Menu"  component={Menu} options={{ title: 'Paramètres'}} />
+            <Stack.Screen name="WS"  component={WS} options={{ title: 'WS'}} />
+            <Stack.Screen name="Login"  component={Login} options={{ headerShown: false }} />
+            <Stack.Screen name="Offer"  component={Offer} options={{ title: 'Nouvelle course' }} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </SearchProvider>
+    </UserProvider>
+>>>>>>> wip
 
     );
 }

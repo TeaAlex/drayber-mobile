@@ -18,7 +18,8 @@ const Search = (props) => {
         const url = `https://maps.googleapis.com/maps/api/directions/json?origin=${from}&destination=${to}&key=${GOOGLE_API_KEY}`;
         const response = await fetch(url);
         const data = await response.json();
-        const points = polyline.decode(data.routes[0].overview_polyline.points);
+        const encodedPolyline = data.routes[0].overview_polyline.points;
+        const points = polyline.decode(encodedPolyline);
         const coords = points.map(point => {
           const [latitude, longitude] = point;
           return { latitude,longitude }
@@ -44,7 +45,8 @@ const Search = (props) => {
               longitude: leg.end_location.lng
             }
           },
-          coords
+          coords,
+          encodedPolyline
         })
       }
       search();
