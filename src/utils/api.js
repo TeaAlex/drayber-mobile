@@ -27,8 +27,7 @@ const api = async (method, url, body) => {
 
   try {
     const response = await fetch(`${API_URL}${url}`, options);
-    const responseJSON = await response.json();
-    return responseJSON;
+    return await response.json();
   } catch (e) {
     console.error(e)
   }
