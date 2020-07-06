@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from "react";
 import tailwind from "tailwind-rn";
-import { View, Text, TouchableOpacity, Image } from 'react-native';
+import { Text, TouchableOpacity } from 'react-native';
 import {api} from '../utils/api';
-import {UserContext} from "../context/UserContext";
 import PersonSvg from "../assets/icons/person.svg";
 import MenuItem from "./MenuItem";
 import { ScrollView } from "react-native-gesture-handler";
 
 
 
-const DriverValidation = () => {
+const DriverValidation = ({navigation}) => {
     const color = '#586CD9';
 
     const [drivers,setDrivers] = useState([]);
@@ -49,6 +48,9 @@ const DriverValidation = () => {
           drivers && drivers.filter(id => id.firstname).map((driver, index) =>
             <TouchableOpacity
               key={index}
+              onPress={() => navigation.navigate('ValidateAccount',{
+                driverId: driver.id,
+              })}
             >
             <MenuItem text={driver.firstname + " " + driver.lastname} >
               <PersonSvg width={24} height={24} fill={color}/>

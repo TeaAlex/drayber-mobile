@@ -19,6 +19,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import BecomeDriver from './src/components/BecomeDriver';
 import AdminMenu from './src/components/AdminMenu';
 import DriverValidation from './src/components/DriverValidation';
+import ValidateAccount from './src/components/ValidateAccount';
 
 function HomeScreen({ navigation }) {
 
@@ -103,6 +104,7 @@ function App() {
                         <Stack.Screen name="BecomeDriver"  component={BecomeDriver} options={{  title: 'Devenir chauffeur'}} />
                         <Stack.Screen name="Admin"  component={AdminMenu} options={{  title: 'Admin'}} />
                         <Stack.Screen name="DriverValidation"  component={DriverValidation} options={{  title: 'Comptes a valider'}} />
+                        <Stack.Screen name="ValidateAccount"  component={ValidateAccount} options={{  title: 'Validation'}} />
                     </Stack.Navigator>
                 </NavigationContainer>
             </SearchProvider>
