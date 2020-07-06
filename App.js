@@ -17,6 +17,8 @@ import Profile from './src/components/Profile';
 import ProfileUpdate from './src/components/ProfileUpdate';
 import AsyncStorage from '@react-native-community/async-storage';
 import BecomeDriver from './src/components/BecomeDriver';
+import AdminMenu from './src/components/AdminMenu';
+import DriverValidation from './src/components/DriverValidation';
 
 function HomeScreen({ navigation }) {
 
@@ -99,6 +101,8 @@ function App() {
                         <Stack.Screen name="Profile"  component={Profile} options={{  title: 'Profil'}} />
                         <Stack.Screen name="ProfileUpdate"  component={ProfileUpdate} options={{  title: 'Modifier mon Profil'}} />
                         <Stack.Screen name="BecomeDriver"  component={BecomeDriver} options={{  title: 'Devenir chauffeur'}} />
+                        <Stack.Screen name="Admin"  component={AdminMenu} options={{  title: 'Admin'}} />
+                        <Stack.Screen name="DriverValidation"  component={DriverValidation} options={{  title: 'Comptes a valider'}} />
                     </Stack.Navigator>
                 </NavigationContainer>
             </SearchProvider>

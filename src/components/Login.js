@@ -6,7 +6,7 @@ import {UserContext} from '../context/UserContext';
 
 const Login = ({navigation}) => {
 
-    const [email, setEmail] = useState('y@y.fr');
+    const [email, setEmail] = useState('support@drayber.fr');
     const [password, setPassword] = useState('aaa');
     const {setUser} = useContext(UserContext);
 

@@ -4,7 +4,9 @@ import {TouchableHighlight, View} from 'react-native';
 import MenuItem from './MenuItem';
 import PersonSvg from '../assets/icons/person.svg';
 import CreditCardSvg from '../assets/icons/credit-card-outline.svg';
+import Swap from '../assets/icons/swap-outline.svg';
 import CarSvg from '../assets/icons/automobile.svg';
+import Admin from '../assets/icons/person-done-outline.svg';
 import CloseSvg from '../assets/icons/close-square-outline.svg';
 import AsyncStorage from '@react-native-community/async-storage';
 import {UserContext} from "./../context/UserContext";
@@ -23,12 +25,15 @@ const Menu = ({navigation}) => {
     const mode = await AsyncStorage.getItem('changeMode');
     if(mode === "Client"){
       if(user.driver){
+        console.log(user.driver.active_driver)
         if(user.driver.active_driver === true){
           await AsyncStorage.setItem('changeMode', "Driver");
           navigation.navigate('Home')
         }else {
           alert("Votre compte Driver n'est pas encore activé")
         }
+      } else {
+        alert("Vous n'êtes pas chauffeur :(")
       }
     } else {
       await AsyncStorage.setItem('changeMode', "Client");
@@ -62,7 +67,7 @@ const Menu = ({navigation}) => {
         </TouchableHighlight>
         <TouchableHighlight onPress={() => switchMode()}>
           <MenuItem text={'Mode Driver'}>
-            <CreditCardSvg width={24} height={24} fill={color} />
+            <Swap width={24} height={24} fill={color} />
           </MenuItem>
         </TouchableHighlight>
         <TouchableHighlight onPress={() => isDriver()}>
@@ -70,6 +75,13 @@ const Menu = ({navigation}) => {
           <CarSvg width={24} height={24} fill={color} />
         </MenuItem>
         </TouchableHighlight>
+        {user.user.role_id === 1 &&
+            <TouchableHighlight onPress={() => navigation.navigate('Admin')}>
+            <MenuItem text={'Admin'}>
+              <Admin width={24} height={24} fill={color} />
+            </MenuItem>
+            </TouchableHighlight>
+        }
         <TouchableHighlight onPress={() => logout()}>
         <MenuItem text={'Deconnexion'}>
           <CloseSvg width={24} height={24} fill={color} />
