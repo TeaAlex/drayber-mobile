@@ -1,4 +1,4 @@
-import React, {useState, useContext} from 'react'
+import React, { useContext, useEffect, useState} from 'react'
 import { Button, View, Text } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -12,19 +12,35 @@ import WS from "./src/components/WS";
 import UserProvider from "./src/context/UserContext";
 import Register from './src/components/Register';
 import {UserContext} from "./src/context/UserContext";
-import Payment from './src/components/AddSubscriptionScreen';
-import CreditCard from './src/components/AddSubscriptionScreen';
 import AddSubscriptionScreen from './src/components/AddSubscriptionScreen';
 import Profile from './src/components/Profile';
 import ProfileUpdate from './src/components/ProfileUpdate';
+import AsyncStorage from '@react-native-community/async-storage';
+import BecomeDriver from './src/components/BecomeDriver';
+import AdminMenu from './src/components/AdminMenu';
+import DriverValidation from './src/components/DriverValidation';
+import ValidateAccount from './src/components/ValidateAccount';
 
 function HomeScreen({ navigation }) {
 
     const {user} = useContext(UserContext);
+    
+    const [mode, setMode] = useState('');
+
+    useEffect(() => {
+        async function getMode () {
+            setMode(await AsyncStorage.getItem('changeMode'));
+          }
+          getMode();
+    }, []);
+
+
+
 
     return (
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
             <Text>Home Screen</Text>
+            <Text> Mode {mode}</Text>
             <Text>Bonjour { user.user.firstname}</Text>
             <Button
                 title="Go to Details"
@@ -85,6 +101,10 @@ function App() {
                         <Stack.Screen name="AddSubscriptionScreen" component={AddSubscriptionScreen} options={{ title: 'Moyen de paiement'}} />
                         <Stack.Screen name="Profile"  component={Profile} options={{  title: 'Profil'}} />
                         <Stack.Screen name="ProfileUpdate"  component={ProfileUpdate} options={{  title: 'Modifier mon Profil'}} />
+                        <Stack.Screen name="BecomeDriver"  component={BecomeDriver} options={{  title: 'Devenir chauffeur'}} />
+                        <Stack.Screen name="Admin"  component={AdminMenu} options={{  title: 'Admin'}} />
+                        <Stack.Screen name="DriverValidation"  component={DriverValidation} options={{  title: 'Comptes a valider'}} />
+                        <Stack.Screen name="ValidateAccount"  component={ValidateAccount} options={{  title: 'Validation'}} />
                     </Stack.Navigator>
                 </NavigationContainer>
             </SearchProvider>

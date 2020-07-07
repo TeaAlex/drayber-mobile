@@ -6,7 +6,7 @@ import {UserContext} from '../context/UserContext';
 
 const Login = ({navigation}) => {
 
-    const [email, setEmail] = useState('flex@flaex.fr');
+    const [email, setEmail] = useState('support@drayber.fr');
     const [password, setPassword] = useState('aaa');
     const {setUser} = useContext(UserContext);
 
@@ -28,6 +28,7 @@ const Login = ({navigation}) => {
         const {token} = await api('POST', '/login', body);
         try {
             await AsyncStorage.setItem('token', token);
+            await AsyncStorage.setItem('changeMode', 'Client');
             const user = await api('GET', '/users/current-user');
             setUser(user);
             navigation.navigate('Home');

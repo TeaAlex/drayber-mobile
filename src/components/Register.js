@@ -104,6 +104,7 @@ const Register = ({navigation}) => {
                     <TextInput
                         style={styles.input}
                         value={phone_number}
+                        keyboardType='numeric'
                         onChangeText={text => setPhone_number(text)}
                     />
                 </View>
@@ -134,6 +135,7 @@ const Register = ({navigation}) => {
                     <TextInput
                         style={styles.input}
                         value={zip_code}
+                        keyboardType='numeric'
                         onChangeText={text => setZipCode(text)}
                     />
                 </View>
