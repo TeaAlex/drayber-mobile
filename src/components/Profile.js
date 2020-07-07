@@ -9,9 +9,10 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 
 
 const Profile = ({navigation}) => {
+  
     const {user} = useContext(UserContext);
     const color = '#586CD9';
-    console.log(user);
+    
 
   return (
      
@@ -44,8 +45,8 @@ const Profile = ({navigation}) => {
                 
                 
               <View style={tailwind('flex flex-row justify-center items-center')}>
-            <TouchableHighlight style={{...tailwind('bg-indigo-800 p-4 rounded mt-5')}} >
-              <Text style={tailwind('text-white font-bold text-center text-lg')} onPress={() => navigation.navigate('ProfileUpdate')}> Modifier mon profil </Text>
+            <TouchableHighlight style={{...tailwind('bg-indigo-800 p-4 rounded mt-5')}} onPress={() => navigation.navigate('ProfileUpdate')}>
+              <Text style={tailwind('text-white font-bold text-center text-lg')} > Modifier mon profil </Text>
             </TouchableHighlight>
           </View>
             </ScrollView>

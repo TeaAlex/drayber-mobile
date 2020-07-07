@@ -6,7 +6,7 @@ import ImagePicker from 'react-native-image-picker'
 import DateTimePicker from '@react-native-community/datetimepicker';
 
 const ProfileUpdate = ({navigation}) => {
-  const {user} = useContext(UserContext);
+  const {user, setUser} = useContext(UserContext);
   const [firstname, setFirstname]=useState(user.user.firstname);
   const [lastname, setLastname]=useState(user.user.lastname);
   const [phone_number, setPhone_number]= useState(user.user.phone_number);
@@ -19,12 +19,18 @@ const ProfileUpdate = ({navigation}) => {
   
   const handleChoosePhoto = () => {
     const options = {
-      noData: true,
+      mediaType: 'photo',
+
     }
-    ImagePicker.launchImageLibrary(options, response => {
-      if (response.uri) {
-        console.log(response);
-        setProfilePictureUrl(response.uri);
+    ImagePicker.launchImageLibrary(options, (response) => {
+      if (response.data) {
+        
+        const source = {
+          name: response.fileName,
+          data: response.data 
+           
+        };
+        setProfilePictureUrl(source);
       }
     })
   }
@@ -40,10 +46,16 @@ const ProfileUpdate = ({navigation}) => {
       "city": city,
       "birth_date": birth_date
     }
-    console.log(body);
-    api('PUT', '/users/update', body)
-        .then(() => { navigation.navigate('Profile') });
 
+    try {
+      api('PUT', '/users/update', body);
+      api('POST', '/users/upload', profile_picture_url);
+      const user = await api('GET', '/users/current-user');
+      setUser(user);
+      navigation.navigate('Profile');
+    } catch (e) {
+        console.error(e);
+    }
   }
 
    const [date, setDate] = useState(new Date());
@@ -158,3 +170,4 @@ const styles = StyleSheet.create({
 
 
 export default ProfileUpdate
+
