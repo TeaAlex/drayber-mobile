@@ -12,12 +12,17 @@
   "dependencies": {
     "@mapbox/polyline": "^1.1.1",
     "@react-native-community/async-storage": "^1.11.0",
+<<<<<<< HEAD
     "@react-native-community/datetimepicker": "^2.4.2",
+=======
+    "@react-native-community/geolocation": "^2.0.2",
+>>>>>>> test
     "@react-native-community/masked-view": "^0.1.10",
     "@react-native-firebase/app": "^7.3.1",
     "@react-native-firebase/messaging": "^7.2.1",
     "@react-navigation/native": "^5.5.1",
     "@react-navigation/stack": "^5.5.1",
+    "haversine": "^1.1.1",
     "jetifier": "^1.6.6",
     "react": "16.11.0",
     "react-native": "0.62.2",

@@ -1,7 +1,14 @@
+<<<<<<< HEAD
 import React, {useContext, useEffect, useState} from 'react'
 import {Button, View, Text} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
+=======
+import React, {useEffect} from 'react';
+import { Button, View, Text } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+>>>>>>> test
 import Map from "./src/components/Map";
 import Search from "./src/components/Search";
 import SearchProvider from "./src/context/SearchContext";
@@ -9,6 +16,7 @@ import Menu from "./src/components/Menu";
 import Login from "./src/components/Login";
 import {getColor} from 'tailwind-rn';
 import WS from "./src/components/WS";
+<<<<<<< HEAD
 import UserProvider, {UserContext} from "./src/context/UserContext";
 import Register from './src/components/Register';
 import AddSubscriptionScreen from './src/components/AddSubscriptionScreen';
@@ -23,7 +31,12 @@ import SocketIOClient from "socket.io-client";
 import {API_URL} from "react-native-dotenv";
 import messaging from '@react-native-firebase/messaging';
 import {useNavigation} from '@react-navigation/native';
+=======
+import UserProvider from "./src/context/UserContext";
+import messaging from '@react-native-firebase/messaging';
+>>>>>>> test
 import Offer from "./src/components/Offer";
+import AnimatedMarkers from "./src/components/AnimatedMarkers";
 
 function HomeScreen({navigation}) {
 
@@ -31,6 +44,7 @@ function HomeScreen({navigation}) {
 
   const [mode, setMode] = useState('');
 
+<<<<<<< HEAD
   useEffect(() => {
     async function getMode() {
       setMode(await AsyncStorage.getItem('changeMode'));
@@ -38,6 +52,8 @@ function HomeScreen({navigation}) {
 
     getMode();
   }, []);
+=======
+>>>>>>> test
 
   useEffect(() => {
     const unsubscribe = messaging().onMessage(async remoteMessage => {
