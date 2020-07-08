@@ -48,8 +48,20 @@ const Offer = ({route, navigation}) => {
   const [position, setPosition] = useState(null);
   const [isAccepted, setIsAccepted] = useState(true);
 
-  const LATITUDE_DELTA = 0.009;
-  const LONGITUDE_DELTA = 0.009;
+  const onUserLocationChange = (event) => {
+    const {latitude, longitude} = event.nativeEvent.coordinate
+    setRegion(region => ({...region, latitude, longitude}))
+  }
+
+  const LATITUDE_DELTA = 0.005;
+  const LONGITUDE_DELTA = 0.005;
+
+  const [region, setRegion] = useState({
+    latitude: 37.78825,
+    longitude: -122.4324,
+    latitudeDelta: LATITUDE_DELTA,
+    longitudeDelta: LONGITUDE_DELTA,
+  })
 
 
   useEffect(() => {
@@ -64,29 +76,36 @@ const Offer = ({route, navigation}) => {
   }, [])
 
   useEffect(() => {
+    console.log('RENDER');
     requestLocationPermission();
 
     // get initial position
-    // Geolocation.getCurrentPosition(() => {
-    //   const {latitude, longitude} = position.coords;
-    //   setPosition({latitude, longitude})
-    // })
+    Geolocation.getCurrentPosition((position) => {
+      const {latitude, longitude} = position.coords;
+      setRegion(region => ({...region, latitude, longitude}))
+      }, (error) => console.log(error),
+      {
+        timeout: 20000,
+        enableHighAccuracy: true,
+        maximumAge: 1000,
+    })
+
+    Geolocation.watchPosition(position => {
+      const {latitude, longitude} = position.coords;
+      setPosition({latitude, longitude})
+      console.log({latitude, longitude})
+    }, error => {
+      console.error(error)
+    }, {
+      enableHighAccuracy: true,
+      timeout: 20000,
+      maximumAge: 1000,
+      distanceFilter: 10
+    })
 
   }, [])
 
   // watch position
-  Geolocation.watchPosition(position => {
-    const {latitude, longitude} = position.coords;
-    setPosition({latitude, longitude})
-    console.log({latitude, longitude})
-  }, error => {
-    console.error(error)
-  }, {
-    enableHighAccuracy: true,
-    timeout: 20000,
-    maximumAge: 1000,
-    distanceFilter: 50
-  })
 
 
 
@@ -139,8 +158,7 @@ const Offer = ({route, navigation}) => {
 
 
   const startToEndCoords = polyline.decode(offer.encoded_polyline)
-                          .map(point => {
-                            const [latitude, longitude] = point;
+                          .map(([latitude, longitude]) => {
                             return { latitude,longitude }
                           });
 
@@ -167,42 +185,39 @@ const Offer = ({route, navigation}) => {
       >
         <MenuToggle/>
       </TouchableOpacity>
-      <MapView
-        style={tailwind('h-full w-full')}
-        provider={PROVIDER_GOOGLE}
-        region={{
-          latitude: offer.start_address_lat,
-          longitude: offer.start_address_lon,
-          latitudeDelta: LATITUDE_DELTA,
-          longitudeDelta: LONGITUDE_DELTA,
-        }}
-        followsUserLocation={true}
-        showsUserLocation={true}
-        loadingEnabled={true}
-      >
-        {
-          position &&
+      {
+        position !== null && <MapView
+          style={tailwind('h-full w-full')}
+          provider={PROVIDER_GOOGLE}
+          region={region}
+          showsUserLocation={true}
+          loadingEnabled={true}
+          onUserLocationChange={onUserLocationChange}
+        >
+          {
+            position &&
             <Marker
-              coordinate={position}
+              coordinate={region}
             />
-        }
-        {/*{*/}
-        {/*  currentPositionToStartAddressCoords &&*/}
-        {/*  <Polyline*/}
-        {/*    coordinates={currentPositionToStartAddressCoords}*/}
-        {/*    strokeColor="red"*/}
-        {/*    strokeWidth={3}*/}
-        {/*  />*/}
-        {/*}*/}
-        {
-          startToEndCoords &&
-          <Polyline
-            coordinates={startToEndCoords}
-            strokeColor="blue"
-            strokeWidth={5}
-          />
-        }
-      </MapView>
+          }
+          {/*{*/}
+          {/*  currentPositionToStartAddressCoords &&*/}
+          {/*  <Polyline*/}
+          {/*    coordinates={currentPositionToStartAddressCoords}*/}
+          {/*    strokeColor="red"*/}
+          {/*    strokeWidth={3}*/}
+          {/*  />*/}
+          {/*}*/}
+          {
+            startToEndCoords &&
+            <Polyline
+              coordinates={startToEndCoords}
+              strokeColor="blue"
+              strokeWidth={5}
+            />
+          }
+        </MapView>
+      }
       <View style={{...tailwind('bg-gray-100 w-full absolute bottom-0'), height: "20%"}}>
         {
           !isAccepted && <ProgressBar/>

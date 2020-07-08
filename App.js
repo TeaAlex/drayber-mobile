@@ -12,7 +12,6 @@ import WS from "./src/components/WS";
 import UserProvider from "./src/context/UserContext";
 import messaging from '@react-native-firebase/messaging';
 import Offer from "./src/components/Offer";
-import AnimatedMarkers from "./src/components/AnimatedMarkers";
 
 
 
