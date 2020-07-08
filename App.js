@@ -36,7 +36,6 @@ import UserProvider from "./src/context/UserContext";
 import messaging from '@react-native-firebase/messaging';
 >>>>>>> test
 import Offer from "./src/components/Offer";
-import AnimatedMarkers from "./src/components/AnimatedMarkers";
 
 function HomeScreen({navigation}) {
 
