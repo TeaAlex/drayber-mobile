@@ -1,4 +1,4 @@
-import React, {useEffect, useContext} from 'react';
+import React, {useEffect} from 'react';
 import { Button, View, Text } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -9,18 +9,14 @@ import Menu from "./src/components/Menu";
 import Login from "./src/components/Login";
 import {getColor} from 'tailwind-rn';
 import WS from "./src/components/WS";
-import UserProvider, {UserContext} from "./src/context/UserContext";
-import SocketIOClient from "socket.io-client";
-import {API_URL} from "react-native-dotenv";
+import UserProvider from "./src/context/UserContext";
 import messaging from '@react-native-firebase/messaging';
-import { useNavigation } from '@react-navigation/native';
 import Offer from "./src/components/Offer";
 
 
 
 function HomeScreen({ navigation }) {
 
-  const {user} = useContext(UserContext);
 
   useEffect(() => {
     const unsubscribe = messaging().onMessage(async remoteMessage => {

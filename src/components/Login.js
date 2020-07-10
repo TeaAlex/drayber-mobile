@@ -13,7 +13,10 @@ const Login = ({navigation}) => {
   const {setUser} = useContext(UserContext);
 
   useEffect(() => {
-    messaging().getToken().then(token => api('POST', '/users/save-device-token', { device_token: token }));
+    messaging().getToken().then(token => {
+      console.log(token);
+      return api('POST', '/users/save-device-token', { device_token: token })
+    });
   }, [])
 
   const onPress = async () => {
