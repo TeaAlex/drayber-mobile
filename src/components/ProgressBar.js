@@ -3,7 +3,7 @@ import {useDecrement} from "../hooks/useDecrement";
 import {View} from 'react-native';
 import tailwind from "tailwind-rn";
 
-const ProgressBar = () => {
+const ProgressBar = ({onCompletion}) => {
 
   const [count, decrement] = useDecrement(100, 10);
   let timer = null;
@@ -13,8 +13,16 @@ const ProgressBar = () => {
       decrement();
     }, 1000)
 
+
     return function () {
       clearInterval(timer)
+    }
+  }, [count])
+
+  useEffect(() => {
+    if (count <= 0) {
+      clearInterval(timer)
+      onCompletion();
     }
   }, [count])
 

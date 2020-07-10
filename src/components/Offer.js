@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {View, Button, Text, TouchableOpacity, TouchableHighlight, PermissionsAndroid} from 'react-native';
+import {View, Text, TouchableOpacity, TouchableHighlight, PermissionsAndroid} from 'react-native';
 import {api} from "../utils/api";
 import tailwind from "tailwind-rn";
 import MenuToggle from "../assets/icons/menu-toggle.svg";
@@ -8,7 +8,6 @@ import {UserContext} from "../context/UserContext";
 import {directionAPI, geoCoding} from '../utils/googleAPI';
 import polyline from "@mapbox/polyline";
 import ProgressBar from "./ProgressBar";
-import RNLocation from "react-native-location";
 import Geolocation from '@react-native-community/geolocation';
 
 
@@ -46,21 +45,19 @@ const Offer = ({route, navigation}) => {
   const [currentPositionAddress, setCurrentPositionAddress] = useState("");
 
   const [position, setPosition] = useState(null);
-  const [isAccepted, setIsAccepted] = useState(true);
+  const [isAccepted, setIsAccepted] = useState(false);
 
   const onUserLocationChange = (event) => {
     const {latitude, longitude} = event.nativeEvent.coordinate
-    setRegion(region => ({...region, latitude, longitude}))
+    setRegion({ latitude, longitude, latitudeDelta: 0.005, longitudeDelta: 0.005 });
   }
 
-  const LATITUDE_DELTA = 0.005;
-  const LONGITUDE_DELTA = 0.005;
 
   const [region, setRegion] = useState({
-    latitude: 37.78825,
-    longitude: -122.4324,
-    latitudeDelta: LATITUDE_DELTA,
-    longitudeDelta: LONGITUDE_DELTA,
+    latitude: 48.8587741,
+    longitude: 2.2069771,
+    latitudeDelta: 0.0922,
+    longitudeDelta: 0.0922,
   })
 
 
@@ -76,20 +73,9 @@ const Offer = ({route, navigation}) => {
   }, [])
 
   useEffect(() => {
-    console.log('RENDER');
     requestLocationPermission();
 
-    // get initial position
-    Geolocation.getCurrentPosition((position) => {
-      const {latitude, longitude} = position.coords;
-      setRegion(region => ({...region, latitude, longitude}))
-      }, (error) => console.log(error),
-      {
-        timeout: 20000,
-        enableHighAccuracy: true,
-        maximumAge: 1000,
-    })
-
+    // watch position
     Geolocation.watchPosition(position => {
       const {latitude, longitude} = position.coords;
       setPosition({latitude, longitude})
@@ -105,58 +91,6 @@ const Offer = ({route, navigation}) => {
 
   }, [])
 
-  // watch position
-
-
-
-  // RNLocation.configure({
-  //   distanceFilter: 200
-  // })
-  // RNLocation.requestPermission({
-  //   ios: "whenInUse",
-  //   android: {
-  //     detail: "coarse",
-  //     interval: 20000,
-  //   }
-  // }).then(granted => {
-  //   if (granted) {
-  //     const unsubscribe = RNLocation.subscribeToLocationUpdates(locations => {
-  //       const {latitude, longitude} = locations[0];
-  //       setPosition({latitude, longitude});
-  //     })
-  //   }
-  // })
-
-  // useEffect(() => {
-  //   const getPosition = async () => {
-  //     RNLocation.configure({
-  //       distanceFilter: 200
-  //     })
-  //     const granted = await RNLocation.requestPermission({
-  //       ios: "whenInUse",
-  //       android: {
-  //         detail: "coarse"
-  //       }
-  //     })
-  //     if (granted) {
-  //       const unsubscribe = RNLocation.subscribeToLocationUpdates(locations => {
-  //         const {latitude, longitude} = locations[0];
-  //         if (latitude && longitude) {
-  //           setPosition({ latitude, longitude });
-  //           console.log(position);
-  //           unsubscribe();
-  //         }
-  //       });
-  //     }
-  //   }
-  //   getPosition();
-  //
-  // }, [])
-
-
-
-
-
   const startToEndCoords = polyline.decode(offer.encoded_polyline)
                           .map(([latitude, longitude]) => {
                             return { latitude,longitude }
@@ -164,6 +98,16 @@ const Offer = ({route, navigation}) => {
 
   const accept = () => {
     console.log('accept');
+    Geolocation.getCurrentPosition((position) => {
+        const {latitude, longitude} = position.coords;
+        setPosition({latitude, longitude});
+        setRegion(region => ({...region, latitude, longitude, latitudeDelta: 0.005, longitudeDelta: 0.005}))
+      }, (error) => console.log(error),
+      {
+        timeout: 20000,
+        enableHighAccuracy: true,
+        maximumAge: 1000,
+      })
     setIsAccepted(true);
   }
 
@@ -194,52 +138,47 @@ const Offer = ({route, navigation}) => {
           loadingEnabled={true}
           onUserLocationChange={onUserLocationChange}
         >
+          <Marker
+            coordinate={region}
+          />
+
           {
-            position &&
-            <Marker
-              coordinate={region}
+            currentPositionToStartAddressCoords &&
+            <Polyline
+              coordinates={currentPositionToStartAddressCoords}
+              strokeColor="red"
+              strokeWidth={3}
             />
           }
-          {/*{*/}
-          {/*  currentPositionToStartAddressCoords &&*/}
-          {/*  <Polyline*/}
-          {/*    coordinates={currentPositionToStartAddressCoords}*/}
-          {/*    strokeColor="red"*/}
-          {/*    strokeWidth={3}*/}
-          {/*  />*/}
-          {/*}*/}
           {
             startToEndCoords &&
             <Polyline
               coordinates={startToEndCoords}
               strokeColor="blue"
-              strokeWidth={5}
+              strokeWidth={7}
             />
           }
         </MapView>
       }
-      <View style={{...tailwind('bg-gray-100 w-full absolute bottom-0'), height: "20%"}}>
+      <View style={{...tailwind('bg-gray-100 w-full absolute bottom-0'), height: "45%"}}>
         {
-          !isAccepted && <ProgressBar/>
-        }
-        {
-          position && <Text>{JSON.stringify(position)}</Text>
+          !isAccepted && <ProgressBar onCompletion={() => navigation.goBack()}/>
         }
         {/*<Text style={tailwind('text-indigo-800 font-bold text-lg text-center py-6')}>Nouvelle course</Text>*/}
-        {/*<View>*/}
-        {/*  <View style={tailwind('bg-white p-4')}>*/}
-        {/*    <Text style={tailwind('text-gray-700 font-bold')}>Ma position</Text>*/}
-        {/*    <Text style={tailwind('text-gray-600 text-sm')}>{currentPositionAddress}</Text>*/}
-        {/*  </View>*/}
-        {/*  <View style={tailwind('bg-white p-4')}>*/}
-        {/*    <Text style={tailwind('text-gray-700 font-bold')}>Départ</Text>*/}
-        {/*    <Text style={tailwind('text-gray-600 text-sm')}>{offer.address_from}</Text>*/}
-        {/*  </View>*/}
-        {/*  <View style={tailwind('bg-white p-4')}>*/}
-        {/*    <Text style={tailwind('text-gray-700 font-bold')}>Arrivé</Text>*/}
-        {/*    <Text style={tailwind('text-gray-600 text-sm')}>{offer.address_to}</Text>*/}
-        {/*  </View>*/}
-        {/*</View>*/}
+        <View>
+          {/*<View style={tailwind('bg-white p-4')}>*/}
+          {/*  <Text style={tailwind('text-gray-700 font-bold')}>Ma position</Text>*/}
+          {/*  <Text style={tailwind('text-gray-600 text-sm')}>{currentPositionAddress}</Text>*/}
+          {/*</View>*/}
+          <View style={tailwind('bg-white p-4')}>
+            <Text style={tailwind('text-gray-700 font-bold')}>Départ</Text>
+            <Text style={tailwind('text-gray-600 text-sm')}>{offer.address_from}</Text>
+          </View>
+          <View style={tailwind('bg-white p-4')}>
+            <Text style={tailwind('text-gray-700 font-bold')}>Arrivé</Text>
+            <Text style={tailwind('text-gray-600 text-sm')}>{offer.address_to}</Text>
+          </View>
+        </View>
         <View style={tailwind('flex flex-row justify-center items-center my-6')}>
           <Text style={tailwind('text-center text-indigo-800 font-bold text-lg')}>
             {offer.distance} km · {offer.duration} mins · {offer.price} €</Text>
