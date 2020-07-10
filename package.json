@@ -12,21 +12,41 @@
   "dependencies": {
     "@mapbox/polyline": "^1.1.1",
     "@react-native-community/async-storage": "^1.11.0",
+<<<<<<< HEAD
+<<<<<<< HEAD
     "@react-native-community/datetimepicker": "^2.4.2",
+=======
+    "@react-native-community/geolocation": "^2.0.2",
+>>>>>>> test
+=======
+    "@react-native-community/geolocation": "^2.0.2",
+>>>>>>> a793675fd54afc669f917b88a2be0fa425269fba
     "@react-native-community/masked-view": "^0.1.10",
+    "@react-native-firebase/app": "^7.3.1",
+    "@react-native-firebase/messaging": "^7.2.1",
     "@react-navigation/native": "^5.5.1",
     "@react-navigation/stack": "^5.5.1",
+    "haversine": "^1.1.1",
+    "jetifier": "^1.6.6",
     "react": "16.11.0",
     "react-native": "0.62.2",
     "react-native-dotenv": "^0.2.0",
     "react-native-form-validator": "^0.3.2",
     "react-native-gesture-handler": "^1.6.1",
+<<<<<<< HEAD
+<<<<<<< HEAD
     "react-native-image-picker": "^2.3.1",
     "react-native-location": "^2.5.0",
+=======
+    "react-native-location": "^2.5",
+>>>>>>> update package.json
+=======
+    "react-native-location": "^2.5",
+>>>>>>> a793675fd54afc669f917b88a2be0fa425269fba
     "react-native-maps": "0.27.1",
     "react-native-reanimated": "^1.9.0",
-    "react-native-safe-area-context": "^3.0.2",
-    "react-native-screens": "^2.8.0",
+    "react-native-safe-area-context": "^3.0.7",
+    "react-native-screens": "^2.9.0",
     "react-native-svg": "^12.1.0",
     "socket.io-client": "^2.3.0",
     "tailwind-rn": "^1.1.1"

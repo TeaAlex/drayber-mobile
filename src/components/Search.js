@@ -12,13 +12,14 @@ const Search = (props) => {
   const {navigation} = props;
   const {from, setFrom, to, setTo, fromSelected, toSelected, setFromSelected, setToSelected, tripInfo, setTripInfo} = useContext(SearchContext);
 
-  useEffect(() => {
+  useEffect( () => {
     if (fromSelected === true && toSelected === true) {
       const search = async () => {
         const url = `https://maps.googleapis.com/maps/api/directions/json?origin=${from}&destination=${to}&key=${GOOGLE_API_KEY}`;
         const response = await fetch(url);
         const data = await response.json();
-        const points = polyline.decode(data.routes[0].overview_polyline.points);
+        const encodedPolyline = data.routes[0].overview_polyline.points;
+        const points = polyline.decode(encodedPolyline);
         const coords = points.map(point => {
           const [latitude, longitude] = point;
           return { latitude,longitude }
@@ -31,18 +32,21 @@ const Search = (props) => {
           duration: leg.duration.text,
           price: parseInt(leg.distance.text) * 2,
           startAddress: {
+            name: leg.start_address,
             coords: {
               latitude: leg.start_location.lat,
               longitude: leg.start_location.lng
             }
           },
           endAddress: {
+            name: leg.end_address,
             coords: {
               latitude: leg.end_location.lat,
               longitude: leg.end_location.lng
             }
           },
-          coords
+          coords,
+          encodedPolyline
         })
       }
       search();
