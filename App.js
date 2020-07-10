@@ -1,9 +1,12 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 import React, {useContext, useEffect, useState} from 'react'
 import {Button, View, Text} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 =======
+=======
+>>>>>>> a793675fd54afc669f917b88a2be0fa425269fba
 import React, {useEffect} from 'react';
 import { Button, View, Text } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
@@ -34,6 +37,7 @@ import {useNavigation} from '@react-navigation/native';
 =======
 import UserProvider from "./src/context/UserContext";
 import messaging from '@react-native-firebase/messaging';
+<<<<<<< HEAD
 >>>>>>> test
 import Offer from "./src/components/Offer";
 
@@ -68,6 +72,28 @@ function HomeScreen({navigation}) {
   }, []);
 
 
+=======
+import Offer from "./src/components/Offer";
+
+
+
+function HomeScreen({ navigation }) {
+
+
+  useEffect(() => {
+    const unsubscribe = messaging().onMessage(async remoteMessage => {
+      const {type} = remoteMessage.data;
+      console.log(remoteMessage);
+      if (type === "OFFER_CREATE") {
+        const offer = JSON.parse(remoteMessage.data.offer);
+        navigation.navigate('Offer', { offer })
+      }
+    });
+
+    return unsubscribe;
+  }, []);
+
+>>>>>>> a793675fd54afc669f917b88a2be0fa425269fba
   return (
     <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
       <Text>Home Screen</Text>
@@ -89,10 +115,10 @@ function HomeScreen({navigation}) {
         title="Go to Menu"
         onPress={() => navigation.navigate('Menu')}
       />
-      {/*<Button*/}
-      {/*  title="WS"*/}
-      {/*  onPress={() => navigation.navigate('WS')}*/}
-      {/*/>*/}
+      <Button
+        title="WS"
+        onPress={() => navigation.navigate('WS')}
+      />
     </View>
   );
 }
@@ -122,6 +148,7 @@ function App() {
               headerTintColor: getColor('gray-100'),
             }}
           >
+<<<<<<< HEAD
             <Stack.Screen name="Home" component={HomeScreen} options={{title: 'Accueil'}}/>
             <Stack.Screen name="Details" component={DetailsScreen}/>
             <Stack.Screen name="Map" component={Map} options={{headerShown: false}}/>
@@ -139,6 +166,16 @@ function App() {
             <Stack.Screen name="DriverValidation" component={DriverValidation} options={{title: 'Comptes a valider'}}/>
             <Stack.Screen name="ValidateAccount" component={ValidateAccount} options={{title: 'Validation'}}/>
             <Stack.Screen name="Offer" component={Offer} options={{title: 'Nouvelle course'}}/>
+=======
+            <Stack.Screen name="Home" component={HomeScreen} options={{ title: 'Accueil'}} />
+            <Stack.Screen name="Details" component={DetailsScreen} />
+            <Stack.Screen name="Map" component={Map} options={{ headerShown: false }} />
+            <Stack.Screen name="Search" component={Search} options={{ title: 'Itinéraire'}}/>
+            <Stack.Screen name="Menu"  component={Menu} options={{ title: 'Paramètres'}} />
+            <Stack.Screen name="WS"  component={WS} options={{ title: 'WS'}} />
+            <Stack.Screen name="Login"  component={Login} options={{ headerShown: false }} />
+            <Stack.Screen name="Offer"  component={Offer} options={{ title: 'Nouvelle course' }} />
+>>>>>>> a793675fd54afc669f917b88a2be0fa425269fba
           </Stack.Navigator>
         </NavigationContainer>
       </SearchProvider>
