@@ -1,22 +1,13 @@
-<<<<<<< HEAD
 import React, {useState, useContext, useEffect} from 'react';
 import {View, TextInput, Button, Text, TouchableOpacity} from 'react-native';
 import {api} from '../utils/api';
 import AsyncStorage from '@react-native-community/async-storage';
 import {UserContext} from '../context/UserContext';
-=======
-import React, {useState, useContext, useEffect} from 'react'
-import {View, TextInput, Button, Text} from "react-native";
-import {api} from "../utils/api";
-import AsyncStorage from '@react-native-community/async-storage';
-import {UserContext} from "../context/UserContext";
->>>>>>> a793675fd54afc669f917b88a2be0fa425269fba
 import messaging from "@react-native-firebase/messaging";
 
 
 const Login = ({navigation}) => {
 
-<<<<<<< HEAD
     const [email, setEmail] = useState('support@drayber.fr');
     const [password, setPassword] = useState('aaa');
     const {setUser} = useContext(UserContext);
@@ -81,49 +72,3 @@ const Login = ({navigation}) => {
 
 export default Login;
 
-=======
-  const [email, setEmail] = useState('alex@alex.com');
-  const [password, setPassword] = useState('toto');
-  const {setUser} = useContext(UserContext);
-
-  useEffect(() => {
-    messaging().getToken().then(token => {
-      console.log(token);
-      return api('POST', '/users/save-device-token', { device_token: token })
-    });
-  }, [])
-
-  const onPress = async () => {
-    const body = {
-      uid: email,
-      password
-    }
-    const {token} = await api('POST', '/login', body);
-    try {
-      await AsyncStorage.setItem('token', token);
-      const {user} = await api('GET', '/users/current-user');
-      setUser(user);
-      navigation.navigate('Home');
-    } catch (e) {
-      console.error(e);
-    }
-  }
-
-  return (
-    <View>
-      <View>
-        <Text>Email</Text>
-        <TextInput value={email} onChangeText={(text) => setEmail(text)}/>
-      </View>
-      <View>
-        <Text>Mot de passe</Text>
-        <TextInput value={password} secureTextEntry={true} onChangeText={(text) => setPassword(text)}/>
-      </View>
-      <Button title="Se connecter" onPress={onPress}/>
-    </View>
-  )
-
-}
-
-export default Login
->>>>>>> a793675fd54afc669f917b88a2be0fa425269fba
