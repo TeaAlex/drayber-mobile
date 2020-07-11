@@ -33,7 +33,10 @@ const api = async (method, url, body) => {
       const responseJSON = await response.json();
       return responseJSON;
     } else {
-       return alert("Une erreur est survenue")
+        let error = await response.text();
+        console.log(error);
+        error = JSON.parse(error);
+        console.log(error);
     }
   } catch (e) {
     console.error(e)

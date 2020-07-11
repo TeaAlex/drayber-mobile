@@ -3,6 +3,7 @@ import {View, TextInput, Button, Text, StyleSheet,Image,TouchableOpacity } from 
 import {api} from "../utils/api";
 import ImagePicker from 'react-native-image-picker'
 
+import moment from "moment";
 import {UserContext} from '../context/UserContext';
 import {showMessage, hideMessage} from 'react-native-flash-message';
 
@@ -11,25 +12,35 @@ const BecomeDriver = ({navigation}) => {
     const [iban, setIban] = useState('');
     const [bic, setBic] = useState('');
     const [driving_licence_path, setDriving_licence_path] = useState(null);
+    const [base64Image, setBase64Image]=useState(null)
 
-    const {setUser} = useContext(UserContext);
+    const {user,setUser} = useContext(UserContext);
 
     const handleChoosePhoto = () => {
         const options = {
-            noData: true,
-        };
-        ImagePicker.launchImageLibrary(options, response => {
-            if (response.uri) {
-                setDriving_licence_path(response);
-            }
-        });
-    };
+          mediaType: 'photo',
+    
+        }
+        ImagePicker.launchImageLibrary(options, (response) => {
+          if (response.data) {
+            const fileName = response.fileName.split(' ').join('_');
+            const currentTime = moment().format('X');
+            const source = {
+              name: user.user.email+"-"+currentTime+"-"+fileName,
+              data: response.data
+               
+            };
+            setDriving_licence_path(source);
+            setBase64Image(source.data);
+          }
+        })
+      }
 
     const onPress = async () => {
         const body = {
             "iban": iban,
             "bic": bic,
-            "driving_licence_path": driving_licence_path.uri
+            "driving_licence_path":driving_licence_path.name
         }
 
         if(iban.length === 0 ||
@@ -47,6 +58,7 @@ const BecomeDriver = ({navigation}) => {
         try {
             await api('POST', '/users/create-driver', body);
             const user = await api('GET', '/users/current-user');
+            await api('POST', '/upload', driving_licence_path);
             setUser(user);
 
         } catch (e) {
@@ -84,12 +96,7 @@ const BecomeDriver = ({navigation}) => {
                     />
                 </View>
                 <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-                    {driving_licence_path && (
-                        <Image
-                            source={{uri: driving_licence_path.uri}}
-                            style={{width: 150, height: 150}}
-                        />
-                    )}
+                    {driving_licence_path && (<Image source={{ uri: `data:image/jpeg;base64,${base64Image}` }} style={{ width: 150, height: 150 }}/>)}
 
                     <Button
                         mode="contained"
@@ -97,7 +104,6 @@ const BecomeDriver = ({navigation}) => {
                         title="Recto du Permis de conduire"
                     />
                 </View>
-               {/* <View style={{flex: 1, justifyContent: 'flex-end'}}> */}
                <View style={styles.bottom}>
                <TouchableOpacity onPress={onPress}>
                 <Text style={styles.button}>Devenir chauffeur</Text>

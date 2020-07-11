@@ -4,6 +4,7 @@ import {api} from "../utils/api";
 import {UserContext} from "../context/UserContext";
 import ImagePicker from 'react-native-image-picker'
 import DateTimePicker from '@react-native-community/datetimepicker';
+import moment from "moment";
 
 const ProfileUpdate = ({navigation}) => {
   const {user, setUser} = useContext(UserContext);
@@ -42,10 +43,11 @@ const ProfileUpdate = ({navigation}) => {
     }
     ImagePicker.launchImageLibrary(options, (response) => {
       if (response.data) {
-        
+        const fileName = response.fileName.split(' ').join('_');
+        const currentTime = moment().format('X');
         const source = {
-          name: response.fileName,
-          data: response.data 
+          name: user.user.email+"-"+currentTime+"-"+fileName,
+          data: response.data
            
         };
         setProfilePictureUrl(source);
@@ -62,13 +64,14 @@ const ProfileUpdate = ({navigation}) => {
       "address": address,
       "zip_code": zip_code,
       "city": city,
-      "birth_date": birth_date
+      "birth_date": birth_date,
+      "profile_picture_url":profile_picture_url.name
     }
 
     try {
       await api('PUT', '/users/update', body);
       if(oldImage != profile_picture_url){
-      await api('POST', '/users/upload', profile_picture_url);
+      await api('POST', '/upload', profile_picture_url);
       }
       const user = await api('GET', '/users/current-user');
       setUser(user);

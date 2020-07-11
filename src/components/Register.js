@@ -2,14 +2,15 @@ import React, {useState, useContext} from 'react'
 import {View, TextInput, Button, Text, ScrollView, StyleSheet,Image } from "react-native";
 import {api} from "../utils/api";
 import ImagePicker from 'react-native-image-picker'
+import DateTimePicker from '@react-native-community/datetimepicker';
+import moment from "moment";
 import {showMessage, hideMessage} from 'react-native-flash-message';
 
-
 const Register = ({navigation}) => {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [firstname, setFirstname] = useState('');
-    const [lastname, setLastname] = useState('');
+    const [email, setEmail] = useState('@a.fr');
+    const [password, setPassword] = useState('aaa');
+    const [firstname, setFirstname] = useState('reds');
+    const [lastname, setLastname] = useState('rods');
     const [phone_number, setPhone_number] = useState('0612345678');
     const [profile_picture_url, setProfilePictureUrl] = useState(null);
     const [address, setAddress] = useState('1 rue de Saint Denis');
@@ -17,17 +18,53 @@ const Register = ({navigation}) => {
     const [city, setCity] = useState('Paris');
     const [birth_date, setBirthSate] = useState('1990-10-10');
     const [password_confirmation, setPasswordConfirm] = useState('');
+    const [base64Image, setBase64Image]=useState(null)
+
+    const [date, setDate] = useState(new Date());
+    const [mode, setMode] = useState('date');
+    const [show, setShow] = useState(false);
+    
+ 
+    const onChange = (event, selectedDate) => {
+      if(event.type == "set"){
+       const currentDate = selectedDate || date;
+       
+       const reformated = currentDate.getDate().toString() + "-" +currentDate.getMonth().toString()+ "-" + currentDate.getFullYear().toString();
+       setBirthSate(reformated);
+       setShow(false);
+      }else{
+       setShow(false);
+      }
+    };
+ 
+    const showMode = currentMode => {
+      setShow(true);
+     setMode(currentMode);
+    };
+ 
+    const showDatepicker = () => {
+      showMode('date');
+    };
 
     const handleChoosePhoto = () => {
         const options = {
-            noData: true,
-        };
-        ImagePicker.launchImageLibrary(options, response => {
-            if (response.uri) {
-                setProfilePictureUrl(response);
-            }
-        });
-    };
+          mediaType: 'photo',
+    
+        }
+        ImagePicker.launchImageLibrary(options, (response) => {
+          if (response.data) {
+            const fileName = response.fileName.split(' ').join('_');
+            const currentTime = moment().format('X');
+            const source = {
+              name: email+"-"+currentTime+"-"+fileName,
+              data: response.data
+               
+            };
+            setProfilePictureUrl(source);
+            setBase64Image(source.data);
+          }
+        })
+      }
 
     const onPress = async () => {
         const body = {
@@ -40,9 +77,10 @@ const Register = ({navigation}) => {
             "address": address,
             "zip_code": zip_code,
             "city": city,
-            "birth_date": birth_date
+            "birth_date": birth_date,
+            "profile_picture_url":profile_picture_url.name
         }
-
+        console.log(profile_picture_url.name);
         var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
         if(!re.test(email) || email.length === 0 ){
@@ -83,6 +121,10 @@ const Register = ({navigation}) => {
 
         try {
             await api('POST', '/register', body);
+            if(profile_picture_url){
+                console.log(profile_picture_url)
+                await api('POST', '/upload', profile_picture_url);
+            }
             navigation.navigate('Login');
             return showMessage({
                 message: 'Succès',
@@ -133,12 +175,7 @@ const Register = ({navigation}) => {
                     />
                 </View>
                 <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-                    {profile_picture_url && (
-                        <Image
-                            source={{uri: profile_picture_url.uri}}
-                            style={{width: 150, height: 150}}
-                        />
-                    )}
+                    {profile_picture_url && (<Image source={{ uri: `data:image/jpeg;base64,${base64Image}` }} style={{ width: 150, height: 150 }}/>)}
 
                     <Button
                         mode="contained"
@@ -173,22 +210,18 @@ const Register = ({navigation}) => {
                 </View>
                 <View style={styles.container}>
                     <Text>Date de naissance</Text>
-                    <TextInput
-                        style={styles.input}
-                        value={birth_date}
-                        onChangeText={text => setBirthSate(text)}
-                    />
-                    {/* <Button onPress={showDatepicker} title="Show date picker!" />
-        {show && (
-        <DateTimePicker
-          testID="dateTimePicker"
-          value={date}
-          mode={mode}
-          is24Hour={true}
-          display="default"
-          onChange={(date) => setBirthSate(date)}
-        />
-      )} */}
+                    <TextInput style={styles.input} onFocus={showDatepicker}  value={birth_date.toString()}  />
+                        {show && (
+                        <DateTimePicker
+                        testID="dateTimePicker"
+                        value={date}
+                        mode={mode}
+                        is24Hour={true}
+                        display="spinner"
+                        onChange={onChange}
+                        
+                        />
+                    )} 
                 </View>
                 <View style={styles.container}>
                     <Text>Mot de passe</Text>
