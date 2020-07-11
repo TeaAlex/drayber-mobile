@@ -24,6 +24,11 @@ const Login = ({navigation}) => {
       uid: email,
       password
     }
+    const onPress = async () => {
+        const body = {
+            uid: email,
+            password
+        }
 
     var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
@@ -45,6 +50,25 @@ const Login = ({navigation}) => {
       console.error(e);
     }
   };
+=======
+            return alert("Veuillez renseigner un mot de passe");
+        }
+        const {token} = await api('POST', '/login', body);
+        try {
+            await AsyncStorage.setItem('token', token);
+            await AsyncStorage.setItem('changeMode', 'Client');
+            const user = await api('GET', '/users/current-user');
+            setUser(user);
+            messaging().getToken().then(token =>  {
+                console.log(token)
+                api('POST', '/users/save-device-token', { device_token: token })
+            });
+            navigation.navigate('Home');
+        } catch (e) {
+            console.error(e);
+        }
+    };
+>>>>>>> 3676370632e2df6e4d251734d2eef3712e63677c
 
   return (
     <View>

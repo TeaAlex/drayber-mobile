@@ -57,9 +57,11 @@ const Menu = ({navigation}) => {
       {/*  <MenuBackButton onPress={() => navigation.navigate('Map')}/>*/}
       {/*</View>*/}
       <View style={tailwind('bg-blue-500 w-full')}>
+      <TouchableHighlight onPress={() => navigation.navigate('Profile')}>
         <MenuItem text={'Mon profil'}>
           <PersonSvg width={24} height={24} fill={color} />
         </MenuItem>
+        </TouchableHighlight>
         <TouchableHighlight onPress={() => navigation.navigate('AddSubscriptionScreen')}>
           <MenuItem text={'Moyen de paiements'}>
             <CreditCardSvg width={24} height={24} fill={color} />
