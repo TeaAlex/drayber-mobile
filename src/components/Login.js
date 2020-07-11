@@ -12,10 +12,6 @@ const Login = ({navigation}) => {
     const [password, setPassword] = useState('aaa');
     const {setUser} = useContext(UserContext);
 
-    useEffect(() => {
-        messaging().getToken().then(token => api('POST', '/users/save-device-token', { device_token: token }));
-    }, [])
-
     const onPress = async () => {
         const body = {
             uid: email,
@@ -37,6 +33,10 @@ const Login = ({navigation}) => {
             await AsyncStorage.setItem('changeMode', 'Client');
             const user = await api('GET', '/users/current-user');
             setUser(user);
+            messaging().getToken().then(token =>  {
+                console.log(token)
+                api('POST', '/users/save-device-token', { device_token: token })
+            });
             navigation.navigate('Home');
         } catch (e) {
             console.error(e);
