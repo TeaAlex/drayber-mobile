@@ -21,7 +21,9 @@ import DriverValidation from './src/components/DriverValidation';
 import ValidateAccount from './src/components/ValidateAccount';
 import messaging from '@react-native-firebase/messaging';
 import Offer from "./src/components/Offer";
-
+import PaymentFormView from './src/components/PaymentFormView';
+import ForgotPassword from './src/components/ForgotPassword';
+import NewPassword from './src/components/NewPassword';
 
 function HomeScreen({ navigation }) {
 
@@ -108,7 +110,7 @@ function App() {
             <Stack.Screen name="Menu" component={Menu} options={{title: 'Paramètres'}}/>
             <Stack.Screen name="Register" component={Register} options={{title: 'Inscription'}}/>
             <Stack.Screen name="Login" component={Login} options={{headerShown: false}}/>
-            <Stack.Screen name="AddSubscriptionScreen" component={AddSubscriptionScreen} options={{title: 'Moyen de paiement'}}/>
+            <Stack.Screen name="PaymentFormView" component={PaymentFormView} options={{title: 'Moyen de paiement'}}/>
             <Stack.Screen name="Profile" component={Profile} options={{title: 'Profil'}}/>
             <Stack.Screen name="ProfileUpdate" component={ProfileUpdate} options={{title: 'Modifier mon Profil'}}/>
             <Stack.Screen name="BecomeDriver" component={BecomeDriver} options={{title: 'Devenir chauffeur'}}/>
@@ -116,6 +118,8 @@ function App() {
             <Stack.Screen name="DriverValidation" component={DriverValidation} options={{title: 'Comptes a valider'}}/>
             <Stack.Screen name="ValidateAccount" component={ValidateAccount} options={{title: 'Validation'}}/>
             <Stack.Screen name="Offer" component={Offer} options={{title: 'Nouvelle course'}}/>
+            <Stack.Screen name="ForgotPassword" component={ForgotPassword} options={{title: 'Mot de passe oublié'}}/>
+            <Stack.Screen name="NewPassword" component={NewPassword} options={{title: 'Nouveau mot de passe'}}/>
           </Stack.Navigator>
         </NavigationContainer>
       </SearchProvider>

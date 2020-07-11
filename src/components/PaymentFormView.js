@@ -1,47 +1,37 @@
-import React from 'react';
+import React, {useContext, useState} from 'react';
 import {StyleSheet, Text, View, Button} from 'react-native';
 import {CreditCardInput} from 'react-native-credit-card-input';
+import {UserContext} from '../context/UserContext';
 
 /**
  * Renders the payment form and handles the credit card data
  * using the CreditCardInput component.
  */
-export default class PaymentFormView extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {cardData: {valid: false}};
-  }
 
-  render() {
-    const {onSubmit, submitted, error} = this.props;
 
-    return (
+const PaymentFormView = ({navigation}) => {
+
+  return (
       <View>
         <View>
           <CreditCardInput
-            requiresName
-            onChange={cardData => this.setState({cardData})}
+              autoFocus
+              requiresName
+              requireCVC={true}
+              requirePostalCode={true}
+              validColor="black"
+              invalidColor="red"
+              placeholderColor="darkgray"
+              labelStyle={{color: 'black', fontSize: 13}}
+              inputStyle={{color: 'black', fontSize: 16}}
           />
         </View>
         <View style={styles.buttonWrapper}>
-          <Button
-            title="Ajouter"
-            disabled={!this.state.cardData.valid || submitted}
-            onPress={() => onSubmit(this.state.cardData)}
-          />
-          {/* Show errors */}
-          {error && (
-            <View style={styles.alertWrapper}>
-              <View style={styles.alertTextWrapper}>
-                <Text style={styles.alertText}>{error}</Text>
-              </View>
-            </View>
-          )}
+          <Button title="Ajouter" />
         </View>
       </View>
-    );
-  }
-}
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -79,3 +69,6 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
 });
+
+export default PaymentFormView;
+

@@ -49,7 +49,7 @@ const Menu = ({navigation}) => {
       navigation.navigate('BecomeDriver')
     }
   }
-  
+
 
   return (
     <View style={tailwind('bg-gray-100 h-full items-center w-full')}>
@@ -60,7 +60,7 @@ const Menu = ({navigation}) => {
         <MenuItem text={'Mon profil'}>
           <PersonSvg width={24} height={24} fill={color} />
         </MenuItem>
-        <TouchableHighlight onPress={() => navigation.navigate('AddSubscriptionScreen')}>
+        <TouchableHighlight onPress={() => navigation.navigate('PaymentFormView')}>
           <MenuItem text={'Moyen de paiements'}>
             <CreditCardSvg width={24} height={24} fill={color} />
           </MenuItem>
