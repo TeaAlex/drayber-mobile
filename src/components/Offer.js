@@ -20,6 +20,7 @@ const Offer = ({route, navigation}) => {
 
   const NEW_COURSE = 'Nouvelle course';
   const PICK_CLIENT = 'Récuperer le client';
+  const START_TRIP = 'Démarrer la course'
   const DESTINATION = 'Se rendre à la destination'
 
   // STATE
@@ -142,9 +143,10 @@ const Offer = ({route, navigation}) => {
         info: '40%'
       })
     } else if (status === CLIENT_PICKED_UP || status === TRIP_START || status === TRIP_END) {
+      const stepStatus = status === CLIENT_PICKED_UP ? START_TRIP : DESTINATION
       setStartAddress({...startAddress, show: false});
       setEndAddress({...endAddress, label: 'Prochaine destination', show: true});
-      setStepStatus(DESTINATION);
+      setStepStatus(stepStatus);
       setShowStartToEndCoords(true);
       setShowCurrentToStartCoords(false);
     }
@@ -281,7 +283,7 @@ const Offer = ({route, navigation}) => {
           {
             status === CLIENT_PICKED_UP &&
             <TouchableHighlight style={{...tailwind('bg-indigo-200 p-4 rounded mr-4')}} onPress={tripStart}>
-              <Text style={tailwind('text-indigo-500 font-bold text-center text-lg')}> Commencer la course </Text>
+              <Text style={tailwind('text-indigo-500 font-bold text-center text-lg')}> Demarrer la course </Text>
             </TouchableHighlight>
           }
           {
