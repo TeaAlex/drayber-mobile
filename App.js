@@ -24,6 +24,8 @@ import Offer from "./src/components/Offer";
 import PaymentFormView from './src/components/PaymentFormView';
 import ForgotPassword from './src/components/ForgotPassword';
 import NewPassword from './src/components/NewPassword';
+import FlashMessage from 'react-native-flash-message';
+
 
 function HomeScreen({ navigation }) {
 
@@ -118,12 +120,15 @@ function App() {
             <Stack.Screen name="DriverValidation" component={DriverValidation} options={{title: 'Comptes a valider'}}/>
             <Stack.Screen name="ValidateAccount" component={ValidateAccount} options={{title: 'Validation'}}/>
             <Stack.Screen name="Offer" component={Offer} options={{headerShown: false}}/>
-            <Stack.Screen name="ForgotPassword" component={ForgotPassword} options={{title: 'Mot de passe oublié'}}/>
+            <Stack.Screen name="ForgotPassword" component={ForgotPassword} options={{title: "Mot de passe oublié"}}/>
             <Stack.Screen name="NewPassword" component={NewPassword} options={{title: 'Nouveau mot de passe'}}/>
           </Stack.Navigator>
         </NavigationContainer>
       </SearchProvider>
+        <FlashMessage position="bottom" animated={true} ></FlashMessage>
     </UserProvider>
+
+
   );
 }
 

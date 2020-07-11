@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import {UserContext} from '../context/UserContext';
 import {api} from '../utils/api';
+import {showMessage, hideMessage} from 'react-native-flash-message';
 
 const ForgotPassword = ({navigation}) => {
   const {user} = useContext(UserContext);
@@ -25,11 +26,22 @@ const ForgotPassword = ({navigation}) => {
     var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
     if (!re.test(email) || email.length === 0) {
-      return alert('Votre email est invalide');
+      return showMessage({
+        message: 'Erreur',
+        description: 'Votre email est invalide.',
+        type: 'danger',
+        icon: 'danger',
+      });
     }
     try {
       await api('POST', '/forgot-password', body);
       navigation.navigate('Login');
+      return showMessage({
+        message: 'Succés',
+        description: 'Vous allez recevoir un courriel vous permettant de réinitialiser votre mot de passe.',
+        type: 'success',
+        icon: 'success',
+      });
     } catch (e) {
       console.error(e);
     }
@@ -56,6 +68,14 @@ const ForgotPassword = ({navigation}) => {
       <TouchableHighlight
         style={tailwind('bg-indigo-800 p-4 rounded')}
         onPress={onPress}>
+        {/* showMessage({
+            message: 'Succés',
+            description:
+              'Vous allez recevoir un courriel vous permettant de réinitialiser votre mot de passe.',
+            type: 'success',
+            icon: 'success',
+          })*/}
+
         <Text style={tailwind('text-white font-bold text-center text-lg')}>
           {' '}
           Envoyer{' '}
