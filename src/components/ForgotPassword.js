@@ -32,7 +32,7 @@ const ForgotPassword = ({navigation}) => {
         type: 'danger',
         icon: 'danger',
       });
-    }
+     }
     try {
       await api('POST', '/forgot-password', body);
       navigation.navigate('Login');
