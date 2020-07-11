@@ -1,4 +1,4 @@
-import React, {useState, useContext} from 'react'
+import React, {useState, useContext, useEffect} from 'react'
 import {View, TextInput, Button, Text, ScrollView, StyleSheet,Image, Keyboard } from "react-native";
 import {api} from "../utils/api";
 import {UserContext} from "../context/UserContext";
@@ -15,8 +15,21 @@ const ProfileUpdate = ({navigation}) => {
   const [zip_code, setZipCode]= useState(user.user.zip_code);
   const [city, setCity]= useState(user.user.city);
   const [birth_date, setBirthSate]= useState(user.user.birth_date);
+  const [oldImage]= useState(user.user.profile_picture_url);
+  const [base64Image, setBase64Image]=useState(null)
   
-  
+  useEffect(() => {
+    
+      try {
+         api('GET', '/users/getUpload/'+profile_picture_url)
+        .then(body => {
+          setBase64Image(body.exists);
+
+        });
+    } catch (e) {
+        console.error(e);
+    }
+}, []);
   const handleChoosePhoto = () => {
     const options = {
       mediaType: 'photo',
@@ -31,6 +44,7 @@ const ProfileUpdate = ({navigation}) => {
            
         };
         setProfilePictureUrl(source);
+        setBase64Image(source.data);
       }
     })
   }
@@ -40,7 +54,6 @@ const ProfileUpdate = ({navigation}) => {
       "firstname": firstname,
       "lastname": lastname,
       "phone_number":phone_number,
-      "profile_picture_url": profile_picture_url,
       "address": address,
       "zip_code": zip_code,
       "city": city,
@@ -48,8 +61,10 @@ const ProfileUpdate = ({navigation}) => {
     }
 
     try {
-      api('PUT', '/users/update', body);
-      api('POST', '/users/upload', profile_picture_url);
+      await api('PUT', '/users/update', body);
+      if(oldImage != profile_picture_url){
+      await api('POST', '/users/upload', profile_picture_url);
+      }
       const user = await api('GET', '/users/current-user');
       setUser(user);
       navigation.navigate('Profile');
@@ -103,7 +118,7 @@ const ProfileUpdate = ({navigation}) => {
       </View>
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
 
-      {profile_picture_url && (<Image source={{ uri: profile_picture_url.uri }} style={{ width: 150, height: 150 }}/>)}
+      {profile_picture_url && (<Image source={{ uri: `data:image/jpeg;base64,${base64Image}` }} style={{ width: 150, height: 150 }}/>)}
 
      <Button mode="contained" onPress={() => handleChoosePhoto()} title="Choisissez une photo" />
       </View>
