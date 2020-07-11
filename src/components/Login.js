@@ -59,6 +59,7 @@ const Login = ({navigation}) => {
       </View>
       <Button title="Se connecter" onPress={onPress} />
 
+
       <View>
         <Text>Pas encore de compte? </Text>
         <Button
@@ -68,6 +69,39 @@ const Login = ({navigation}) => {
       </View>
     </View>
   );
+
+    return (
+        <View>
+            <View>
+                <Text>Email</Text>
+                <TextInput value={email} onChangeText={text => setEmail(text)} />
+            </View>
+            <View>
+                <Text>Mot de passe</Text>
+                <TextInput
+                    value={password}
+                    secureTextEntry={true}
+                    onChangeText={text => setPassword(text)}
+                />
+            </View>
+            <Button title="Se connecter" onPress={onPress} />
+
+            <View>
+                <Text>Pas encore de compte? </Text>
+                <Button
+                    title="Inscrivez vous"
+                    onPress={() => navigation.navigate('Register')}
+                />
+            </View>
+            <TouchableOpacity onPress={() => navigation.navigate('ForgotPassword')}>
+                <Text>Mot de passe oublié ?</Text>
+            </TouchableOpacity>
+            {/* <TouchableOpacity onPress={() => navigation.navigate('NewPassword')}>
+        <Text>Mot de passe oubliée ?</Text>
+      </TouchableOpacity>*/}
+        </View>
+    );
+
 };
 
 export default Login;
