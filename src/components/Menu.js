@@ -10,6 +10,7 @@ import Admin from '../assets/icons/person-done-outline.svg';
 import CloseSvg from '../assets/icons/close-square-outline.svg';
 import AsyncStorage from '@react-native-community/async-storage';
 import {UserContext} from "./../context/UserContext";
+import {showMessage, hideMessage} from 'react-native-flash-message';
 
 const Menu = ({navigation}) => {
   const color = '#586CD9';
@@ -30,10 +31,22 @@ const Menu = ({navigation}) => {
           await AsyncStorage.setItem('changeMode', "Driver");
           navigation.navigate('Home')
         }else {
-          alert("Votre compte Driver n'est pas encore activé")
+          showMessage({
+            message: 'Erreur',
+            description: "Votre compte Driver n'est pas encore activé.",
+            type: 'danger',
+            icon: 'danger',
+          });
+          // alert("Votre compte Driver n'est pas encore activé")
         }
       } else {
-        alert("Vous n'êtes pas chauffeur :(")
+        showMessage({
+          message: 'Erreur',
+          description: "Vous n'êtes pas chauffeur :( ",
+          type: 'danger',
+          icon: 'danger',
+        });
+        // alert("Vous n'êtes pas chauffeur :(")
       }
     } else {
       await AsyncStorage.setItem('changeMode', "Client");
@@ -44,12 +57,18 @@ const Menu = ({navigation}) => {
   const isDriver = () => {
     console.log(user)
     if(user.driver){
-      return alert("Vous êtes déjà Driver ou votre compte est en attente d'activation.")
+      return showMessage({
+        message: 'Erreur',
+        description: "Vous êtes déjà Driver ou votre compte est en attente d'activation. ",
+        type: 'danger',
+        icon: 'danger',
+      });
+      // return alert("Vous êtes déjà Driver ou votre compte est en attente d'activation.")
     } else {
       navigation.navigate('BecomeDriver')
     }
   }
-  
+
 
   return (
     <View style={tailwind('bg-gray-100 h-full items-center w-full')}>
@@ -62,7 +81,7 @@ const Menu = ({navigation}) => {
           <PersonSvg width={24} height={24} fill={color} />
         </MenuItem>
         </TouchableHighlight>
-        <TouchableHighlight onPress={() => navigation.navigate('AddSubscriptionScreen')}>
+        <TouchableHighlight onPress={() => navigation.navigate('PaymentFormView')}>
           <MenuItem text={'Moyen de paiements'}>
             <CreditCardSvg width={24} height={24} fill={color} />
           </MenuItem>
