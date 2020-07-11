@@ -8,6 +8,8 @@ import { directionAPI } from '../utils/googleAPI';
 import polyline from "@mapbox/polyline";
 import ProgressBar from "./ProgressBar";
 import Geolocation from '@react-native-community/geolocation';
+import {showMessage, hideMessage} from 'react-native-flash-message';
+
 
 const Offer = ({route, navigation}) => {
 
@@ -192,7 +194,13 @@ const Offer = ({route, navigation}) => {
 
   const tripEnd = () => {
     setStatus(TRIP_END);
-    alert('course terminée');
+    return showMessage({
+      message: 'Succès',
+      description: "Course terminée. ",
+      type: 'success',
+      icon: 'success',
+    });
+    //alert('course terminée');
   };
 
 

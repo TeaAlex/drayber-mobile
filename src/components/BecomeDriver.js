@@ -4,6 +4,8 @@ import {api} from "../utils/api";
 import ImagePicker from 'react-native-image-picker'
 
 import {UserContext} from '../context/UserContext';
+import {showMessage, hideMessage} from 'react-native-flash-message';
+
 
 const BecomeDriver = ({navigation}) => {
     const [iban, setIban] = useState('');
@@ -34,7 +36,12 @@ const BecomeDriver = ({navigation}) => {
             driving_licence_path.length === 0 ||
             bic.length === 0){
 
-            return alert("Tout les champs doivent être renseigner");
+                return showMessage({
+                    message: 'Erreur',
+                    description: 'Tout les champs doivent être renseigner.',
+                    type: 'danger',
+                    icon: 'danger',
+                  });
         }
         console.log(body);
         try {
@@ -45,7 +52,12 @@ const BecomeDriver = ({navigation}) => {
         } catch (e) {
             console.error(e);
         }
-        alert("La demande a été prise en compte, votre demande est en attente de validation")
+        showMessage({
+            message: 'Succées',
+            description: 'La demande a été prise en compte, votre demande est en attente de validation.',
+            type: 'success',
+            icon: 'success',
+          });
         navigation.navigate('Home');
     }
 

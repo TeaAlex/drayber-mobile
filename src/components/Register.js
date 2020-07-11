@@ -2,6 +2,8 @@ import React, {useState, useContext} from 'react'
 import {View, TextInput, Button, Text, ScrollView, StyleSheet,Image } from "react-native";
 import {api} from "../utils/api";
 import ImagePicker from 'react-native-image-picker'
+import {showMessage, hideMessage} from 'react-native-flash-message';
+
 
 const Register = ({navigation}) => {
     const [email, setEmail] = useState('');
@@ -44,7 +46,13 @@ const Register = ({navigation}) => {
         var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
         if(!re.test(email) || email.length === 0 ){
-            return alert("Votre email est invalide");
+            return showMessage({
+                message: 'Erreur',
+                description: 'Votre email est invalide.',
+                type: 'danger',
+                icon: 'danger',
+              });
+            //return alert("Votre email est invalide");
         }
         if(password.length === 0 ||
             password_confirmation.length === 0 ||
@@ -54,18 +62,34 @@ const Register = ({navigation}) => {
             zip_code.length === 0 ||
             city.length === 0 ||
             birth_date.length === 0){
-
-            return alert("Tout les champs doivent être renseigner");
+            return showMessage({
+                message: 'Erreur',
+                description: 'Tout les champs doivent être renseigner.',
+                type: 'danger',
+                icon: 'danger',
+            });    
+            //return alert("Tout les champs doivent être renseigner");
         }
 
         if(password !== password_confirmation){
-            return alert("Les deux mots de passe ne correspondent pas");
+            return showMessage({
+                message: 'Erreur',
+                description: 'Les deux mots de passe ne correspondent pas.',
+                type: 'danger',
+                icon: 'danger',
+            });  
+            //return alert("Les deux mots de passe ne correspondent pas");
         }
 
         try {
             await api('POST', '/register', body);
-
             navigation.navigate('Login');
+            return showMessage({
+                message: 'Succès',
+                description: 'Vous allez recevoir un courriel vous permettant de confirmer votre compte.',
+                type: 'success',
+                icon: 'success',
+              });
         } catch (e) {
             console.error(e);
         }

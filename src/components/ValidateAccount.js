@@ -5,6 +5,8 @@ import {api} from '../utils/api';
 import PersonSvg from "../assets/icons/person.svg";
 import MenuItem from "./MenuItem";
 import { ScrollView } from "react-native-gesture-handler";
+import {showMessage, hideMessage} from 'react-native-flash-message';
+
 
 
 const ValidateAccount = ({route,navigation}) => {
@@ -34,7 +36,13 @@ const ValidateAccount = ({route,navigation}) => {
 
       try {
         await api('PUT', '/users/update/'+driver.user.id, body);
-        alert("Le compte "+driver.user.id+" a bien été validé");
+        showMessage({
+          message: 'Succès',
+          description: "Le compte "+driver.user.id+" a bien été validé",
+          type: 'success',
+          icon: 'success',
+        });
+        //alert("Le compte "+driver.user.id+" a bien été validé");
         navigation.navigate('Admin');
       } catch (e) {
           console.error(e);

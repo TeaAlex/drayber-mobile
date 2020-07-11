@@ -4,6 +4,7 @@ import {api} from '../utils/api';
 import AsyncStorage from '@react-native-community/async-storage';
 import {UserContext} from '../context/UserContext';
 import messaging from "@react-native-firebase/messaging";
+import {showMessage, hideMessage} from 'react-native-flash-message';
 
 
 const Login = ({navigation}) => {
@@ -21,11 +22,21 @@ const Login = ({navigation}) => {
     var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
     if(!re.test(email) || email.length === 0){
-      return alert("Votre email est invalide");
+      return showMessage({
+        message: 'Erreur',
+        description: 'Votre email est invalide.',
+        type: 'danger',
+        icon: 'danger',
+      });
     }
     if(password.length === 0){
 
-      return alert("Veuillez renseigner un mot de passe");
+     return showMessage({
+        message: 'Erreur',
+        description: 'Veuillez renseigner un mot de passe.',
+        type: 'danger',
+        icon: 'danger',
+      });
     }
     const {token} = await api('POST', '/login', body);
     try {
@@ -43,32 +54,6 @@ const Login = ({navigation}) => {
     }
   };
 
-  return (
-    <View>
-      <View>
-        <Text>Email</Text>
-        <TextInput value={email} onChangeText={text => setEmail(text)} />
-      </View>
-      <View>
-        <Text>Mot de passe</Text>
-        <TextInput
-          value={password}
-          secureTextEntry={true}
-          onChangeText={text => setPassword(text)}
-        />
-      </View>
-      <Button title="Se connecter" onPress={onPress} />
-
-
-      <View>
-        <Text>Pas encore de compte? </Text>
-        <Button
-          title="Inscrivez vous"
-          onPress={() => navigation.navigate('Register')}
-        />
-      </View>
-    </View>
-  );
 
     return (
         <View>

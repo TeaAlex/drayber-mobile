@@ -12,6 +12,8 @@ import {
 } from 'react-native';
 import {UserContext} from '../context/UserContext';
 import {api} from '../utils/api';
+import {showMessage, hideMessage} from 'react-native-flash-message';
+
 
 const NewPassword = ({navigation}) => {
   const {user} = useContext(UserContext);
@@ -27,7 +29,13 @@ const NewPassword = ({navigation}) => {
     console.log(body);
 
     if (password.length === 0) {
-      return alert('Veuillez renseigner un mot de passe');
+      return showMessage({
+        message: 'Erreur',
+        description: "Veuillez renseigner un mot de passe. ",
+        type: 'danger',
+        icon: 'danger',
+      });
+      // return alert('Veuillez renseigner un mot de passe');
     }
     try {
       await api('PUT', '/update-password', body);

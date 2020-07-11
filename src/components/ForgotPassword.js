@@ -37,7 +37,7 @@ const ForgotPassword = ({navigation}) => {
       await api('POST', '/forgot-password', body);
       navigation.navigate('Login');
       return showMessage({
-        message: 'Succés',
+        message: 'Succès',
         description: 'Vous allez recevoir un courriel vous permettant de réinitialiser votre mot de passe.',
         type: 'success',
         icon: 'success',
