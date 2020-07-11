@@ -11,6 +11,7 @@ const ValidateAccount = ({route,navigation}) => {
     const color = '#586CD9';
 
     const [driver,setDriver] = useState(null);
+    const [base64Image, setBase64Image]=useState(null)
 
     useEffect(() => {
       async function getDriverData () {
@@ -18,13 +19,24 @@ const ValidateAccount = ({route,navigation}) => {
           const driver = await api('GET', '/users/'+route.params.driverId);
 
           setDriver(driver);
-          console.log(driver);
+          console.log("redha",driver);
+
+          if(driver.driver.driving_licence_path != ""){
+            const body = await api('GET', '/users/getUpload/'+driver.driver.driving_licence_path)
+            
+            if(body != undefined){
+                console.log("je suis la");
+              setBase64Image(body.exists);
+              }
+         }
+
       } catch (e) {
           console.error(e);
       }
         }
         getDriverData();
   }, []);
+
 
   const validateAccount = async () => {
 
@@ -58,10 +70,8 @@ const ValidateAccount = ({route,navigation}) => {
                 <PersonSvg width={24} height={24} fill={color}/>
                 <Text style={tailwind('mr-3 ml-3')}>BIC : </Text>
               </MenuItem>
-              <MenuItem text={driver.driver.driving_licence_path} >
-                <PersonSvg width={24} height={24} fill={color}/>
-                <Text style={tailwind('mr-3 ml-3')}>Permis de conduire</Text>
-              </MenuItem>
+                <Image source={{ uri: `data:image/jpeg;base64,${base64Image}` }} style={{ width: 100, height: 100 }}/>
+
               </View>
               }
                 
