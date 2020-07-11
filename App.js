@@ -115,7 +115,7 @@ function App() {
             <Stack.Screen name="Admin" component={AdminMenu} options={{title: 'Admin'}}/>
             <Stack.Screen name="DriverValidation" component={DriverValidation} options={{title: 'Comptes a valider'}}/>
             <Stack.Screen name="ValidateAccount" component={ValidateAccount} options={{title: 'Validation'}}/>
-            <Stack.Screen name="Offer" component={Offer} options={{title: 'Nouvelle course'}}/>
+            <Stack.Screen name="Offer" component={Offer} options={{headerShown: false}}/>
           </Stack.Navigator>
         </NavigationContainer>
       </SearchProvider>

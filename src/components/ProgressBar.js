@@ -3,7 +3,7 @@ import {useDecrement} from "../hooks/useDecrement";
 import {View} from 'react-native';
 import tailwind from "tailwind-rn";
 
-const ProgressBar = ({onCompletion}) => {
+const ProgressBar = ({onCompletion, timeout = 1000}) => {
 
   const [count, decrement] = useDecrement(100, 10);
   let timer = null;
@@ -11,7 +11,7 @@ const ProgressBar = ({onCompletion}) => {
   useEffect(() => {
     timer = setInterval(() => {
       decrement();
-    }, 1000)
+    }, timeout)
 
 
     return function () {
@@ -26,7 +26,7 @@ const ProgressBar = ({onCompletion}) => {
     }
   }, [count])
 
-  return <View style={{...tailwind('bg-green-500 h-2'), width: `${count}%`}}/>
+  return <View style={{...tailwind('bg-indigo-500 h-2'), width: `${count}%`}}/>
 }
 
 export default ProgressBar

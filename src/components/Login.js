@@ -8,66 +8,69 @@ import messaging from "@react-native-firebase/messaging";
 
 const Login = ({navigation}) => {
 
-    const [email, setEmail] = useState('support@drayber.fr');
-    const [password, setPassword] = useState('aaa');
-    const {setUser} = useContext(UserContext);
+  const [email, setEmail] = useState('alex@alex.com');
+  const [password, setPassword] = useState('toto');
+  const {setUser} = useContext(UserContext);
 
-    useEffect(() => {
-        messaging().getToken().then(token => api('POST', '/users/save-device-token', { device_token: token }));
-    }, [])
+  useEffect(() => {
+    messaging().getToken().then(token => {
+      console.log(token);
+      api('POST', '/users/save-device-token', {device_token: token})
+    });
+  }, [])
 
-    const onPress = async () => {
-        const body = {
-            uid: email,
-            password
-        }
+  const onPress = async () => {
+    const body = {
+      uid: email,
+      password
+    }
 
-        var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-        if(!re.test(email) || email.length === 0){
-            return alert("Votre email est invalide");
-        }
-        if(password.length === 0){
+    if (!re.test(email) || email.length === 0) {
+      return alert("Votre email est invalide");
+    }
+    if (password.length === 0) {
 
-            return alert("Veuillez renseigner un mot de passe");
-        }
-        const {token} = await api('POST', '/login', body);
-        try {
-            await AsyncStorage.setItem('token', token);
-            await AsyncStorage.setItem('changeMode', 'Client');
-            const user = await api('GET', '/users/current-user');
-            setUser(user);
-            navigation.navigate('Home');
-        } catch (e) {
-            console.error(e);
-        }
-    };
+      return alert("Veuillez renseigner un mot de passe");
+    }
+    const {token} = await api('POST', '/login', body);
+    try {
+      await AsyncStorage.setItem('token', token);
+      await AsyncStorage.setItem('changeMode', 'Client');
+      const user = await api('GET', '/users/current-user');
+      setUser(user);
+      navigation.navigate('Home');
+    } catch (e) {
+      console.error(e);
+    }
+  };
 
-    return (
-        <View>
-            <View>
-                <Text>Email</Text>
-                <TextInput value={email} onChangeText={text => setEmail(text)} />
-            </View>
-            <View>
-                <Text>Mot de passe</Text>
-                <TextInput
-                    value={password}
-                    secureTextEntry={true}
-                    onChangeText={text => setPassword(text)}
-                />
-            </View>
-            <Button title="Se connecter" onPress={onPress} />
+  return (
+    <View>
+      <View>
+        <Text>Email</Text>
+        <TextInput value={email} onChangeText={text => setEmail(text)}/>
+      </View>
+      <View>
+        <Text>Mot de passe</Text>
+        <TextInput
+          value={password}
+          secureTextEntry={true}
+          onChangeText={text => setPassword(text)}
+        />
+      </View>
+      <Button title="Se connecter" onPress={onPress}/>
 
-            <View>
-                <Text>Pas encore de compte? </Text>
-                <Button
-                    title="Inscrivez vous"
-                    onPress={() => navigation.navigate('Register')}
-                />
-            </View>
-        </View>
-    );
+      <View>
+        <Text>Pas encore de compte? </Text>
+        <Button
+          title="Inscrivez vous"
+          onPress={() => navigation.navigate('Register')}
+        />
+      </View>
+    </View>
+  );
 };
 
 export default Login;

@@ -25,12 +25,12 @@ const Map = ({navigation}) => {
   const {from, to, setFrom, setTo, tripInfo, setTripInfo} = useContext(SearchContext);
   const [position, setPosition] = useState({});
   const [coordinates, setCoordinates] = useState([]);
-  const [encodedPolyline, setEncodedPolyline] = useState("}uvhHoiyNr@JNiBVqETiCPoAp@uDLyAL{C@wBOaDBC@IAEd@YfAc@?WIYMSOi@S}HGsDJeJN}IN{BXqBZwBHu@D_@Dy@DI@QEKGEMaDOmJEoC?_ABo@Hm@N_@FAJIHONeA`@mAJi@Fs@?y@KwAOu@Oc@s@qAa@s@eAmBIWu@mAkAmBo@kACS?Q@c@Ee@ISKOOIOCQDMFKNIRGl@Ff@FPBl@Gt@@fAIz@IRKPMHo@PmDk@sEs@iMoB_OaCeDm@mCq@cDgAqD{AOU_@WsE}CsGcF{J_HuU_Pu@{AOg@Ok@Kw@Ge@Me@aA}BKYOUKg@AYDMDYCc@GUOUOKSAIDMTQp@a@`ASt@OlAU|@k@~BSx@_@hBIp@Mj@Kv@CBIFEJIZA`@w@`CsBdISfAExAIBMTCZ@NUv@o@jCcBvHq@pCUj@IJ[V]L]?YCOGW[S_@yBcGi@_B@E?KEWMOKCMBORCXDXLPPBLAJLd@jA^rAn@dBj@~AJPLHHAHOf@kC");
+  const [encodedPolyline, setEncodedPolyline] = useState("ovvhHydyNp@T^NdAP|AT@IRkDHkB?g@U_AQi@eAiDYw@IGBMd@wCZcBFo@NiDDqBAo@MoCBQAALKfAc@VM?QAMKWMYK]ASOoGE{ACkB@mALcJDaEDuAJ{ADg@\\_Cb@cDDmAB?DKAUGICAC_@GcBEsAEqDIuEA}A@}@Di@Li@JMDCJKHOBWPaA^iAHo@Bs@Cs@Ck@Kq@Qu@MWo@iAm@cA[m@a@}@}CgFMWKWAQBQ?c@Ie@KSMKOEO?ODMLKPGTAj@Hd@Fj@AVEz@?fACZGVKTKHSHc@LeAQgAQaDi@oCa@qKaBmQsCqBc@cD}@gC}@eBs@q@[OUkBoAoDgCkFaEgEyCeRiMcH{Eu@{A_@sA[sBmA{CIOOWKw@JY@[Ea@IUMOSKQ@IDO^GXO\\a@jAIl@WvAi@vBMh@e@lBQ`AMv@QnAIFMTG\\?N?Hm@fBY|@eBbHSpA?h@Eb@IDKTC\\@FEXYx@u@`DcBzHg@pBQZST]R[Fg@C]QU_@Sg@cAiCkAkDI[?G?KEUOMKCMDMRCZDXNNP@DCF@j@lAb@~AnAjDRd@HLJ@HGFMd@gC");
   const [response, setResponse] = useState({
     "geocoded_waypoints": [
       {
         "geocoder_status": "OK",
-        "place_id": "ChIJNy4cwyUP5kcRCQKtBmWXUyI",
+        "place_id": "ChIJXUHM3CUP5kcRXzNuooZTU7E",
         "types": [
           "street_address"
         ]
@@ -50,80 +50,104 @@ const Map = ({navigation}) => {
       {
         "bounds": {
           "northeast": {
-            "lat": 48.80813939999999,
-            "lng": 2.6290664
+            "lat": 48.8081389,
+            "lng": 2.6290674
           },
           "southwest": {
-            "lat": 48.7796599,
-            "lng": 2.5923375
+            "lat": 48.77965649999999,
+            "lng": 2.5912573
           }
         },
         "copyrights": "Map data ©2020",
         "legs": [
           {
             "distance": {
-              "text": "6.4 km",
-              "value": 6434
+              "text": "6.6 km",
+              "value": 6648
             },
             "duration": {
-              "text": "11 mins",
-              "value": 638
+              "text": "10 mins",
+              "value": 627
             },
             "end_address": "Gare d'Émerainville Pontault - Combault, Rue de la Famille Auribault, 77184 Émerainville, France",
             "end_location": {
               "lat": 48.80657679999999,
               "lng": 2.6183213
             },
-            "start_address": "44 Rue des Longs Prés, 77340 Pontault-Combault, France",
+            "start_address": "24 Rue des Hirondelles, 77340 Pontault-Combault, France",
             "start_location": {
-              "lat": 48.7819064,
-              "lng": 2.5923993
+              "lat": 48.7819987,
+              "lng": 2.5916474
             },
             "steps": [
               {
                 "distance": {
-                  "text": "28 m",
-                  "value": 28
+                  "text": "0.1 km",
+                  "value": 140
                 },
                 "duration": {
                   "text": "1 min",
-                  "value": 7
+                  "value": 23
                 },
                 "end_location": {
-                  "lat": 48.7816549,
-                  "lng": 2.5923375
+                  "lat": 48.78076790000001,
+                  "lng": 2.5912573
                 },
-                "html_instructions": "Head <b>south</b> on <b>Rue des Longs Prés</b> toward <b>Rue de la Pompe</b><div style=\"font-size:0.9em\">Restricted usage road</div>",
+                "html_instructions": "Head <b>south</b> on <b>Rue des Hirondelles</b> toward <b>Chemin de la Pompe</b><div style=\"font-size:0.9em\">Restricted usage road</div>",
                 "polyline": {
-                  "points": "}uvhHoiyNh@HH@"
+                  "points": "ovvhHydyNLBb@P^NdAP|AT"
                 },
                 "start_location": {
-                  "lat": 48.7819064,
-                  "lng": 2.5923993
+                  "lat": 48.7819987,
+                  "lng": 2.5916474
                 },
                 "travel_mode": "DRIVING"
               },
               {
                 "distance": {
-                  "text": "0.5 km",
-                  "value": 469
+                  "text": "0.3 km",
+                  "value": 272
                 },
                 "duration": {
-                  "text": "2 mins",
-                  "value": 93
+                  "text": "1 min",
+                  "value": 46
+                },
+                "end_location": {
+                  "lat": 48.7813376,
+                  "lng": 2.594606
+                },
+                "html_instructions": "Turn <b>left</b> onto <b>Rue des Chardonnerets</b><div style=\"font-size:0.9em\">Restricted usage road</div>",
+                "maneuver": "turn-left",
+                "polyline": {
+                  "points": "ynvhHkbyN@IJkBF_AHiB?A@WAOCSQk@Oe@ACM]]mAGOQm@Og@IOIG"
+                },
+                "start_location": {
+                  "lat": 48.78076790000001,
+                  "lng": 2.5912573
+                },
+                "travel_mode": "DRIVING"
+              },
+              {
+                "distance": {
+                  "text": "0.3 km",
+                  "value": 299
+                },
+                "duration": {
+                  "text": "1 min",
+                  "value": 42
                 },
                 "end_location": {
                   "lat": 48.78092729999999,
                   "lng": 2.5985555
                 },
-                "html_instructions": "Turn <b>left</b> onto <b>Rue de la Pompe</b><div style=\"font-size:0.9em\">Restricted usage road</div>",
-                "maneuver": "turn-left",
+                "html_instructions": "Turn <b>right</b> onto <b>Rue de la Pompe</b><div style=\"font-size:0.9em\">Restricted usage road</div>",
+                "maneuver": "turn-right",
                 "polyline": {
-                  "points": "itvhHciyNLaB@GBi@RgDNiBD_@BMLaAVuAX_B@CBYBUBe@JcC@WByAA]?QEu@EkACM"
+                  "points": "krvhHiwyNBMLaAVuAX_B@CBYBUBe@JcC@WByAA]?QEu@EkACM"
                 },
                 "start_location": {
-                  "lat": 48.7816549,
-                  "lng": 2.5923375
+                  "lat": 48.7813376,
+                  "lng": 2.594606
                 },
                 "travel_mode": "DRIVING"
               },
@@ -158,7 +182,7 @@ const Map = ({navigation}) => {
                 },
                 "duration": {
                   "text": "2 mins",
-                  "value": 147
+                  "value": 136
                 },
                 "end_location": {
                   "lat": 48.7801602,
@@ -182,7 +206,7 @@ const Map = ({navigation}) => {
                 },
                 "duration": {
                   "text": "1 min",
-                  "value": 49
+                  "value": 46
                 },
                 "end_location": {
                   "lat": 48.7816311,
@@ -206,7 +230,7 @@ const Map = ({navigation}) => {
                 },
                 "duration": {
                   "text": "1 min",
-                  "value": 28
+                  "value": 27
                 },
                 "end_location": {
                   "lat": 48.7826163,
@@ -230,7 +254,7 @@ const Map = ({navigation}) => {
                 },
                 "duration": {
                   "text": "1 min",
-                  "value": 48
+                  "value": 47
                 },
                 "end_location": {
                   "lat": 48.792654,
@@ -254,7 +278,7 @@ const Map = ({navigation}) => {
                 },
                 "duration": {
                   "text": "1 min",
-                  "value": 16
+                  "value": 15
                 },
                 "end_location": {
                   "lat": 48.7953308,
@@ -326,7 +350,7 @@ const Map = ({navigation}) => {
                 },
                 "duration": {
                   "text": "1 min",
-                  "value": 40
+                  "value": 38
                 },
                 "end_location": {
                   "lat": 48.8035883,
@@ -350,13 +374,13 @@ const Map = ({navigation}) => {
                 },
                 "duration": {
                   "text": "1 min",
-                  "value": 32
+                  "value": 31
                 },
                 "end_location": {
                   "lat": 48.8047376,
                   "lng": 2.621652
                 },
-                "html_instructions": "At the roundabout, take the <b>1st</b> exit onto <b>Rue de l'Est</b>/<wbr/><b>D361</b>",
+                "html_instructions": "At the roundabout, take the <b>1st</b> exit onto <b>Rue de l'Est</b>/<wbr/><b>D361</b><div style=\"font-size:0.9em\">Parts of this road may be closed at certain times or days</div>",
                 "maneuver": "roundabout-right",
                 "polyline": {
                   "points": "m}zhHiv_OCBEBCBCDADCDAFADAFAF?F?F?Hm@fBIXOb@cB`HA@Ot@AJ?BAJ?P?VCb@"
@@ -374,7 +398,7 @@ const Map = ({navigation}) => {
                 },
                 "duration": {
                   "text": "1 min",
-                  "value": 11
+                  "value": 10
                 },
                 "end_location": {
                   "lat": 48.8051061,
@@ -422,7 +446,7 @@ const Map = ({navigation}) => {
                 },
                 "duration": {
                   "text": "1 min",
-                  "value": 23
+                  "value": 21
                 },
                 "end_location": {
                   "lat": 48.8076269,
@@ -446,7 +470,7 @@ const Map = ({navigation}) => {
                 },
                 "duration": {
                   "text": "1 min",
-                  "value": 38
+                  "value": 39
                 },
                 "end_location": {
                   "lat": 48.80657679999999,
@@ -469,7 +493,7 @@ const Map = ({navigation}) => {
           }
         ],
         "overview_polyline": {
-          "points": "}uvhHoiyNr@JNiBVqETiCPoAp@uDLyAL{C@wBOaDBC@IAEd@YfAc@?WIYMSOi@S}HGsDJeJN}IN{BXqBZwBHu@D_@Dy@DI@QEKGEMaDOmJEoC?_ABo@Hm@N_@FAJIHONeA`@mAJi@Fs@?y@KwAOu@Oc@s@qAa@s@eAmBIWu@mAkAmBo@kACS?Q@c@Ee@ISKOOIOCQDMFKNIRGl@Ff@FPBl@Gt@@fAIz@IRKPMHo@PmDk@sEs@iMoB_OaCeDm@mCq@cDgAqD{AOU_@WsE}CsGcF{J_HuU_Pu@{AOg@Ok@Kw@Ge@Me@aA}BKYOUKg@AYDMDYCc@GUOUOKSAIDMTQp@a@`ASt@OlAU|@k@~BSx@_@hBIp@Mj@Kv@CBIFEJIZA`@w@`CsBdISfAExAIBMTCZ@NUv@o@jCcBvHq@pCUj@IJ[V]L]?YCOGW[S_@yBcGi@_B@E?KEWMOKCMBORCXDXLPPBLAJLd@jA^rAn@dBj@~AJPLHHAHOf@kC"
+          "points": "ovvhHydyNp@T^NdAP|AT@IRkDHkB?g@U_AQi@eAiDYw@IGBMd@wCZcBFo@NiDDqBAo@MoCBQAALKfAc@VM?QAMKWMYK]ASOoGE{ACkB@mALcJDaEDuAJ{ADg@\\_Cb@cDDmAB?DKAUGICAC_@GcBEsAEqDIuEA}A@}@Di@Li@JMDCJKHOBWPaA^iAHo@Bs@Cs@Ck@Kq@Qu@MWo@iAm@cA[m@a@}@}CgFMWKWAQBQ?c@Ie@KSMKOEO?ODMLKPGTAj@Hd@Fj@AVEz@?fACZGVKTKHSHc@LeAQgAQaDi@oCa@qKaBmQsCqBc@cD}@gC}@eBs@q@[OUkBoAoDgCkFaEgEyCeRiMcH{Eu@{A_@sA[sBmA{CIOOWKw@JY@[Ea@IUMOSKQ@IDO^GXO\\a@jAIl@WvAi@vBMh@e@lBQ`AMv@QnAIFMTG\\?N?Hm@fBY|@eBbHSpA?h@Eb@IDKTC\\@FEXYx@u@`DcBzHg@pBQZST]R[Fg@C]QU_@Sg@cAiCkAkDI[?G?KEUOMKCMDMRCZDXNNP@DCF@j@lAb@~AnAjDRd@HLJ@HGFMd@gC"
         },
         "summary": "N104/N4",
         "warnings": [],
@@ -477,7 +501,7 @@ const Map = ({navigation}) => {
       }
     ],
     "status": "OK"
-  });
+  })
   const {user} = useContext(UserContext);
   const socket = SocketIOClient(API_URL);
 
@@ -551,8 +575,9 @@ const Map = ({navigation}) => {
     }
     // console.log(JSON.stringify(payload, null, '\t'));
     const { offer } = await api('POST', '/offer/create', {tripInfo: payload});
-    await api('POST', `/offer/${offer.id}/find-driver`);
-    console.log('create offer')
+    const { status } = await api('POST', `/offer/${offer.id}/find-driver`);
+    console.log('create offer');
+    console.log(status);
   }
 
 
