@@ -20,16 +20,21 @@ const ProfileUpdate = ({navigation}) => {
   
   useEffect(() => {
     
-      try {
-         api('GET', '/users/getUpload/'+profile_picture_url)
+    try {
+      
+      if(user.user.profile_picture_url != ""){
+        api('GET', '/users/getUpload/'+user.user.profile_picture_url)
         .then(body => {
+          if(body != undefined){
           setBase64Image(body.exists);
-
+          }
         });
-    } catch (e) {
-        console.error(e);
-    }
+      }
+  } catch (e) {
+      console.error(e);
+  }
 }, []);
+
   const handleChoosePhoto = () => {
     const options = {
       mediaType: 'photo',
