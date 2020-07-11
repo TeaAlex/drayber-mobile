@@ -5,7 +5,6 @@ import {UserContext} from "../context/UserContext";
 import PersonSvg from "../assets/icons/person.svg";
 import MenuItem from "./MenuItem";
 import { ScrollView } from "react-native-gesture-handler";
-import DateTimePicker from '@react-native-community/datetimepicker';
 import { api } from "../utils/api";
 
 
@@ -16,13 +15,16 @@ const Profile = ({navigation}) => {
     const [base64Image, setBase64Image]=useState(null)
     
     useEffect(() => {
-    
       try {
-         api('GET', '/users/getUpload/'+user.user.profile_picture_url)
+        if(user.user.profile_picture_url != ""){
+        api('GET', '/users/getUpload/'+user.user.profile_picture_url)
         .then(body => {
+          if(body != undefined){
+            console.log("je suis la");
           setBase64Image(body.exists);
-
+          }
         });
+     }
     } catch (e) {
         console.error(e);
     }
