@@ -1,12 +1,15 @@
 import React, {useState, useContext} from 'react'
-import {View, TextInput, Button, Text, StyleSheet,Image,TouchableOpacity } from "react-native";
+import {View, TextInput, Text, StyleSheet,Image,TouchableOpacity } from "react-native";
 import {api} from "../utils/api";
 import ImagePicker from 'react-native-image-picker'
 
 import moment from "moment";
 import {UserContext} from '../context/UserContext';
 import {showMessage, hideMessage} from 'react-native-flash-message';
-
+import Input from "./Input";
+import Button from './Button'
+import tailwind from 'tailwind-rn'
+import { ScrollView } from 'react-native-gesture-handler';
 
 const BecomeDriver = ({navigation}) => {
     const [iban, setIban] = useState('');
@@ -76,27 +79,10 @@ const BecomeDriver = ({navigation}) => {
     }
 
     return (
-            <View style={styles.backgroundContainer}>
-                <View style={styles.container}>
-                    <Text>IBAN</Text>
-                    <TextInput
-                        style={styles.input}
-                        style={styles.input}
-                        value={iban}
-                        onChangeText={text => setIban(text)}
-                        maxLength={34}
-                    />
-                </View>
-                <View style={styles.container}>
-                    <Text>BIC</Text>
-                    <TextInput
-                        style={styles.input}
-                        value={bic}
-                        keyboardType='numeric'
-                        onChangeText={text => setBic(text)}
-                        maxLength={11}
-                    />
-                </View>
+        <ScrollView>
+            <View style={tailwind('w-full flex items-center mt-12')}>
+                <Input label={"IBAN"} value={iban} onChange={setIban} maxLength={34}/>
+                <Input label={"BIC"} value={bic} onChange={setBic} maxLength={11}/>
                 <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
                     {driving_licence_path && (<Image source={{ uri: `data:image/jpeg;base64,${base64Image}` }} style={{ width: 150, height: 150 }}/>)}
 
@@ -106,13 +92,9 @@ const BecomeDriver = ({navigation}) => {
                         title="Recto du Permis de conduire"
                     />
                 </View>
-               <View style={styles.bottom}>
-               <TouchableOpacity onPress={onPress}>
-                <Text style={styles.button}>Devenir chauffeur</Text>
-               </TouchableOpacity>
-                </View>
-
+                <Button title="Devenir chauffeur" onPress={onPress} />
             </View>
+            </ScrollView>
     );
 };
 
@@ -135,20 +117,7 @@ const styles = StyleSheet.create({
         padding: 20,
         alignItems: 'center',
     },
-    bottom: {
-        flex: 1,
-        justifyContent: 'flex-end',
-      },
-      button: {
-        backgroundColor:'#5E2B97',
-        padding:20,
-        borderRadius:20,
-        alignItems:"center",
-        textTransform:"uppercase",
-        borderColor:"black",
-        color:"white",
-        fontWeight:"bold"
-      }
+    
 });
 
 export default BecomeDriver;
