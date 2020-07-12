@@ -50,6 +50,15 @@ function HomeScreen({ navigation }) {
         const offer = JSON.parse(remoteMessage.data.offer);
         navigation.navigate('Offer', { offer })
       }
+      if (type === "TRIP_CREATE") {
+        const driver = JSON.parse(remoteMessage.data.driver);
+        const arrivalTime = remoteMessage.data.arrivalTime;
+        const info = {
+          driverName: `${driver.firstname} ${driver.lastname}`,
+          arrivalTime
+        }
+        navigation.navigate('Map', { info })
+      }
     });
 
     return unsubscribe;

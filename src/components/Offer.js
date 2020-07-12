@@ -9,6 +9,7 @@ import polyline from "@mapbox/polyline";
 import ProgressBar from "./ProgressBar";
 import Geolocation from '@react-native-community/geolocation';
 import {showMessage, hideMessage} from 'react-native-flash-message';
+import { getComputedTime } from "../utils/getComputedTime";
 
 
 const Offer = ({route, navigation}) => {
@@ -52,9 +53,11 @@ const Offer = ({route, navigation}) => {
   const [showStartToEndCoords, setShowStartToEndCoords] = useState(true);
   const [showCurrentToStartCoords, setShowCurrentToStartCoords] = useState(true);
 
+  const [currentToStartInfo, setCurrentToStartInfo] = useState(null);
+
   const [height, setHeight] = useState({
-    map: '50%',
-    info: '50%'
+    map: '48%',
+    info: '52%'
   })
 
 
@@ -111,7 +114,15 @@ const Offer = ({route, navigation}) => {
         setCurrentPosition({latitude, longitude});
         setRegion({...region, latitude, longitude});
 
-        const {coords: currentToStartCoords} = await directionAPI({latitude, longitude}, offer.address_from);
+        const {coords: currentToStartCoords, leg} = await directionAPI({latitude, longitude}, offer.address_from, "driving");
+
+        const {distance, duration} = leg;
+        const info = {
+          distance,
+          duration,
+          arrivalTime: getComputedTime(duration.value)
+        };
+        setCurrentToStartInfo(info);
         setCurrentToStartCoords(currentToStartCoords);
 
         const startToEndCoords = polyline.decode(offer.encoded_polyline).map(([latitude, longitude]) => ({
@@ -130,7 +141,6 @@ const Offer = ({route, navigation}) => {
   }, [])
 
   useEffect(() => {
-    // const statuses = [INITIAL, INIT, ACCEPTED, CLIENT_PICKED_UP, TRIP_START, TRIP_END];
     if (status === INIT || status === INITIAL) {
       setStartAddress({...startAddress, label: 'Départ', show: true});
       setEndAddress({...endAddress, label: 'Arrivé', show: true});
@@ -155,10 +165,15 @@ const Offer = ({route, navigation}) => {
   }, [status])
 
 
-  const accept = () => {
-    // TODO SEND NOTIF TO USER => DRIVER ACCEPTED
+  const accept = async () => {
     setStatus(ACCEPTED);
     setStepStatus(PICK_CLIENT);
+
+    // send notification to client
+    await api('POST', `/offer/${offer.id}/accept`, {
+      arrivalTime: currentToStartInfo.arrivalTime
+    });
+
     Geolocation.watchPosition(position => {
       const {latitude, longitude} = position.coords;
       setCurrentPosition({latitude, longitude})
@@ -213,7 +228,8 @@ const Offer = ({route, navigation}) => {
         <MenuToggle/>
       </TouchableOpacity>
       {
-        currentPosition !== null && <MapView
+        currentPosition !== null &&
+        <MapView
           style={{...tailwind('w-full'), height: height.map}}
           provider={PROVIDER_GOOGLE}
           region={region}
@@ -246,28 +262,40 @@ const Offer = ({route, navigation}) => {
       <View style={{...tailwind('bg-gray-100 w-full absolute bottom-0'), height: height.info}}>
         {
           status === INIT
-          && <ProgressBar onCompletion={() => navigation.goBack()} timeout={1000} />
+          // && <ProgressBar onCompletion={() => navigation.goBack()} timeout={1000} />
         }
         <View>
           <Text style={tailwind('text-indigo-800 font-bold text-lg text-center py-6')}>{stepStatus}</Text>
           {
             startAddress.show &&
-            <View style={tailwind('bg-white p-4')}>
+            <View style={tailwind('bg-white p-4 border-l-4 border-teal-500')}>
               <Text style={tailwind('text-gray-700 font-bold')}>{startAddress.label}</Text>
               <Text style={tailwind('text-gray-600 text-sm')}>{startAddress.text}</Text>
             </View>
           }
           {
             endAddress.show &&
-            <View style={tailwind('bg-white p-4')}>
+            <View style={tailwind('bg-white p-4 border-l-4 border-indigo-500')}>
               <Text style={tailwind('text-gray-700 font-bold')}>{endAddress.label}</Text>
               <Text style={tailwind('text-gray-600 text-sm')}>{endAddress.text}</Text>
             </View>
           }
         </View>
-        <View style={tailwind('flex flex-row justify-center items-center my-6')}>
-          <Text style={tailwind('text-center text-indigo-800 font-bold text-lg')}>
-            {offer.distance} km · {offer.duration} mins · {offer.price} €</Text>
+        <View style={tailwind('flex justify-center items-center my-4')}>
+          {
+            currentToStartInfo &&
+            <Text style={tailwind('text-center text-teal-500 font-bold text-base')}>
+              {currentToStartInfo.distance.text}· {currentToStartInfo.duration.text}
+            </Text>
+          }
+          <Text style={tailwind('text-center text-indigo-800 font-bold text-base')}>
+            {offer.distance} km · {offer.duration} mins
+          </Text>
+          <Text style={tailwind('text-center text-gray-800 font-bold text-lg')}>
+            Total de la course : {offer.price} €
+          </Text>
+        </View>
+        <View style={tailwind('flex flex-row justify-center items-center')}>
         </View>
         {/*<Text>{status}</Text>*/}
         <View style={tailwind('flex flex-row justify-center items-center')}>
