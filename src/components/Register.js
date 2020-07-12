@@ -48,9 +48,11 @@ const Register = ({navigation}) => {
 
     const handleChoosePhoto = () => {
         const options = {
-          mediaType: 'photo',
-    
-        }
+            mediaType: 'photo',
+            quality:1, 
+            maxWidth: 1280,
+            maxHeight: 720
+          }
         ImagePicker.launchImageLibrary(options, (response) => {
           if (response.data) {
             const fileName = response.fileName.split(' ').join('_');
