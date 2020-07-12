@@ -41,8 +41,7 @@ const ProfileUpdate = ({navigation}) => {
       mediaType: 'photo',
       quality:1, 
       maxWidth: 1280,
-      maxHeight: 720, 
-      allowsEditing: false
+      maxHeight: 720
     }
     ImagePicker.launchImageLibrary(options, (response) => {
       if (response.data) {
