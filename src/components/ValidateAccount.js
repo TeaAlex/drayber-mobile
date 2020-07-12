@@ -6,7 +6,7 @@ import PersonSvg from "../assets/icons/person.svg";
 import MenuItem from "./MenuItem";
 import { ScrollView } from "react-native-gesture-handler";
 import {showMessage, hideMessage} from 'react-native-flash-message';
-
+import Lightbox from 'react-native-lightbox';
 
 
 const ValidateAccount = ({route,navigation}) => {
@@ -78,7 +78,12 @@ const ValidateAccount = ({route,navigation}) => {
                 <PersonSvg width={24} height={24} fill={color}/>
                 <Text style={tailwind('mr-3 ml-3')}>BIC : </Text>
               </MenuItem>
-                <Image source={{ uri: `data:image/jpeg;base64,${base64Image}` }} style={{ width: 100, height: 100 }}/>
+              <View style={tailwind('items-center mt-3')}>
+              <Lightbox >
+
+              <Image source={{ uri: `data:image/jpeg;base64,${base64Image}` }} style={{width: 230, height: 230}}/>
+            </Lightbox>
+              </View>
 
               </View>
               }

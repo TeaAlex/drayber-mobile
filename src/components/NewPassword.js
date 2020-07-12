@@ -19,12 +19,13 @@ const NewPassword = ({navigation}) => {
   const {user} = useContext(UserContext);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [token, setToken] = useState('');
   const [password_confirmation, setPasswordConfirm] = useState('');
 
   const onPress = async () => {
     const body = {
       password: password,
-      password_confirmation: password_confirmation,
+      token: token,
     };
     console.log(body);
 
@@ -35,7 +36,24 @@ const NewPassword = ({navigation}) => {
         type: 'danger',
         icon: 'danger',
       });
-      // return alert('Veuillez renseigner un mot de passe');
+
+    }
+    if (password !== password_confirmation) {
+      return showMessage({
+        message: 'Erreur',
+        description: "Les mots de passe ne correspondent pas ",
+        type: 'danger',
+        icon: 'danger',
+      });
+    }
+    if (token.length === 0) {
+      return showMessage({
+        message: 'Erreur',
+        description: "Veuillez renseigner un token. ",
+        type: 'danger',
+        icon: 'danger',
+      });
+
     }
     try {
       await api('PUT', '/update-password', body);
@@ -49,6 +67,17 @@ const NewPassword = ({navigation}) => {
     <ScrollView>
       <View style={styles.backgroundContainer}>
         <Text>Réinitialiser votre mot de passe</Text>
+        <View style={styles.container}>
+          <Text>Token</Text>
+          <TextInput
+            style={tailwind(
+              'w-full bg-white border-2 border-gray-400 p-3 rounded text-gray-700 font-bold',
+            )}
+            value={token}
+            secureTextEntry={true}
+            onChangeText={text => setToken(text)}
+          />
+        </View>
         <View style={styles.container}>
           <Text>Nouveau mot de passe</Text>
           <TextInput
