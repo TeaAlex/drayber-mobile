@@ -1,16 +1,19 @@
-import React, {useState, useContext, useEffect} from 'react';
-import {View, TextInput, Button, Text, TouchableOpacity} from 'react-native';
+import React, {useState, useContext} from 'react';
+import {View, Text, TouchableOpacity} from 'react-native';
 import {api} from '../utils/api';
 import AsyncStorage from '@react-native-community/async-storage';
 import {UserContext} from '../context/UserContext';
 import messaging from "@react-native-firebase/messaging";
 import {showMessage, hideMessage} from 'react-native-flash-message';
+import Input from "./Input";
+import Button from './Button'
+import tailwind from 'tailwind-rn'
 
 
 const Login = ({navigation}) => {
 
-  const [email, setEmail] = useState('support@drayber.fr');
-  const [password, setPassword] = useState('aaa');
+  const [email, setEmail] = useState('alex@alex.com');
+  const [password, setPassword] = useState('toto');
   const {setUser} = useContext(UserContext);
 
   const onPress = async () => {
@@ -57,30 +60,30 @@ const Login = ({navigation}) => {
 
     return (
         <View>
-            <View>
-                <Text>Email</Text>
-                <TextInput value={email} onChangeText={text => setEmail(text)} />
-            </View>
-            <View>
-                <Text>Mot de passe</Text>
-                <TextInput
-                    value={password}
-                    secureTextEntry={true}
-                    onChangeText={text => setPassword(text)}
-                />
-            </View>
+            <Input label={"Email"} value={email} onChange={setEmail} placeholder={"email@email.com"}/>
+            <Input label={"Mot de passe"} value={password} onChange={setPassword} placeholder={"*****"}/>
             <Button title="Se connecter" onPress={onPress} />
-
-            <View>
-                <Text>Pas encore de compte? </Text>
-                <Button
-                    title="Inscrivez vous"
-                    onPress={() => navigation.navigate('Register')}
-                />
+            <View style={tailwind('w-full flex items-center mt-3')}>
+              <View style={tailwind('w-2/3 flex items-center mb-1')}>
+                <TouchableOpacity onPress={() => navigation.navigate('ForgotPassword')}>
+                  <Text style={tailwind('text-indigo-800 font-bold')}>Mot de passe oublié ?</Text>
+                </TouchableOpacity>
+              </View>
+              <View style={tailwind('w-2/3 flex items-center mb-1')}>
+                <Text style={tailwind('text-gray-800 mb-1')}>Pas encore de compte ? </Text>
+                <TouchableOpacity onPress={() => navigation.navigate('ForgotPassword')}>
+                  <Text style={tailwind('text-indigo-800 font-bold')}>S'inscrire</Text>
+                </TouchableOpacity>
+              </View>
             </View>
-            <TouchableOpacity onPress={() => navigation.navigate('ForgotPassword')}>
-                <Text>Mot de passe oublié ?</Text>
-            </TouchableOpacity>
+
+            {/*<View>*/}
+            {/*    <Text>Pas encore de compte? </Text>*/}
+            {/*    <Button*/}
+            {/*        title="Inscrivez vous"*/}
+            {/*        onPress={() => navigation.navigate('Register')}*/}
+            {/*    />*/}
+            {/*</View>*/}
             {/* <TouchableOpacity onPress={() => navigation.navigate('NewPassword')}>
         <Text>Mot de passe oubliée ?</Text>
       </TouchableOpacity>*/}
