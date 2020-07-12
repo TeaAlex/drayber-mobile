@@ -1,16 +1,14 @@
-import React, {useEffect, useState, useContext} from 'react'
-import MapView, {PROVIDER_GOOGLE, Polyline, Marker} from "react-native-maps";
-import {View, StyleSheet, Text, TouchableHighlight, TouchableOpacity, Button} from "react-native";
+import React, { useEffect, useState, useContext } from 'react'
+import MapView, { PROVIDER_GOOGLE, Polyline, Marker } from "react-native-maps";
+import { View, StyleSheet, Text, TouchableHighlight, TouchableOpacity, Button } from "react-native";
 import tailwind from "tailwind-rn";
 import RNLocation from 'react-native-location';
 import polyline from "@mapbox/polyline"
-import {SearchContext} from "../context/SearchContext";
-import {API_URL, GOOGLE_API_KEY} from 'react-native-dotenv'
+import { SearchContext } from "../context/SearchContext";
+import { API_URL, GOOGLE_API_KEY } from 'react-native-dotenv'
 import MenuToggle from "../assets/icons/menu-toggle.svg";
-import SocketIOClient from "socket.io-client";
-import {UserContext} from "../context/UserContext";
-import {api} from "../utils/api";
-
+import { UserContext } from "../context/UserContext";
+import { api } from "../utils/api";
 
 
 const styles = StyleSheet.create({
@@ -20,7 +18,7 @@ const styles = StyleSheet.create({
   }
 })
 
-const Map = ({navigation}) => {
+const Map = ({navigation, route}) => {
 
   const {from, to, setFrom, setTo, tripInfo, setTripInfo} = useContext(SearchContext);
   const [position, setPosition] = useState({});
@@ -503,29 +501,8 @@ const Map = ({navigation}) => {
     "status": "OK"
   })
   const {user} = useContext(UserContext);
-  const socket = SocketIOClient(API_URL);
 
   useEffect(() => {
-    const getPosition = async () => {
-      RNLocation.configure({
-        distanceFilter: 100
-      })
-      const granted = await RNLocation.requestPermission({
-        ios: "whenInUse",
-        android: {
-          detail: "coarse"
-        }
-      })
-      if (granted) {
-        const unsubscribe = RNLocation.subscribeToLocationUpdates(locations => {
-          const {latitude, longitude} = locations[0];
-          if (latitude && longitude) {
-            setPosition({ latitude, longitude });
-            unsubscribe();
-          }
-        });
-      }
-    }
     const setTrip = () => {
       const points = polyline.decode(encodedPolyline);
       const coords = points.map(point => {
@@ -574,8 +551,8 @@ const Map = ({navigation}) => {
       encodedPolyline
     }
     // console.log(JSON.stringify(payload, null, '\t'));
-    const { offer } = await api('POST', '/offer/create', {tripInfo: payload});
-    const { status } = await api('POST', `/offer/${offer.id}/find-driver`);
+    const {offer} = await api('POST', '/offer/create', {tripInfo: payload});
+    const {status} = await api('POST', `/offer/${offer.id}/find-driver`);
     console.log('create offer');
     console.log(status);
   }
@@ -585,21 +562,31 @@ const Map = ({navigation}) => {
     <>
       {
         Object.keys(tripInfo).length > 0 ?
-          <View style={tailwind('flex-1 bg-white items-center justify-center')}>
+          <View style={tailwind('bg-white h-full w-full')}>
             <TouchableOpacity
               style={{position: 'absolute', top: 40, left: 20, zIndex: 100}}
               onPress={() => navigation.navigate('Menu')}
             >
-              <MenuToggle />
+              <MenuToggle/>
             </TouchableOpacity>
+            {
+              route.params && route.params.info && Object.keys(route.params.info).length > 0 &&
+              <View style={{...tailwind('flex flex-row justify-center w-full absolute z-50'), 'top': '20%'}}>
+                <View style={tailwind('w-3/4 bg-white border-red-100 p-6 border-t-4 border-indigo-400 rounded')}>
+                  <Text style={tailwind('text-indigo-800 font-bold text-lg mb-2')}>CHAUFFEUR EN ROUTE</Text>
+                  <Text style={tailwind('text-gray-700 font-bold mb-1 text-base')}>{route.params.info.driverName}</Text>
+                  <Text style={tailwind('text-gray-600 text-base')}>Arrivé prévu à {route.params.info.arrivalTime}</Text>
+                </View>
+              </View>
+            }
             <MapView
-              style={tailwind('h-full w-full')}
+              style={{...tailwind('w-full'), height: '50%'}}
               provider={PROVIDER_GOOGLE}
               region={{
                 latitude: tripInfo.startAddress.coords.latitude,
                 longitude: tripInfo.startAddress.coords.longitude,
-                latitudeDelta: 0.0922,
-                longitudeDelta: 0.0421,
+                latitudeDelta: 0.048,
+                longitudeDelta: 0.048,
               }}
               loadingEnabled={true}
             >
@@ -614,8 +601,9 @@ const Map = ({navigation}) => {
             </MapView>
             {
               tripInfo && tripInfo.coords && tripInfo.coords.length > 0 &&
-              <View style={{...tailwind('bg-gray-100 w-full absolute bottom-0'), height: "48%"}}>
-                <Text style={tailwind('text-indigo-800 font-bold text-lg text-center py-6')}>Récapitulatif de la course</Text>
+              <View style={{...tailwind('bg-gray-100 w-full absolute bottom-0'), height: "50%"}}>
+                <Text style={tailwind('text-indigo-800 font-bold text-lg text-center py-6')}>Récapitulatif de la
+                  course</Text>
                 <View>
                   <View style={tailwind('bg-white p-4')}>
                     <Text style={tailwind('text-gray-700 font-bold')}>Départ</Text>
@@ -627,13 +615,17 @@ const Map = ({navigation}) => {
                   </View>
                 </View>
                 <View style={tailwind('flex flex-row justify-center items-center my-6')}>
-                  <Text style={tailwind('text-center text-indigo-800 font-bold text-lg')}>{tripInfo.distance} · {tripInfo.duration} · {tripInfo.price} €</Text>
+                  <Text
+                    style={tailwind('text-center text-indigo-800 font-bold text-lg')}>{tripInfo.distance} · {tripInfo.duration} · {tripInfo.price} €</Text>
                 </View>
-                <View style={tailwind('flex flex-row justify-center items-center')}>
-                  <TouchableHighlight style={{...tailwind('bg-indigo-800 p-4 rounded')}} onPress={onPress}>
-                    <Text style={tailwind('text-white font-bold text-center text-lg')}> Rechercher un chauffeur </Text>
-                  </TouchableHighlight>
-                </View>
+                {
+                  route.params === undefined &&
+                  <View style={tailwind('flex flex-row justify-center items-center')}>
+                    <TouchableHighlight style={{...tailwind('bg-indigo-800 p-4 rounded')}} onPress={onPress}>
+                      <Text style={tailwind('text-white font-bold text-center text-lg')}> Rechercher un chauffeur </Text>
+                    </TouchableHighlight>
+                  </View>
+                }
               </View>
             }
           </View>
