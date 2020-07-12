@@ -7,11 +7,13 @@ import {
   View,
   TextInput,
   TouchableHighlight,
-  Button,
 } from 'react-native';
 import {UserContext} from '../context/UserContext';
 import {api} from '../utils/api';
 import {showMessage, hideMessage} from 'react-native-flash-message';
+import Input from './Input';
+import Button from './Button';
+import {ScrollView} from 'react-native-gesture-handler';
 
 const ForgotPassword = ({navigation}) => {
   const {user} = useContext(UserContext);
@@ -32,13 +34,14 @@ const ForgotPassword = ({navigation}) => {
         type: 'danger',
         icon: 'danger',
       });
-     }
+    }
     try {
       await api('POST', '/forgot-password', body);
       navigation.navigate('Login');
       return showMessage({
         message: 'Succès',
-        description: 'Vous allez recevoir un courriel vous permettant de réinitialiser votre mot de passe.',
+        description:
+          'Vous allez recevoir un courriel vous permettant de réinitialiser votre mot de passe.',
         type: 'success',
         icon: 'success',
       });
@@ -48,40 +51,17 @@ const ForgotPassword = ({navigation}) => {
   };
 
   return (
-    <View style={styles.backgroundContainer}>
-      <Text>Réinitialiser votre mot de passe</Text>
-      <View style={styles.container}>
-        <TextInput
-          style={tailwind(
-            'w-full bg-white border-2 border-gray-400 p-3 rounded text-gray-700 font-bold',
-          )}
-          label="E-mail address"
-          returnKeyType="done"
+    <ScrollView>
+      <View style={tailwind('w-full flex items-center mt-12')}>
+        <Input
+          label={'Email'}
           value={email}
-          onChangeText={text => setEmail(text)}
-          autoCapitalize="none"
-          autoCompleteType="email"
-          textContentType="emailAddress"
-          keyboardType="email-address"
+          onChange={setEmail}
+          placeholder={'email@email.com'}
         />
+        <Button title="Envoyer" onPress={onPress} />
       </View>
-      <TouchableHighlight
-        style={tailwind('bg-indigo-800 p-4 rounded')}
-        onPress={onPress}>
-        {/* showMessage({
-            message: 'Succés',
-            description:
-              'Vous allez recevoir un courriel vous permettant de réinitialiser votre mot de passe.',
-            type: 'success',
-            icon: 'success',
-          })*/}
-
-        <Text style={tailwind('text-white font-bold text-center text-lg')}>
-          {' '}
-          Envoyer{' '}
-        </Text>
-      </TouchableHighlight>
-    </View>
+    </ScrollView>
   );
 };
 

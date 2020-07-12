@@ -1,10 +1,10 @@
-import React, { useState, useContext } from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
-import { api } from '../utils/api';
+import React, {useState, useContext} from 'react';
+import {View, Text, TouchableOpacity, Image} from 'react-native';
+import {api} from '../utils/api';
 import AsyncStorage from '@react-native-community/async-storage';
-import { UserContext } from '../context/UserContext';
+import {UserContext} from '../context/UserContext';
 import messaging from "@react-native-firebase/messaging";
-import { showMessage, hideMessage } from 'react-native-flash-message';
+import {showMessage, hideMessage} from 'react-native-flash-message';
 import Input from "./Input";
 import Button from './Button'
 import tailwind from 'tailwind-rn'
@@ -24,7 +24,7 @@ const Login = ({navigation}) => {
 
     var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-    if (!re.test(email) || email.length === 0) {
+    if(!re.test(email) || email.length === 0){
       return showMessage({
         message: 'Erreur',
         description: 'Votre email est invalide.',
@@ -32,9 +32,9 @@ const Login = ({navigation}) => {
         icon: 'danger',
       });
     }
-    if (password.length === 0) {
+    if(password.length === 0){
 
-      return showMessage({
+     return showMessage({
         message: 'Erreur',
         description: 'Veuillez renseigner un mot de passe.',
         type: 'danger',
@@ -47,9 +47,9 @@ const Login = ({navigation}) => {
       await AsyncStorage.setItem('changeMode', 'Client');
       const user = await api('GET', '/users/current-user');
       setUser(user);
-      messaging().getToken().then(token => {
+      messaging().getToken().then(token =>  {
         console.log(token)
-        api('POST', '/users/save-device-token', {device_token: token})
+        api('POST', '/users/save-device-token', { device_token: token })
       });
       navigation.navigate('Home');
     } catch (e) {
@@ -58,27 +58,28 @@ const Login = ({navigation}) => {
   };
 
 
-  return (
-    <View>
-      <Input label={"Email"} value={email} onChange={setEmail} placeholder={"email@email.com"}/>
-      <Input label={"Mot de passe"} value={password} onChange={setPassword} placeholder={"*****"} secureTextEntry={true}/>
-      <Button title="Se connecter" onPress={onPress}/>
-      <View style={tailwind('w-full flex items-center mt-3')}>
-        <View style={tailwind('w-2/3 flex items-center mb-1')}>
-          <TouchableOpacity onPress={() => navigation.navigate('ForgotPassword')}>
-            <Text style={tailwind('text-indigo-800 font-bold')}>Mot de passe oublié ?</Text>
-          </TouchableOpacity>
+    return (
+        <View style={tailwind('w-full flex items-center mt-16')}>
+            <Image source={require('../assets/drayberandlogo.png')}></Image>
+            <Input label={"Email"} value={email} onChange={setEmail} placeholder={"email@email.com"}/>
+            <Input label={"Mot de passe"} value={password} onChange={setPassword} placeholder={"*****"} secureTextEntry={true} />
+            <Button title="Se connecter" onPress={onPress} />
+            <View style={tailwind('w-full flex items-center mt-3')}>
+              <View style={tailwind('w-2/3 flex items-center mb-1')}>
+                <TouchableOpacity onPress={() => navigation.navigate('ForgotPassword')}>
+                  <Text style={tailwind('text-indigo-800 font-bold')}>Mot de passe oublié ?</Text>
+                </TouchableOpacity>
+              </View>
+              <View style={tailwind('w-2/3 flex items-center mb-1')}>
+                <Text style={tailwind('text-gray-800 mb-1')}>Pas encore de compte ? </Text>
+                <Button title={"S'inscrire"} onPress={() => navigation.navigate('Register')}>
+                </Button>
+              </View>
+            </View>
         </View>
-        <View style={tailwind('w-2/3 flex items-center mb-1')}>
-          <Text style={tailwind('text-gray-800 mb-1')}>Pas encore de compte ? </Text>
-          <TouchableOpacity onPress={() => navigation.navigate('ForgotPassword')}>
-            <Text style={tailwind('text-indigo-800 font-bold')}>S'inscrire</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-    </View>
-  );
+    );
 
 };
 
 export default Login;
+
