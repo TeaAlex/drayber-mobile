@@ -550,11 +550,14 @@ const Map = ({navigation, route}) => {
       endAddress,
       encodedPolyline
     }
-    // console.log(JSON.stringify(payload, null, '\t'));
-    const {offer} = await api('POST', '/offer/create', {tripInfo: payload});
-    const {status} = await api('POST', `/offer/${offer.id}/find-driver`);
-    console.log('create offer');
-    console.log(status);
+    try {
+      const {offer} = await api('POST', '/offer/create', {tripInfo: payload});
+      const {status} = await api('POST', `/offer/${offer.id}/find-driver`);
+      console.log('create offer');
+      console.log(status);
+    } catch (e) {
+      console.log(e);
+    }
   }
 
 
