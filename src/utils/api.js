@@ -1,6 +1,8 @@
 import {API_URL} from 'react-native-dotenv'
 import AsyncStorage from '@react-native-community/async-storage';
 
+import {showMessage, hideMessage} from 'react-native-flash-message';
+
 const api = async (method, url, body) => {
 
   const headers = {
@@ -34,9 +36,14 @@ const api = async (method, url, body) => {
       return responseJSON;
     } else {
         let error = await response.text();
-        console.log(error);
         error = JSON.parse(error);
-        console.log(error);
+        console.log(error.message);
+        return showMessage({
+          message: 'Erreur',
+          description: error.message,
+          type: 'danger',
+          icon: 'danger',
+      });    
     }
   } catch (e) {
     console.error(e)
