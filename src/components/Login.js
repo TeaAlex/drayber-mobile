@@ -76,17 +76,6 @@ const Login = ({navigation}) => {
                 </TouchableOpacity>
               </View>
             </View>
-
-            {/*<View>*/}
-            {/*    <Text>Pas encore de compte? </Text>*/}
-            {/*    <Button*/}
-            {/*        title="Inscrivez vous"*/}
-            {/*        onPress={() => navigation.navigate('Register')}*/}
-            {/*    />*/}
-            {/*</View>*/}
-            {/* <TouchableOpacity onPress={() => navigation.navigate('NewPassword')}>
-        <Text>Mot de passe oubliée ?</Text>
-      </TouchableOpacity>*/}
         </View>
     );
 
