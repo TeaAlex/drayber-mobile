@@ -39,7 +39,10 @@ const ProfileUpdate = ({navigation}) => {
   const handleChoosePhoto = () => {
     const options = {
       mediaType: 'photo',
-
+      quality:1, 
+      maxWidth: 1280,
+      maxHeight: 720, 
+      allowsEditing: false
     }
     ImagePicker.launchImageLibrary(options, (response) => {
       if (response.data) {
