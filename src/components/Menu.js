@@ -6,6 +6,7 @@ import PersonSvg from '../assets/icons/person.svg';
 import CreditCardSvg from '../assets/icons/credit-card-outline.svg';
 import Swap from '../assets/icons/swap-outline.svg';
 import CarSvg from '../assets/icons/automobile.svg';
+import Contact from '../assets/icons/alert-circle-outline.svg';
 import Admin from '../assets/icons/person-done-outline.svg';
 import CloseSvg from '../assets/icons/close-square-outline.svg';
 import AsyncStorage from '@react-native-community/async-storage';
@@ -103,9 +104,14 @@ const Menu = ({navigation}) => {
             </MenuItem>
             </TouchableHighlight>
         }
+                <TouchableHighlight onPress={() => navigation.navigate('Contact')}>
+        <MenuItem text={'Contact'}>
+          <Contact width={24} height={24} fill={"orange"} />
+        </MenuItem>
+        </TouchableHighlight>
         <TouchableHighlight onPress={() => logout()}>
         <MenuItem text={'Deconnexion'}>
-          <CloseSvg width={24} height={24} fill={color} />
+          <CloseSvg width={24} height={24} fill={"#BC1717"} />
         </MenuItem>
         </TouchableHighlight>
       </View>

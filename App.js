@@ -25,6 +25,7 @@ import PaymentFormView from './src/components/PaymentFormView';
 import ForgotPassword from './src/components/ForgotPassword';
 import NewPassword from './src/components/NewPassword';
 import FlashMessage from 'react-native-flash-message';
+import Contact from './src/components/Contact';
 
 
 function HomeScreen({ navigation }) {
@@ -131,6 +132,7 @@ function App() {
             <Stack.Screen name="Offer" component={Offer} options={{headerShown: false}}/>
             <Stack.Screen name="ForgotPassword" component={ForgotPassword} options={{title: "Mot de passe oublié"}}/>
             <Stack.Screen name="NewPassword" component={NewPassword} options={{title: 'Nouveau mot de passe'}}/>
+            <Stack.Screen name="Contact" component={Contact} options={{title: 'Contact'}}/>
           </Stack.Navigator>
         </NavigationContainer>
       </SearchProvider>
