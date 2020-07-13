@@ -22,11 +22,12 @@ const Contact = ({navigation}) => {
   const [selectedValue, setSelectedValue] = useState("Trajet");
 
   const onPress = async () => {
-    // const body = {
-    //   password: password,
-    //   token: token,
-    // };
-    // console.log(body);
+    const body = {
+      email: email,
+      description: description,
+      category: selectedValue,
+    };
+    console.log(body);
 
 
     var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -48,12 +49,18 @@ const Contact = ({navigation}) => {
           });
     
         }
-    // try {
-    //   await api('PUT', '/update-password', body);
-    //   navigation.navigate('Login');
-    // } catch (e) {
-    //   console.error(e);
-    // }
+    try {
+      await api('POST', '/send-contact', body);
+      navigation.navigate('Menu');
+      return showMessage({
+        message: 'Succès',
+        description: "Votre demande a été envoyée et sera traitée dans les meilleurs délais.",
+        type: 'success',
+        icon: 'success',
+      });
+    } catch (e) {
+      console.error(e);
+    }
   };
 
   return (
@@ -78,11 +85,11 @@ const Contact = ({navigation}) => {
                 'w-full bg-white border-2 border-gray-400 p-3 mt-2 rounded text-gray-700 font-bold',
               )}
             onValueChange={(itemValue, itemIndex) => setSelectedValue(itemValue)}>
-            <Picker.Item label="Trajet" value="trip" />
-            <Picker.Item label="Paiement" value="payment" />
-            <Picker.Item label="Compte" value="account" />
-            <Picker.Item label="Problème avec un client/driver" value="problem" />
-            <Picker.Item label="Autre" value="other" />
+            <Picker.Item label="Trajet" value="Trajet" />
+            <Picker.Item label="Paiement" value="Paiement" />
+            <Picker.Item label="Compte" value="Compte" />
+            <Picker.Item label="Problème avec un client/driver" value="Problème avec un client/driver" />
+            <Picker.Item label="Autre" value="Autre" />
           </Picker>
         </View>
         <View style={styles.container}>
