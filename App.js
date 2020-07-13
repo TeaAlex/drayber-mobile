@@ -24,6 +24,7 @@ import FlashMessage from 'react-native-flash-message';
 import Contact from './src/components/Contact';
 import TripProvider from "./src/context/TripContext";
 import HomeScreen from './src/components/HomeScreen';
+import HistoryTrip from './src/components/HistoryTrip';
 
 
 const Stack = createStackNavigator();
@@ -59,6 +60,7 @@ function App() {
               <Stack.Screen name="Offer" component={Offer} options={{headerShown: false}}/>
               <Stack.Screen name="ForgotPassword" component={ForgotPassword} options={{title: "Mot de passe oublié"}}/>
               <Stack.Screen name="NewPassword" component={NewPassword} options={{title: 'Nouveau mot de passe'}}/>
+              <Stack.Screen name="HistoryTrip" component={HistoryTrip} options={{title: 'Historique des courses'}}/>
               <Stack.Screen name="Contact" component={Contact} options={{title: 'Contact'}}/>
             </Stack.Navigator>
           </NavigationContainer>
