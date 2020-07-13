@@ -207,15 +207,20 @@ const Offer = ({route, navigation}) => {
     console.log('trip start')
   };
 
-  const tripEnd = () => {
+  const tripEnd = async () => {
+    console.log('trip end');
     setStatus(TRIP_END);
+    try {
+      await api('POST', `/offer/${offer.id}/trip_end`);
+    } catch (e) {
+      console.error(e);
+    }
     return showMessage({
       message: 'Succès',
       description: "Course terminée. ",
       type: 'success',
       icon: 'success',
     });
-    //alert('course terminée');
   };
 
 

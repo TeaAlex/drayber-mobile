@@ -1,10 +1,14 @@
 import React, {useState, useContext} from 'react'
-import {View, TextInput, Button, Text, ScrollView, StyleSheet,Image } from "react-native";
+import {View, TextInput, Text, ScrollView, StyleSheet,Image } from "react-native";
 import {api} from "../utils/api";
 import ImagePicker from 'react-native-image-picker'
 import DateTimePicker from '@react-native-community/datetimepicker';
 import moment from "moment";
 import {showMessage, hideMessage} from 'react-native-flash-message';
+import Input from "./Input";
+import Button from './Button'
+import tailwind from 'tailwind-rn'
+
 
 const Register = ({navigation}) => {
     const [email, setEmail] = useState('@a.fr');
@@ -141,78 +145,23 @@ const Register = ({navigation}) => {
 
     return (
         <ScrollView>
-            <View style={styles.backgroundContainer}>
-                <View style={styles.container}>
-                    <Text>Email</Text>
-                    <TextInput
-                        style={styles.input}
-                        style={styles.input}
-                        value={email}
-                        onChangeText={text => setEmail(text)}
-                    />
-                </View>
-                <View style={styles.container}>
-                    <Text>Prénom</Text>
-                    <TextInput
-                        style={styles.input}
-                        value={firstname}
-                        onChangeText={text => setFirstname(text)}
-                    />
-                </View>
-                <View style={styles.container}>
-                    <Text>Nom</Text>
-                    <TextInput
-                        style={styles.input}
-                        value={lastname}
-                        onChangeText={text => setLastname(text)}
-                    />
-                </View>
-                <View style={styles.container}>
-                    <Text>Téléphone</Text>
-                    <TextInput
-                        style={styles.input}
-                        value={phone_number}
-                        keyboardType='numeric'
-                        onChangeText={text => setPhone_number(text)}
-                    />
-                </View>
+            <View style={tailwind('w-full flex items-center mt-12')}>
+                <Input label={"Email"} value={email} onChange={setEmail} placeholder={"email@email.com"}/>
+                <Input label={"Prénom"} value={firstname} onChange={setFirstname} />
+                <Input label={"Nom"} value={lastname} onChange={setLastname} />
+                <Input label={"Téléphone"} value={phone_number} onChange={setPhone_number} keyboardType={"numeric"}/>
                 <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
                     {profile_picture_url && (<Image source={{ uri: `data:image/jpeg;base64,${base64Image}` }} style={{ width: 150, height: 150 }}/>)}
-
                     <Button
                         mode="contained"
                         onPress={() => handleChoosePhoto()}
                         title="Choisissez une photo"
                     />
                 </View>
-                <View style={styles.container}>
-                    <Text>Adresse</Text>
-                    <TextInput
-                        style={styles.input}
-                        value={address}
-                        onChangeText={text => setAddress(text)}
-                    />
-                </View>
-                <View style={styles.container}>
-                    <Text>Code postal</Text>
-                    <TextInput
-                        style={styles.input}
-                        value={zip_code}
-                        keyboardType='numeric'
-                        onChangeText={text => setZipCode(text)}
-                    />
-                </View>
-                <View style={styles.container}>
-                    <Text>Ville</Text>
-                    <TextInput
-                        style={styles.input}
-                        value={city}
-                        onChangeText={text => setCity(text)}
-                    />
-                </View>
-                <View style={styles.container}>
-                    <Text>Date de naissance</Text>
-                    <TextInput style={styles.input} onFocus={showDatepicker}  value={birth_date.toString()}  />
+                <Input label={"Adresse"} value={address} onChange={setAddress} />
+                <Input label={"Code postal"} value={zip_code} onChange={setZipCode} keyboardType={"numeric"}/>
+                <Input label={"Ville"} value={city} onChange={setCity} />
+                <Input label={"Date de naissance"} onFocus={showDatepicker} value={birth_date.toString()}  />
                         {show && (
                         <DateTimePicker
                         testID="dateTimePicker"
@@ -221,28 +170,10 @@ const Register = ({navigation}) => {
                         is24Hour={true}
                         display="spinner"
                         onChange={onChange}
-                        
                         />
                     )} 
-                </View>
-                <View style={styles.container}>
-                    <Text>Mot de passe</Text>
-                    <TextInput
-                        style={styles.input}
-                        value={password}
-                        secureTextEntry={true}
-                        onChangeText={text => setPassword(text)}
-                    />
-                </View>
-                <View style={styles.container}>
-                    <Text>Confirmer mot de passe</Text>
-                    <TextInput
-                        style={styles.input}
-                        value={password_confirmation}
-                        secureTextEntry={true}
-                        onChangeText={text => setPasswordConfirm(text)}
-                    />
-                </View>
+                <Input label={"Mot de passe"} value={password} onChange={setPassword} placeholder={"*****"} secureTextEntry={true} />
+                <Input label={"Confirmer votre mot de passe"} value={password_confirmation} onChange={setPasswordConfirm} placeholder={"*****"} secureTextEntry={true} />
                 <Button title="S'inscrire" onPress={onPress} />
             </View>
         </ScrollView>
