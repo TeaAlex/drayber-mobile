@@ -19,6 +19,7 @@
     "@react-native-firebase/messaging": "^7.2.1",
     "@react-navigation/native": "^5.5.1",
     "@react-navigation/stack": "^5.5.1",
+    "@stripe/stripe-js": "^1.8.0",
     "haversine": "^1.1.1",
     "jetifier": "^1.6.6",
     "moment": "^2.27.0",
@@ -35,6 +36,7 @@
     "react-native-reanimated": "^1.9.0",
     "react-native-safe-area-context": "^3.0.7",
     "react-native-screens": "^2.9.0",
+    "react-native-stripe": "^1.2.2",
     "react-native-svg": "^12.1.0",
     "socket.io-client": "^2.3.0",
     "tailwind-rn": "^1.1.1"

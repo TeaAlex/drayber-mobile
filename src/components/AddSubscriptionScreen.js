@@ -1,9 +1,10 @@
 import React from 'react';
 import AddSubscriptionView from '../components/AddSubscriptionView';
+import { YOUR_STRIPE_PUBLIC_KEY } from 'react-native-dotenv';
 
 const STRIPE_ERROR = 'Payment service error. Try again later.';
 const SERVER_ERROR = 'Server error. Try again later.';
-const STRIPE_PUBLISHABLE_KEY = 'pk_test_QhjaJ6tWeJDGHdgzrZghnovY';
+const STRIPE_PUBLISHABLE_KEY = YOUR_STRIPE_PUBLIC_KEY;
 
 /**
  * The method sends HTTP requests to the Stripe API.
@@ -14,7 +15,7 @@ const STRIPE_PUBLISHABLE_KEY = 'pk_test_QhjaJ6tWeJDGHdgzrZghnovY';
  * @param creditCardData the credit card data
  * @return Promise with the Stripe data
  */
-const getCreditCardToken = creditCardData => {
+const getCreditCardToken = async (creditCardData, stripe) => {
   const card = {
     'card[number]': creditCardData.values.number.replace(/ /g, ''),
     'card[exp_month]': creditCardData.values.expiry.split('/')[0],
@@ -22,7 +23,7 @@ const getCreditCardToken = creditCardData => {
     'card[cvc]': creditCardData.values.cvc,
   };
 
-  return fetch('https://api.stripe.com/v1/tokens', {
+  /*return fetch('https://api.stripe.com/v1/tokens', {
     headers: {
       // Use the correct MIME type for your server
       Accept: 'application/json',
@@ -39,7 +40,20 @@ const getCreditCardToken = creditCardData => {
     body: Object.keys(card)
       .map(key => key + '=' + card[key])
       .join('&'),
-  }).then(response => response.json());
+  }).then(response => response.json());*/
+
+  const result = await stripe.confirmCardSetup('{{CLIENT_SECRET}}', {
+    payment_method: {
+      card,
+      billing_details: {
+        name: 'Jenny Rosen',
+      },
+    }
+  });
+
+  return {
+    token: result.setupIntent.payment_method
+  }
 };
 
 /**
@@ -73,17 +87,17 @@ export default class AddSubscription extends React.Component {
       error: null,
     };
   }
-
+/*
   // Handles submitting the payment request
   onSubmit = async creditCardInput => {
-    const {navigation} = this.props;
+    const {navigation,stripe} = this.props;
     // Disable the Submit button after the request is sent
     this.setState({submitted: true});
     let creditCardToken;
 
     try {
       // Create a credit card token
-      creditCardToken = await getCreditCardToken(creditCardInput);
+      creditCardToken = await getCreditCardToken(creditCardInput,stripe);
       if (creditCardToken.error) {
         // Reset the state if Stripe responds with an error
         // Set submitted to false to let the user subscribe again
@@ -107,7 +121,7 @@ export default class AddSubscription extends React.Component {
       navigation.navigate('Home');
     }
   };
-
+*/
   render() {
     const {submitted, error} = this.state;
     return (
