@@ -21,6 +21,7 @@ import PaymentFormView from './src/components/PaymentFormView';
 import ForgotPassword from './src/components/ForgotPassword';
 import NewPassword from './src/components/NewPassword';
 import FlashMessage from 'react-native-flash-message';
+import Contact from './src/components/Contact';
 import TripProvider from "./src/context/TripContext";
 import HomeScreen from './src/components/HomeScreen';
 import HistoryTrip from './src/components/HistoryTrip';
@@ -59,7 +60,11 @@ function App() {
               <Stack.Screen name="Offer" component={Offer} options={{headerShown: false}}/>
               <Stack.Screen name="ForgotPassword" component={ForgotPassword} options={{title: "Mot de passe oublié"}}/>
               <Stack.Screen name="NewPassword" component={NewPassword} options={{title: 'Nouveau mot de passe'}}/>
+<<<<<<< HEAD
               <Stack.Screen name="HistoryTrip" component={HistoryTrip} options={{title: 'Historique des courses'}}/>
+=======
+              <Stack.Screen name="Contact" component={Contact} options={{title: 'Contact'}}/>
+>>>>>>> 8b5289abda78087df29de7166d4c30cd14fea1ab
             </Stack.Navigator>
           </NavigationContainer>
         </TripProvider>

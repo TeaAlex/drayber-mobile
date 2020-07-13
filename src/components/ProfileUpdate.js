@@ -1,10 +1,13 @@
 import React, {useState, useContext, useEffect} from 'react'
-import {View, TextInput, Button, Text, ScrollView, StyleSheet,Image, Keyboard } from "react-native";
+import {View, TextInput, Text, ScrollView, StyleSheet,Image, Keyboard } from "react-native";
 import {api} from "../utils/api";
 import {UserContext} from "../context/UserContext";
 import ImagePicker from 'react-native-image-picker'
 import DateTimePicker from '@react-native-community/datetimepicker';
 import moment from "moment";
+import Input from "./Input";
+import Button from './Button'
+import tailwind from 'tailwind-rn'
 
 const ProfileUpdate = ({navigation}) => {
   const {user, setUser} = useContext(UserContext);
@@ -112,53 +115,31 @@ const ProfileUpdate = ({navigation}) => {
 
   return (
     <ScrollView>
-    <View style={styles.backgroundContainer}>
-      
-      <View style={styles.container}>
-        <Text>Prénom</Text>
-        <TextInput style={styles.input} value={firstname} onChangeText={(text) => setFirstname(text)}/>
-      </View>
-      <View style={styles.container}>
-        <Text>Nom</Text>
-        <TextInput style={styles.input} value={lastname} onChangeText={(text) => setLastname(text)}/>
-      </View>
-      <View style={styles.container}>
-        <Text>Téléphone</Text>
-        <TextInput style={styles.input} value={phone_number} onChangeText={(text) => setPhone_number(text)}/>
-      </View>
+      <View style={tailwind('w-full flex items-center mt-12')}>
+        <Input label={"Prénom"} value={firstname} onChange={setFirstname}/>
+        <Input label={"Nom"} value={lastname} onChange={setLastname} />
+        <Input label={"Téléphone"} value={phone_number} onChange={setPhone_number} keyboardType={"numeric"}/>
+
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
 
       {profile_picture_url && (<Image source={{ uri: `data:image/jpeg;base64,${base64Image}` }} style={{ width: 150, height: 150 }}/>)}
 
      <Button mode="contained" onPress={() => handleChoosePhoto()} title="Choisissez une photo" />
       </View>
-      <View style={styles.container}>
-        <Text>Adresse</Text>
-        <TextInput style={styles.input} value={address} onChangeText={(text) => setAddress(text)}/>
-      </View>
-      <View style={styles.container}>
-        <Text>Code postal</Text>
-        <TextInput style={styles.input} value={zip_code} onChangeText={(text) => setZipCode(text)}/>
-      </View>
-      <View style={styles.container}>
-        <Text>Ville</Text>
-        <TextInput style={styles.input} value={city} onChangeText={(text) => setCity(text)}/>
-      </View>
-      <View style={styles.container}>
-        <Text>Date de naissance</Text>
-        <TextInput style={styles.input} onFocus={showDatepicker}  value={birth_date.toString()}  />
-        {show && (
-        <DateTimePicker
-          testID="dateTimePicker"
-          value={date}
-          mode={mode}
-          is24Hour={true}
-          display="spinner"
-          onChange={onChange}
-          
-        />
-      )} 
-      </View>
+      <Input label={"Adresse"} value={address} onChange={setAddress} />
+      <Input label={"Code postal"} value={zip_code} onChange={setZipCode} keyboardType={"numeric"}/>
+      <Input label={"Ville"} value={city} onChange={setCity} />
+      <Input label={"Date de naissance"} onFocus={showDatepicker} value={birth_date.toString()}  />
+                        {show && (
+                        <DateTimePicker
+                        testID="dateTimePicker"
+                        value={date}
+                        mode={mode}
+                        is24Hour={true}
+                        display="spinner"
+                        onChange={onChange}
+                        />
+                    )} 
       
       <Button title="Modifier mes infos" onPress={onPress}/>
     </View>
@@ -166,33 +147,6 @@ const ProfileUpdate = ({navigation}) => {
   )
 
 }
-
-const styles = StyleSheet.create({
-  container: {
-    width: '100%',
-    marginVertical: 12,
-  },
-  input: {
-    backgroundColor: "white",
-  },
-  error: {
-    fontSize: 14,
-    color: "red",
-    paddingHorizontal: 4,
-    paddingTop: 4,
-  },
-  backgroundContainer: { 
-    flex: 1,
-    padding: 20,
-    width: '100%',
-    maxWidth: 340,
-    alignSelf: 'center',
-    alignItems: 'center',
-    justifyContent: 'center',
-  }
-});
-
-
 
 export default ProfileUpdate
 
