@@ -44,7 +44,7 @@ function App() {
                 headerTintColor: getColor('gray-100'),
               }}
             >
-              <Stack.Screen name="Home" component={HomeScreen} options={{title: 'Accueil'}}/>
+              <Stack.Screen name="Home" component={HomeScreen} options={{headerShown: false}}/>
               <Stack.Screen name="Map" component={Map} options={{headerShown: false}}/>
               <Stack.Screen name="Search" component={Search} options={{title: 'Itinéraire'}}/>
               <Stack.Screen name="Menu" component={Menu} options={{title: 'Paramètres'}}/>

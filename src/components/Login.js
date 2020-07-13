@@ -12,8 +12,8 @@ import tailwind from 'tailwind-rn'
 
 const Login = ({navigation}) => {
 
-  const [email, setEmail] = useState('alex@alex.com');
-  const [password, setPassword] = useState('toto');
+  const [email, setEmail] = useState('test@test.fr');
+  const [password, setPassword] = useState('test');
   const {setUser} = useContext(UserContext);
 
   const onPress = async () => {
