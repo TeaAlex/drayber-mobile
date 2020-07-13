@@ -10,12 +10,16 @@ const HistoryTrip = () => {
   const {user} = useContext(UserContext);
   const [trips, setTrips] = useState([]);
   const [offers, setOffers] = useState([]);
+<<<<<<< HEAD
   const [races, setRaces] = useState([]);
+=======
+>>>>>>> c10a85dbb333de0d0da9b4c72841442aa4a6d006
 
   useEffect(() => {
     async function getTrips () {
       try {
         if (user.driver) {
+<<<<<<< HEAD
           console.log("ici")
           let allTrip = await api('GET', '/trip/driver_trip');
           setTrips(allTrip);
@@ -33,13 +37,26 @@ const HistoryTrip = () => {
             setOffers(oldOffers => [...oldOffers, offer]);
           });
           
+=======
+          const allTrip = await api('GET', '/trip/driver_trip');
+          setTrips(allTrip);
+          const offer = [];
+          console.log("je suis la");
+          trips.map(async function (trip, key) {
+            const allOffers = await api('GET', '/offer/' + trip.offer_id);
+            offer.push(allOffers)
+          })
+>>>>>>> c10a85dbb333de0d0da9b4c72841442aa4a6d006
         } else {
           const allTrip = await api('GET', '/trip/client_trip');
           setTrips(allTrip);
           allTrip.forEach(async trip => {
             const offer = await api('GET', `/offer/${trip.offer_id}`);
+<<<<<<< HEAD
             const driver = await api('GET', `/users/${trip.driver_id}`);
             offer.driver_name = driver.user.firstname;
+=======
+>>>>>>> c10a85dbb333de0d0da9b4c72841442aa4a6d006
             setOffers(oldOffers => [...oldOffers, offer]);
           });
 
@@ -56,6 +73,7 @@ const HistoryTrip = () => {
 
   return (
     <ScrollView>
+<<<<<<< HEAD
       { user.driver && races && races.map((race, key) =>
       <View
       key={key}
@@ -109,6 +127,30 @@ const HistoryTrip = () => {
           </View>
         </View>
           )}
+=======
+      {offers && offers.map((offer, key) =>
+        <View
+          key={key}
+          style={tailwind(
+            'bg-white px-1 border-gray-200 border-t border-b h-32 flex-row items-center',
+          )}>
+          <View style={tailwind(
+            'relative flex-initial h-24 w-9/12 p-4',
+          )}>
+            <Text style={tailwind('text-gray-800 font-bold my-1 flex-row')}>Depart : <Text
+              style={tailwind('text-gray-500 font-medium ')}>{offer.address_from}</Text></Text>
+            <Text style={tailwind('text-gray-800 font-bold my-1 flex-row')}>Arrivée : <Text
+              style={tailwind('text-gray-500 font-medium ')}>{offer.address_to}</Text></Text>
+          </View>
+          <View style={tailwind(
+            'content-center flex-1 h-20 p-2 ',
+          )}>
+            <Text style={tailwind('text-gray-800 font-bold my-1 flex-row')}>{offer.created_at}</Text>
+            <Text style={tailwind('text-gray-800 font-medium text-center my-1 flex-row text-lg')}>{offer.price} €</Text>
+          </View>
+        </View>
+      )}
+>>>>>>> c10a85dbb333de0d0da9b4c72841442aa4a6d006
     </ScrollView>
 
   );
