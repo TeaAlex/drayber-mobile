@@ -12,8 +12,8 @@ import tailwind from 'tailwind-rn'
 
 const Login = ({navigation}) => {
 
-  const [email, setEmail] = useState('alex@alex.com');
-  const [password, setPassword] = useState('toto');
+  const [email, setEmail] = useState('a@a.fr');
+  const [password, setPassword] = useState('aaa');
   const {setUser} = useContext(UserContext);
 
   const onPress = async () => {
@@ -58,25 +58,25 @@ const Login = ({navigation}) => {
   };
 
 
-    return (
-        <View style={tailwind('w-full flex items-center mt-16')}>
-            <Image source={require('../assets/drayberandlogo.png')}></Image>
-            <Input label={"Email"} value={email} onChange={setEmail} placeholder={"email@email.com"}/>
-            <Input label={"Mot de passe"} value={password} onChange={setPassword} placeholder={"*****"} secureTextEntry={true} />
-            <Button title="Se connecter" onPress={onPress} />
-            <View style={tailwind('w-full flex items-center mt-3')}>
-              <View style={tailwind('w-2/3 flex items-center mb-1')}>
-                <TouchableOpacity onPress={() => navigation.navigate('ForgotPassword')}>
-                  <Text style={tailwind('text-indigo-800 font-bold')}>Mot de passe oublié ?</Text>
-                </TouchableOpacity>
-              </View>
-              <View style={tailwind('w-2/3 flex items-center mb-1')}>
-                <Text style={tailwind('text-gray-800 mb-1')}>Pas encore de compte ? </Text>
-                <Button title={"S'inscrire"} onPress={() => navigation.navigate('Register')}>
-                </Button>
-              </View>
-            </View>
+  return (
+    <View>
+      <Input label={"Email"} value={email} onChange={setEmail} placeholder={"email@email.com"}/>
+      <Input label={"Mot de passe"} value={password} onChange={setPassword} placeholder={"*****"} secureTextEntry={true}/>
+      <Button title="Se connecter" onPress={onPress}/>
+      <View style={tailwind('w-full flex items-center mt-3')}>
+        <View style={tailwind('w-2/3 flex items-center mb-1')}>
+          <TouchableOpacity onPress={() => navigation.navigate('ForgotPassword')}>
+            <Text style={tailwind('text-indigo-800 font-bold')}>Mot de passe oublié ?</Text>
+          </TouchableOpacity>
         </View>
+        <View style={tailwind('w-2/3 flex items-center mb-1')}>
+          <Text style={tailwind('text-gray-800 mb-1')}>Pas encore de compte ? </Text>
+          <TouchableOpacity onPress={() => navigation.navigate('Register')}>
+            <Text style={tailwind('text-indigo-800 font-bold')}>S'inscrire</Text>
+          </TouchableOpacity>
+        </View>
+     </View>
+   </View>
     );
 
 };
