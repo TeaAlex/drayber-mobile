@@ -2,7 +2,7 @@ import React from 'react';
 import {View, Text, TextInput} from 'react-native';
 import tailwind from "tailwind-rn";
 
-const Input = ({ value, onChange, label = "", placeholder = "", secureTextEntry = false, keyboardType = "default", onFocus, maxLength}) => {
+const Input = ({ value, onChange, label = "", placeholder = "", secureTextEntry = false, keyboardType = "default", onFocus, maxLength,multiline}) => {
 
   return (
     <View style={tailwind('w-full items-center p-2')}>
@@ -18,6 +18,7 @@ const Input = ({ value, onChange, label = "", placeholder = "", secureTextEntry 
         keyboardType={keyboardType}
         onFocus= {onFocus}
         maxLength= {maxLength}
+        multiline= {multiline}
       />
     </View>
   );
