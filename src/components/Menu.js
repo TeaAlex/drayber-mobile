@@ -103,19 +103,14 @@ const Menu = ({navigation}) => {
               <Admin width={24} height={24} fill={color} />
             </MenuItem>
             </TouchableHighlight>
-        }
-<<<<<<< HEAD
+        } 
 
         <TouchableHighlight onPress={() => navigation.navigate('HistoryTrip')}>
           <MenuItem text={'Historique des courses'}>
             <CarSvg width={24} height={24} fill={color} />
           </MenuItem>
         </TouchableHighlight>
-        <TouchableHighlight onPress={() => logout()}>
-          <MenuItem text={'Deconnexion'}>
-            <CloseSvg width={24} height={24} fill={color} />
-          </MenuItem>
-=======
+
                 <TouchableHighlight onPress={() => navigation.navigate('Contact')}>
         <MenuItem text={'Contact'}>
           <Contact width={24} height={24} fill={"orange"} />
@@ -125,7 +120,6 @@ const Menu = ({navigation}) => {
         <MenuItem text={'Deconnexion'}>
           <CloseSvg width={24} height={24} fill={"#BC1717"} />
         </MenuItem>
->>>>>>> 8b5289abda78087df29de7166d4c30cd14fea1ab
         </TouchableHighlight>
       </View>
     </View>

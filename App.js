@@ -60,11 +60,8 @@ function App() {
               <Stack.Screen name="Offer" component={Offer} options={{headerShown: false}}/>
               <Stack.Screen name="ForgotPassword" component={ForgotPassword} options={{title: "Mot de passe oublié"}}/>
               <Stack.Screen name="NewPassword" component={NewPassword} options={{title: 'Nouveau mot de passe'}}/>
-<<<<<<< HEAD
               <Stack.Screen name="HistoryTrip" component={HistoryTrip} options={{title: 'Historique des courses'}}/>
-=======
               <Stack.Screen name="Contact" component={Contact} options={{title: 'Contact'}}/>
->>>>>>> 8b5289abda78087df29de7166d4c30cd14fea1ab
             </Stack.Navigator>
           </NavigationContainer>
         </TripProvider>
