@@ -504,7 +504,7 @@ const Map = ({navigation}) => {
     "status": "OK"
   })
   const {user} = useContext(UserContext);
-  const {status, setStatus, driverName, arrivalTime} = useContext(TripContext);
+  const {status, setStatus, driverName, arrivalTime, driver} = useContext(TripContext);
   const ratings = [1,2,3,4,5];
 
 
@@ -569,6 +569,16 @@ const Map = ({navigation}) => {
   }
 
 
+  const rate = async (value) => {
+    await api('POST', '/users/rating', {
+      user_id: driver.id,
+      rating: value
+    })
+    setStatus(null);
+    navigation.navigate('Home');
+  }
+
+
   return (
     <>
       {
@@ -613,15 +623,18 @@ const Map = ({navigation}) => {
                   <View style={tailwind('flex flex-row justify-around items-center')}>
                     {
                       ratings.map(r => {
-                        return (<TouchableHighlight key={r} onPress={() => console.log(r)}>
+                        return (<TouchableOpacity key={r} onPress={() => rate(r) }>
                           <Text style={tailwind('font-bold text-center bg-yellow-200 rounded-full w-10 h-10 p-2 mb-3 text-yellow-500 text-base')}>{r}</Text>
-                        </TouchableHighlight>)
+                        </TouchableOpacity>)
                       })
                     }
                   </View>
-                  <TouchableHighlight onPress={() => console.log('skip')}>
-                    <Text style={tailwind('text-gray-700 font-bold text-base')}>Passez</Text>
-                  </TouchableHighlight>
+                  <TouchableOpacity onPress={() => {
+                    setStatus(null);
+                    navigation.navigate('Home');
+                  }}>
+                    <Text style={tailwind('text-gray-700 font-bold text-base')}>Passer</Text>
+                  </TouchableOpacity>
                 </View>
               </View>
             }

@@ -8,7 +8,7 @@ import { useNavigation } from '@react-navigation/native';
 const FirebaseNotifHandler = () => {
 
   const navigation = useNavigation();
-  const {setDriverName, setArrivalTime, setStatus} = useContext(TripContext);
+  const {setDriverName, setArrivalTime, setStatus, setDriver} = useContext(TripContext);
 
   useEffect(() => {
     const unsubscribe = messaging().onMessage(async remoteMessage => {
@@ -21,6 +21,7 @@ const FirebaseNotifHandler = () => {
       if (type === "TRIP_CREATE") {
         const driver = JSON.parse(remoteMessage.data.driver);
         const arrivalTime = remoteMessage.data.arrivalTime;
+        setDriver(driver);
         setDriverName(`${driver.firstname} ${driver.lastname}`);
         setArrivalTime(arrivalTime);
         setStatus(DRIVER_FOUND);
