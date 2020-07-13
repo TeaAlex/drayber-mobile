@@ -6,51 +6,50 @@ import { UserContext } from '../context/UserContext';
 
 
 const HistoryTrip = () => {
-  const {user} = useContext(UserContext);
+    const {user} = useContext(UserContext);
     const [trips, setTrips] = useState([]);
     const [offers, setOffers] = useState([]);
 
-  useEffect(() => {
-    async function getTrips () {
-      try {
-        if(user.driver){
-          const allTrip = await api('GET', '/trip/driver_trip');
-          setTrips(allTrip);
-          const offer = [];
-          console.log("je suis la");
-          trips.map(async function(trip, key) {
-            const allOffers = await api('GET', '/offer/'+trip.offer_id);
-            offer.push(allOffers)
-          })
+    useEffect(() => {
+      async function getTrips () {
+        try {
+          if(user.driver){
+            const allTrip = await api('GET', '/trip/driver_trip');
+            setTrips(allTrip);
+            const offer = [];
+            console.log("je suis la");
+            trips.map(async function(trip, key) {
+              const allOffers = await api('GET', '/offer/'+trip.offer_id);
+              offer.push(allOffers)
+            })
 
 
-        }else{
-          const allTrip = await api('GET', '/trip/client_trip');
-          setTrips(allTrip);
-          const searchoffers = [];
-          allTrip.map(async function(trip, key) {
-            console.log("je suis ici");
-            const body = await api('GET', '/offer/'+trip.offer_id);
-            console.log(body);
-            searchoffers.push(body)
-          })
-          //console.log(serachoffers);
-          setOffers(searchoffers)
-        }
-        
-    } catch (e) {
-        console.error(e);
-    }
-      }
-    getTrips();
-    
-}, []);
-
+          }else{
+            const allTrip = await api('GET', '/trip/client_trip');
+            setTrips(allTrip);
+            
+            const searchOffers = allTrip.map(async function(trip,key) {
+              console.log("je suis ici");
+              const body = await api('GET', '/offer/'+trip.offer_id);
+              console.log(body)
+              return body;
+            })
+            console.log(searchOffers);
+            setOffers(searchOffers);
+            
+          }
+          
+          } catch (e) {
+              console.error(e);
+          }
+            }
+          getTrips();
+          
+      }, []);
       
-    return(
+      return(
     <ScrollView>
-      { offers  && offers.map((offer, key) => 
-        
+      { offers && offers.map((offer, key) => 
         <View
       style={tailwind(
         'bg-white px-1 border-gray-200 border-t border-b h-32 flex-row items-center',
