@@ -28,7 +28,7 @@ const FirebaseNotifHandler = () => {
         setDriverName(`${driver.firstname} ${driver.lastname}`);
         setArrivalTime(arrivalTime);
         setStatus(DRIVER_FOUND);
-        // navigation.navigate('Map');
+        navigation.navigate('Map');
       }
       if (type === "TRIP_END") {
         const driver = JSON.parse(remoteMessage.data.driver);
