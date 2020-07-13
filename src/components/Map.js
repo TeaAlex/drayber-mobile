@@ -1,17 +1,15 @@
 import React, { useEffect, useState, useContext } from 'react'
-import MapView, { PROVIDER_GOOGLE, Polyline, Marker } from "react-native-maps";
-import { View, StyleSheet, Text, TouchableHighlight, TouchableOpacity, Button } from "react-native";
+import MapView, { PROVIDER_GOOGLE, Polyline } from "react-native-maps";
+import { View, StyleSheet, Text, TouchableHighlight, TouchableOpacity, ActivityIndicator } from "react-native";
 import tailwind, { getColor } from "tailwind-rn";
-import RNLocation from 'react-native-location';
 import polyline from "@mapbox/polyline"
 import { SearchContext } from "../context/SearchContext";
 import { API_URL, GOOGLE_API_KEY } from 'react-native-dotenv'
 import MenuToggle from "../assets/icons/menu-toggle.svg";
 import { UserContext } from "../context/UserContext";
 import { api } from "../utils/api";
-import { TripContext, DRIVER_FOUND, TRIP_END, SEARCHING } from "../context/TripContext";
+import { TripContext, DRIVER_FOUND, TRIP_END, SEARCHING, DRIVER_NOT_FOUND } from "../context/TripContext";
 import CheckMark from '../assets/icons/check-mark.svg'
-import ArrowForward from "../assets/icons/arrow-ios-forward-outline.svg";
 
 
 const styles = StyleSheet.create({
@@ -591,10 +589,20 @@ const Map = ({navigation}) => {
               <MenuToggle/>
             </TouchableOpacity>
             {
+              status === DRIVER_NOT_FOUND &&
+                <View style={{...tailwind('flex flex-row justify-center w-full absolute z-50'), 'top': '20%'}}>
+                  <View style={tailwind('w-3/4 bg-white border-red-100 p-6 border-t-4 border-orange-400 rounded')}>
+                    <Text style={tailwind('text-orange-500 font-bold text-lg mb-2')}>Aucun chauffeur disponible</Text>
+                    <Text style={tailwind('text-gray-600 text-base')}>Veuillez ré-essayer plus tard</Text>
+                  </View>
+                </View>
+            }
+            {
               status === SEARCHING &&
                 <View style={{...tailwind('flex flex-row justify-center w-full absolute z-50'), 'top': '20%'}}>
                   <View style={tailwind('w-3/4 bg-white border-red-100 p-6 border-t-4 border-indigo-400 rounded')}>
                     <Text style={tailwind('text-indigo-800 font-bold text-lg mb-2')}>Recherche en cours...</Text>
+                    <ActivityIndicator />
                   </View>
                 </View>
             }
@@ -639,7 +647,7 @@ const Map = ({navigation}) => {
               </View>
             }
             <MapView
-              style={{...tailwind('w-full'), height: '50%'}}
+              style={{...tailwind('w-full flex-grow')}}
               provider={PROVIDER_GOOGLE}
               region={{
                 latitude: tripInfo.startAddress.coords.latitude,
@@ -660,7 +668,7 @@ const Map = ({navigation}) => {
             </MapView>
             {
               tripInfo && tripInfo.coords && tripInfo.coords.length > 0 &&
-              <View style={{...tailwind('bg-gray-100 w-full absolute bottom-0'), height: "50%"}}>
+              <View style={{...tailwind('bg-gray-100 w-full pb-6')}}>
                 <Text style={tailwind('text-indigo-800 font-bold text-lg text-center py-6')}>Récapitulatif de la
                   course
                 </Text>
