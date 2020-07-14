@@ -26,6 +26,7 @@ import TripProvider from "./src/context/TripContext";
 import HomeScreen from './src/components/HomeScreen';
 import PayDriver from './src/components/PayDriver';
 import ValidatePayment from './src/components/ValidatePayment';
+import HistoryTrip from './src/components/HistoryTrip';
 
 
 const Stack = createStackNavigator();
@@ -45,7 +46,7 @@ function App() {
                 headerTintColor: getColor('gray-100'),
               }}
             >
-              <Stack.Screen name="Home" component={HomeScreen} options={{title: 'Accueil'}}/>
+              <Stack.Screen name="Home" component={HomeScreen} options={{headerShown: false}}/>
               <Stack.Screen name="Map" component={Map} options={{headerShown: false}}/>
               <Stack.Screen name="Search" component={Search} options={{title: 'Itinéraire'}}/>
               <Stack.Screen name="Menu" component={Menu} options={{title: 'Paramètres'}}/>
@@ -61,6 +62,7 @@ function App() {
               <Stack.Screen name="Offer" component={Offer} options={{headerShown: false}}/>
               <Stack.Screen name="ForgotPassword" component={ForgotPassword} options={{title: "Mot de passe oublié"}}/>
               <Stack.Screen name="NewPassword" component={NewPassword} options={{title: 'Nouveau mot de passe'}}/>
+              <Stack.Screen name="HistoryTrip" component={HistoryTrip} options={{title: 'Historique des courses'}}/>
               <Stack.Screen name="Contact" component={Contact} options={{title: 'Contact'}}/>
               <Stack.Screen name="PayDriver" component={PayDriver} options={{title: 'Virements a effectuer'}}/>
               <Stack.Screen name="ValidatePayment" component={ValidatePayment} options={{title: 'Valider le paiement'}}/>

@@ -180,29 +180,4 @@ const Register = ({navigation}) => {
     );
 };
 
-const styles = StyleSheet.create({
-    container: {
-        width: '100%',
-        marginVertical: 12,
-    },
-    input: {
-        backgroundColor: 'white',
-    },
-    error: {
-        fontSize: 14,
-        color: 'red',
-        paddingHorizontal: 4,
-        paddingTop: 4,
-    },
-    backgroundContainer: {
-        flex: 1,
-        padding: 20,
-        width: '100%',
-        maxWidth: 340,
-        alignSelf: 'center',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-});
-
 export default Register;

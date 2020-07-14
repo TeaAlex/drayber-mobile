@@ -66,9 +66,9 @@ const Contact = ({navigation}) => {
   return (
     <ScrollView>
       <View style={styles.backgroundContainer}>
-        <Text>Besoin d'aide? Contactez nous en remplissant ce formulaire.</Text>
+        <Text style={tailwind('font-bold  text-indigo-700 text-base mb-2 ml-1')}>Besoin d'aide? Contactez nous en remplissant ce formulaire.</Text>
         <View style={styles.container}>
-          <Text>Email</Text>
+          <Text style={tailwind('font-bold  text-indigo-700 text-base mb-2 ml-1')}>Email</Text>
           <TextInput
             style={tailwind(
               'w-full bg-white border-2 border-gray-400 p-3 mt-2 rounded text-gray-700 font-bold',
@@ -78,7 +78,7 @@ const Contact = ({navigation}) => {
           />
         </View>
         <View style={styles.container}>
-          <Text>Categorie</Text>
+          <Text style={tailwind('font-bold  text-indigo-700 text-base  ml-1')}>Categorie</Text>
           <Picker
               selectedValue={selectedValue}
               style={tailwind(
@@ -93,7 +93,7 @@ const Contact = ({navigation}) => {
           </Picker>
         </View>
         <View style={styles.container}>
-          <Text>Description</Text>
+          <Text style={tailwind('font-bold  text-indigo-700 text-base mb-2 ml-1')}>Description</Text>
           <TextInput
             style={tailwind(
               'w-full bg-white border-2 border-gray-400 h-40 p-3 mt-2 rounded text-gray-700 font-bold',
