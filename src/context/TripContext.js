@@ -4,6 +4,7 @@ export const TripContext = createContext({});
 export const SEARCHING = "SEARCHING";
 export const DRIVER_FOUND = "DRIVER_FOUND";
 export const TRIP_END = "TRIP_END";
+export const DRIVER_NOT_FOUND = "DRIVER_NOT_FOUND";
 
 const TripProvider = ({children}) => {
 

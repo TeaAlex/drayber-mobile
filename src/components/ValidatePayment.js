@@ -9,7 +9,7 @@ import {showMessage, hideMessage} from 'react-native-flash-message';
 import Lightbox from 'react-native-lightbox';
 
 
-const ValidateAccount = ({route,navigation}) => {
+const ValidatePayment = ({route,navigation}) => {
     const color = '#586CD9';
 
     const [driver,setDriver] = useState(null);
@@ -23,15 +23,6 @@ const ValidateAccount = ({route,navigation}) => {
           setDriver(driver);
           console.log("redha",driver);
 
-          if(driver.driver.driving_licence_path != ""){
-            const body = await api('GET', '/users/getUpload/'+driver.driver.driving_licence_path)
-            
-            if(body != undefined){
-                console.log("je suis la");
-              setBase64Image(body.exists);
-              }
-         }
-
       } catch (e) {
           console.error(e);
       }
@@ -40,11 +31,9 @@ const ValidateAccount = ({route,navigation}) => {
   }, []);
 
 
-  const validateAccount = async () => {
+  const validatePay = async () => {
 
-    const body = {
-        active_driver:true,
-        is_searching:false,
+      const body = {
         credit:0
     }
 
@@ -52,11 +41,10 @@ const ValidateAccount = ({route,navigation}) => {
         await api('PUT', '/users/update/'+driver.user.id, body);
         showMessage({
           message: 'Succès',
-          description: "Le compte "+driver.user.id+" a bien été validé",
+          description: "Le virement vers le compte "+driver.user.id+" a bien été validé",
           type: 'success',
           icon: 'success',
         });
-        //alert("Le compte "+driver.user.id+" a bien été validé");
         navigation.navigate('Admin');
       } catch (e) {
           console.error(e);
@@ -72,28 +60,18 @@ const ValidateAccount = ({route,navigation}) => {
                 <PersonSvg width={24} height={24} fill={color}/>
                 <Text style={tailwind('mr-3 ml-3')}>Compte : </Text>
               </MenuItem>
-              <MenuItem text={driver.driver.iban} >
+              <MenuItem text={driver.driver.credit + "€"} >
                 <PersonSvg width={24} height={24} fill={color}/>
-                <Text style={tailwind('mr-3 ml-3')}>IBAN : </Text>
+                <Text style={tailwind('mr-3 ml-3')}>Crédits : </Text>
               </MenuItem>
-              <MenuItem text={driver.driver.bic} >
-                <PersonSvg width={24} height={24} fill={color}/>
-                <Text style={tailwind('mr-3 ml-3')}>BIC : </Text>
-              </MenuItem>
-              <View style={tailwind('items-center mt-3')}>
-              <Lightbox >
-
-              <Image source={{ uri: `data:image/jpeg;base64,${base64Image}` }} style={{width: 230, height: 230}}/>
-            </Lightbox>
-              </View>
 
               </View>
               }
                 
                 
               <View style={tailwind('flex flex-row justify-center items-center')}>
-            <TouchableHighlight style={{...tailwind('bg-indigo-800 p-4 rounded mt-5')}}  onPress={() => validateAccount()} >
-              <Text style={tailwind('text-white font-bold text-center text-lg')}> Valider le compte </Text>
+            <TouchableHighlight style={{...tailwind('bg-indigo-800 p-4 rounded mt-5')}}  onPress={() => validatePay()} >
+              <Text style={tailwind('text-white font-bold text-center text-lg')}> Valider le virement </Text>
             </TouchableHighlight>
           </View>
             </ScrollView>
@@ -103,4 +81,4 @@ const ValidateAccount = ({route,navigation}) => {
   )
 }
 
-export default ValidateAccount; 
+export default ValidatePayment; 
