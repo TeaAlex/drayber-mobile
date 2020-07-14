@@ -31,6 +31,9 @@ function HomeScreen ({navigation}) {
 
   useEffect(() => {
     console.log(user);
+    console.log('user.driver', user.driver);
+    console.log(user.driver && user.driver.is_searching === false);
+    console.log(user.driver === null || (user.driver && user.driver.is_searching === false))
     async function getMode () {
       setMode(await AsyncStorage.getItem('changeMode'));
     }
@@ -115,8 +118,9 @@ function HomeScreen ({navigation}) {
           </TouchableHighlight>
         }
 
+
         {
-          user.driver === null || user.driver.is_searching === false &&
+          (!user.driver || (user.driver && user.driver.is_searching === false)) &&
             <TouchableHighlight
               style={{
                 ...tailwind('items-center p-3 w-10/12 bg-white p-6 rounded-lg absolute'),
@@ -143,7 +147,7 @@ function HomeScreen ({navigation}) {
         }
 
         {
-          (user.driver === null || user.driver.is_searching === false) && (user.user.address) &&
+          (!user.driver || (user.driver && user.driver.is_searching === false)) && (user.user.address) &&
             <TouchableHighlight
               style={{...tailwind('bg-white rounded-lg p-4 absolute'), top: '45%'}}
               onPress={goHome}
