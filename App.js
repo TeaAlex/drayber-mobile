@@ -49,7 +49,7 @@ function App() {
               <Stack.Screen name="Home" component={HomeScreen} options={{headerShown: false}}/>
               <Stack.Screen name="Map" component={Map} options={{headerShown: false}}/>
               <Stack.Screen name="Search" component={Search} options={{title: 'Itinéraire'}}/>
-              <Stack.Screen name="Menu" component={Menu} options={{title: 'Paramètres'}}/>
+              <Stack.Screen name="Menu" component={Menu} options={{title: 'Menu'}}/>
               <Stack.Screen name="Register" component={Register} options={{title: 'Inscription'}}/>
               <Stack.Screen name="Login" component={Login} options={{headerShown: false}}/>
               <Stack.Screen name="PaymentFormView" component={PaymentFormView} options={{title: 'Moyen de paiement'}}/>
