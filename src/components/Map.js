@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import MapView, { PROVIDER_GOOGLE, Polyline } from "react-native-maps";
 import { View, Text, TouchableHighlight, TouchableOpacity, ActivityIndicator } from "react-native";
 import tailwind, { getColor } from "tailwind-rn";
@@ -7,12 +7,14 @@ import MenuToggle from "../assets/icons/menu-toggle.svg";
 import { api } from "../utils/api";
 import { TripContext, DRIVER_FOUND, TRIP_END, SEARCHING, DRIVER_NOT_FOUND } from "../context/TripContext";
 import CheckMark from '../assets/icons/check-mark.svg'
+import {showMessage} from "react-native-flash-message";
 
 const Map = ({navigation}) => {
 
   const {from, to, tripInfo} = useContext(SearchContext);
   const {status, setStatus, driverName, arrivalTime, driver} = useContext(TripContext);
   const ratings = [1, 2, 3, 4, 5];
+  const [offer, setOffer] = useState(null);
 
   const onPress = async () => {
     const {distance, duration, price, startAddress, endAddress, encodedPolyline} = tripInfo
@@ -29,6 +31,7 @@ const Map = ({navigation}) => {
     try {
       setTimeout(async () => {
         const {offer} = await api('POST', '/offer/create', {tripInfo: payload});
+        setOffer(offer);
         const {status} = await api('POST', `/offer/${offer.id}/find-driver`);
         setStatus(SEARCHING);
         console.log('create offer');
@@ -39,15 +42,39 @@ const Map = ({navigation}) => {
       console.log(e);
     }
   }
-
-
+  
   const rate = async (value) => {
-    await api('POST', '/users/rating', {
-      user_id: driver.id,
-      rating: value
-    })
-    setStatus(null);
+    try {
+      console.log(driver.id, value);
+      await api('POST', '/users/rating', {
+        user_id: driver.id,
+        rating: value
+      })
+      setStatus(null);
+    } catch (e) {
+      console.log('RATE ERROR');
+    }
     navigation.navigate('Home');
+  }
+  
+  const cancel = async () => {
+    try {
+      await api('PUT', `/offer/${offer.id}/update`, {
+        cancel: true
+      })
+      console.log('CANCEL');
+      await api('POST', `/offer/${offer.id}/cancel-notification`)
+      setStatus(null);
+      navigation.navigate('Home');
+      return showMessage({
+        message: 'Succès',
+        description: 'Recherche annulée',
+        type: 'success',
+        icon: 'success',
+      })
+    } catch (e) {
+      console.log(e)
+    }
   }
 
 
@@ -147,6 +174,7 @@ const Map = ({navigation}) => {
                 <Text style={tailwind('text-indigo-800 font-bold text-lg text-center py-6')}>Récapitulatif de la
                   course
                 </Text>
+                <Text>{status}</Text>
                 <View>
                   <View style={tailwind('bg-white p-4')}>
                     <Text style={tailwind('text-gray-700 font-bold')}>Départ</Text>
@@ -167,6 +195,16 @@ const Map = ({navigation}) => {
                     <TouchableHighlight style={{...tailwind('bg-indigo-800 p-4 rounded')}} onPress={onPress}>
                       <Text style={tailwind('text-white font-bold text-center text-lg')}>
                         Rechercher un chauffeur
+                      </Text>
+                    </TouchableHighlight>
+                  </View>
+                }
+                {
+                  (status === SEARCHING || status === DRIVER_FOUND) &&
+                  <View style={tailwind('flex flex-row justify-center items-center')}>
+                    <TouchableHighlight style={{...tailwind('bg-red-200 p-4 rounded')}} onPress={cancel}>
+                      <Text style={tailwind('text-red-500 font-bold text-center text-lg')}>
+                        Annuler
                       </Text>
                     </TouchableHighlight>
                   </View>
