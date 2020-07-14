@@ -31,6 +31,19 @@ const PaymentFormView = ({navigation}) => {
     console.log("SaveCard");
     console.log(card);
     console.log(loggeduser);
+    console.log("HASN'T STRIPE ID",(loggeduser.client_stripe_id == null));
+    if(loggeduser.client_stripe_id == null){
+      //create customer for current user
+      const create_customer = await api('POST', '/payment/create-stripe-customer');
+
+      if(create_customer.status == "Created"){
+        loggeduser.client_stripe_id = create_customer.user.client_stripe_id;
+        loggeduser.client_secret = create_customer.user.client_stripe_secret;
+      }
+      //prepare to get payment method
+      console.log(create_customer);
+    }
+
     const params = { 
       'type': 'card',
       'card[number]': card.number,
@@ -164,20 +177,6 @@ const PaymentFormView = ({navigation}) => {
         icon: 'danger',
       });
     }
-  }
-
-  if(loggeduser.client_stripe_id == null){
-    //create customer for current user
-    const create_customer = async () => {
-      return await api('POST', '/payment/create-stripe-customer');
-    }
-
-    if(create_customer.status == "Created"){
-      loggeduser.client_stripe_id = create_customer.user.client_stripe_id;
-      loggeduser.client_secret = create_customer.user.client_stripe_secret;
-    }
-    //prepare to get payment method
-    console.log(create_customer);
   }
 
   if(loggeduser.client_stripe_payment_method == null){
