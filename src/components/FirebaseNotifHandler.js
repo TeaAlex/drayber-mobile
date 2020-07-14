@@ -6,6 +6,7 @@ import { UserContext } from "../context/UserContext";
 import { useNavigation } from '@react-navigation/native';
 import {api} from "../utils/api";
 import { getCurrentPosition } from "../utils/geolocation";
+import {showMessage} from "react-native-flash-message";
 
 
 const FirebaseNotifHandler = () => {
@@ -39,6 +40,7 @@ const FirebaseNotifHandler = () => {
       }
       if (type === "UPDATE_GEOLOCATION") {
         getCurrentPosition.then(({latitude, longitude}) => {
+          console.log('UPDATE GEOLOCATION');
           console.log(latitude, longitude);
           api('PUT', `/users/update/${user.user.id}`, {
             lat: latitude,
@@ -53,6 +55,15 @@ const FirebaseNotifHandler = () => {
         console.log('driver not found');
         setStatus(DRIVER_NOT_FOUND);
         navigation.navigate('Map');
+      }
+      if (type === "TRIP_CANCEL") {
+        navigation.navigate('Home');
+        showMessage({
+          message: 'Annulation',
+          description: 'La course a été annulée par le client',
+          type: 'danger',
+          icon: 'danger'
+        })
       }
     });
 
