@@ -5,6 +5,7 @@ import { TripContext, DRIVER_FOUND, SEARCHING, TRIP_END, DRIVER_NOT_FOUND } from
 import { UserContext } from "../context/UserContext";
 import { useNavigation } from '@react-navigation/native';
 import {api} from "../utils/api";
+import { getCurrentPosition } from "../utils/geolocation";
 
 
 const FirebaseNotifHandler = () => {
