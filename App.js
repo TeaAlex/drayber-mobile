@@ -24,6 +24,8 @@ import FlashMessage from 'react-native-flash-message';
 import Contact from './src/components/Contact';
 import TripProvider from "./src/context/TripContext";
 import HomeScreen from './src/components/HomeScreen';
+import PayDriver from './src/components/PayDriver';
+import ValidatePayment from './src/components/ValidatePayment';
 import HistoryTrip from './src/components/HistoryTrip';
 
 
@@ -62,6 +64,8 @@ function App() {
               <Stack.Screen name="NewPassword" component={NewPassword} options={{title: 'Nouveau mot de passe'}}/>
               <Stack.Screen name="HistoryTrip" component={HistoryTrip} options={{title: 'Historique des courses'}}/>
               <Stack.Screen name="Contact" component={Contact} options={{title: 'Contact'}}/>
+              <Stack.Screen name="PayDriver" component={PayDriver} options={{title: 'Virements a effectuer'}}/>
+              <Stack.Screen name="ValidatePayment" component={ValidatePayment} options={{title: 'Valider le paiement'}}/>
             </Stack.Navigator>
           </NavigationContainer>
         </TripProvider>
