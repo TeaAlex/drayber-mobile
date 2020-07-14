@@ -33,7 +33,7 @@ const Register = ({navigation}) => {
       if(event.type == "set"){
        const currentDate = selectedDate || date;
        
-       const reformated = currentDate.getDate().toString() + "-" +currentDate.getMonth().toString()+ "-" + currentDate.getFullYear().toString();
+       const reformated = moment(currentDate).format('DD-MM-YYYY');
        setBirthSate(reformated);
        setShow(false);
       }else{

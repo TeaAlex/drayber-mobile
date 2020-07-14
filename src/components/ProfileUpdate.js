@@ -18,7 +18,7 @@ const ProfileUpdate = ({navigation}) => {
   const [address, setAddress]= useState(user.user.address);
   const [zip_code, setZipCode]= useState(user.user.zip_code);
   const [city, setCity]= useState(user.user.city);
-  const [birth_date, setBirthSate]= useState(user.user.birth_date);
+  const [birth_date, setBirthSate]= useState(moment(user.user.birth_date.toString()).format('DD-MM-YYYY'));
   const [oldImage]= useState(user.user.profile_picture_url);
   const [base64Image, setBase64Image]=useState(null)
   
@@ -95,7 +95,7 @@ const ProfileUpdate = ({navigation}) => {
      if(event.type == "set"){
       const currentDate = selectedDate || date;
       
-      const reformated = currentDate.getDate().toString() + "-" +currentDate.getMonth().toString()+ "-" + currentDate.getFullYear().toString();
+      const reformated = moment(currentDate).format('DD-MM-YYYY')
       setBirthSate(reformated);
       setShow(false);
      }else{
@@ -104,7 +104,7 @@ const ProfileUpdate = ({navigation}) => {
    };
 
    const showMode = currentMode => {
-     setShow(true);
+    setShow(true);
     setMode(currentMode);
    };
 
@@ -129,7 +129,7 @@ const ProfileUpdate = ({navigation}) => {
       <Input label={"Adresse"} value={address} onChange={setAddress} />
       <Input label={"Code postal"} value={zip_code} onChange={setZipCode} keyboardType={"numeric"}/>
       <Input label={"Ville"} value={city} onChange={setCity} />
-      <Input label={"Date de naissance"} onFocus={showDatepicker} value={birth_date.toString()}  />
+      <Input label={"Date de naissance"} onFocus={showDatepicker} value={birth_date} />
                         {show && (
                         <DateTimePicker
                         testID="dateTimePicker"
