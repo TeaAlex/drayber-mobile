@@ -1073,6 +1073,11 @@
     color "^3.1.2"
     react-native-iphone-x-helper "^1.2.1"
 
+"@stripe/stripe-js@^1.8.0":
+  version "1.8.0"
+  resolved "https://registry.yarnpkg.com/@stripe/stripe-js/-/stripe-js-1.8.0.tgz#100f102d757cd024f94635dba231993554c8cfba"
+  integrity sha512-VsIohJw70LIdB4b621RN6pTyw49ZMy+QjB81fl+Psu5X5ppiq/c+rG0F+XKHSVpp4JZRNDkQnsOGeuHow0aluA==
+
 "@svgr/babel-plugin-add-jsx-attribute@^4.2.0":
   version "4.2.0"
   resolved "https://registry.yarnpkg.com/@svgr/babel-plugin-add-jsx-attribute/-/babel-plugin-add-jsx-attribute-4.2.0.tgz#dadcb6218503532d6884b210e7f3c502caaa44b1"
@@ -5865,6 +5870,11 @@ react-native-screens@^2.9.0:
   version "2.9.0"
   resolved "https://registry.yarnpkg.com/react-native-screens/-/react-native-screens-2.9.0.tgz#ead2843107ba00fee259aa377582e457c74f1f3b"
   integrity sha512-5MaiUD6HA3nzY3JbVI8l3V7pKedtxQF3d8qktTVI0WmWXTI4QzqOU8r8fPVvfKo3MhOXwhWBjr+kQ7DZaIQQeg==
+
+react-native-stripe@^1.2.2:
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/react-native-stripe/-/react-native-stripe-1.2.2.tgz#a7f048c6e045dcd5b29fd52a8c8e660879ea5c99"
+  integrity sha1-p/BIxuBF3NWyn9UqjI5mCHnqXJk=
 
 react-native-svg-transformer@^0.14.3:
   version "0.14.3"
