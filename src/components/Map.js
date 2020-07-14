@@ -541,7 +541,7 @@ const Map = ({navigation}) => {
       })
     }
     // getPosition();
-    setTrip();
+    // setTrip();
   }, []);
 
   const onPress = async () => {
@@ -697,7 +697,7 @@ const Map = ({navigation}) => {
               </View>
             }
           </View>
-          : <Text>Loading</Text>
+          : <ActivityIndicator size={"large"}/>
       }
     </>
   )
