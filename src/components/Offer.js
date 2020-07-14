@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, TouchableHighlight, PermissionsAndroid, ActivityIndicator } from 'react-native';
+import { View, Text, TouchableOpacity, TouchableHighlight, ActivityIndicator } from 'react-native';
 import { api } from "../utils/api";
 import tailwind, { getColor } from "tailwind-rn";
 import MenuToggle from "../assets/icons/menu-toggle.svg";
@@ -10,6 +10,7 @@ import ProgressBar from "./ProgressBar";
 import Geolocation from '@react-native-community/geolocation';
 import {showMessage} from 'react-native-flash-message';
 import { getComputedTime } from "../utils/getComputedTime";
+import {getCurrentPosition, requestLocationPermission} from "../utils/geolocation";
 
 
 const Offer = ({route, navigation}) => {
@@ -55,55 +56,11 @@ const Offer = ({route, navigation}) => {
 
   const [currentToStartInfo, setCurrentToStartInfo] = useState(null);
 
-
-
-  // METHODS
-
-  const getCurrentPosition = new Promise((resolve, reject) => {
-    Geolocation.getCurrentPosition(position => {
-      const {latitude, longitude} = position.coords;
-      resolve({latitude, longitude});
-    }, error => {
-      reject(error);
-    }, {
-      enableHighAccuracy: true,
-      timeout: 20000
-    })
-  })
-
-  const onUserLocationChange = (event) => {
-    if (status === INIT) {
-      return
-    }
-    const {latitude, longitude} = event.nativeEvent.coordinate
-    setRegion({latitude, longitude, latitudeDelta: 0.001, longitudeDelta: 0.001});
-  }
-
-  const requestLocationPermission = async () => {
-    try {
-      const granted = await PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-        {
-          'title': 'Location Permission',
-          'message': 'This App needs access to your location ' +
-            'so we can know where you are.'
-        }
-      )
-      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-        console.log("You can use locations ")
-      } else {
-        console.log("Location permission denied")
-      }
-    } catch (err) {
-      console.warn(err)
-    }
-  }
-
   // EFFECTS
 
   useEffect(() => {
     const initPositions = async () => {
-      requestLocationPermission();
+      await requestLocationPermission();
 
       try {
         const {latitude, longitude} = await getCurrentPosition;
@@ -156,6 +113,15 @@ const Offer = ({route, navigation}) => {
     }
   }, [status])
 
+  // METHODS
+
+  const onUserLocationChange = (event) => {
+    if (status === INIT) {
+      return
+    }
+    const {latitude, longitude} = event.nativeEvent.coordinate
+    setRegion({latitude, longitude, latitudeDelta: 0.001, longitudeDelta: 0.001});
+  }
 
   const accept = async () => {
     setStatus(ACCEPTED);
@@ -214,7 +180,6 @@ const Offer = ({route, navigation}) => {
       icon: 'success',
     });
   };
-
 
   return (
     <View style={tailwind('flex justify-center items-center')}>

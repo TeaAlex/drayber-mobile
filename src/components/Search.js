@@ -5,8 +5,7 @@ import InputAddress from "./InputAddress";
 import ResultsAddresses from "./ResultsAddresses";
 import tailwind from "tailwind-rn";
 import SearchSidebar from "../assets/icons/search-sidebar.svg"
-import {GOOGLE_API_KEY} from "react-native-dotenv";
-import polyline from "@mapbox/polyline";
+import {search} from "../utils/geolocation";
 
 const Search = (props) => {
   const {navigation} = props;
@@ -14,42 +13,11 @@ const Search = (props) => {
 
   useEffect( () => {
     if (fromSelected === true && toSelected === true) {
-      const search = async () => {
-        const url = `https://maps.googleapis.com/maps/api/directions/json?origin=${from}&destination=${to}&key=${GOOGLE_API_KEY}`;
-        const response = await fetch(url);
-        const data = await response.json();
-        const encodedPolyline = data.routes[0].overview_polyline.points;
-        const points = polyline.decode(encodedPolyline);
-        const coords = points.map(point => {
-          const [latitude, longitude] = point;
-          return { latitude,longitude }
-        })
-        const leg = data.routes[0].legs[0];
-        setFrom(leg.start_address);
-        setTo(leg.end_address);
-        setTripInfo({
-          distance: leg.distance.text,
-          duration: leg.duration.text,
-          price: parseInt(leg.distance.text) * 2,
-          startAddress: {
-            name: leg.start_address,
-            coords: {
-              latitude: leg.start_location.lat,
-              longitude: leg.start_location.lng
-            }
-          },
-          endAddress: {
-            name: leg.end_address,
-            coords: {
-              latitude: leg.end_location.lat,
-              longitude: leg.end_location.lng
-            }
-          },
-          coords,
-          encodedPolyline
-        })
-      }
-      search();
+      search(from, to).then(({from, to, tripInfo}) => {
+        setFrom(from);
+        setTo(to);
+        setTripInfo(tripInfo);
+      })
     }
   }, [fromSelected, toSelected])
 
