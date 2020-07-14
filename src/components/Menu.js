@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext,useState } from 'react';
 import tailwind from 'tailwind-rn';
 import {TouchableHighlight, View} from 'react-native';
 import MenuItem from './MenuItem';
@@ -11,26 +11,46 @@ import Admin from '../assets/icons/person-done-outline.svg';
 import CloseSvg from '../assets/icons/close-square-outline.svg';
 import AsyncStorage from '@react-native-community/async-storage';
 import {UserContext} from "./../context/UserContext";
-import {showMessage, hideMessage} from 'react-native-flash-message';
+import {showMessage} from 'react-native-flash-message';
+import {api} from "../utils/api";
 
 const Menu = ({navigation}) => {
   const color = '#586CD9';
 
 
-  const {user} = useContext(UserContext);
+  const {user,setUser} = useContext(UserContext);
+
+  const [mode,setMode] = useState('Mode Driver');
+
 
   const logout = () => {
     AsyncStorage.removeItem('token')
     navigation.navigate('Login')
   }
   const switchMode = async () => {
-    const mode = await AsyncStorage.getItem('changeMode');
-    if(mode === "Client"){
       if(user.driver){
         console.log(user.driver.active_driver)
         if(user.driver.active_driver === true){
-          await AsyncStorage.setItem('changeMode', "Driver");
-          navigation.navigate('Home')
+          let body = {};
+          if(user.driver.is_searching === false){
+          body = {
+            "is_searching": true
+          }
+        }else {
+          body = {
+            "is_searching": false
+          }
+        }
+      
+          try {
+            await api('PUT', '/users/update', body);
+            const user = await api('GET', '/users/current-user');
+            setUser(user);
+            console.log(user.driver.is_searching);
+            navigation.navigate('Home')
+          } catch (e) {
+              console.error(e);
+          }  
         }else {
           showMessage({
             message: 'Erreur',
@@ -38,7 +58,6 @@ const Menu = ({navigation}) => {
             type: 'danger',
             icon: 'danger',
           });
-          // alert("Votre compte Driver n'est pas encore activé")
         }
       } else {
         showMessage({
@@ -47,11 +66,8 @@ const Menu = ({navigation}) => {
           type: 'danger',
           icon: 'danger',
         });
-        // alert("Vous n'êtes pas chauffeur :(")
       }
-    } else {
-      await AsyncStorage.setItem('changeMode', "Client");
-    }
+    
 
   }
 
@@ -87,11 +103,20 @@ const Menu = ({navigation}) => {
             <CreditCardSvg width={24} height={24} fill={color} />
           </MenuItem>
         </TouchableHighlight>
-        <TouchableHighlight onPress={() => switchMode()}>
-          <MenuItem text={'Mode Driver'}>
+
+        {user.driver && user.driver.is_searching === true &&
+        <TouchableHighlight onPress={() => switchMode()}><MenuItem text={"Mode Client"}>
             <Swap width={24} height={24} fill={color} />
           </MenuItem>
         </TouchableHighlight>
+        }
+
+        {user.driver && user.driver.is_searching === false &&
+        <TouchableHighlight onPress={() => switchMode()}><MenuItem text={"Mode Driver"}>
+            <Swap width={24} height={24} fill={color} />
+          </MenuItem>
+        </TouchableHighlight>
+        }
         <TouchableHighlight onPress={() => isDriver()}>
         <MenuItem text={'Devenir chauffeur'}>
           <CarSvg width={24} height={24} fill={color} />

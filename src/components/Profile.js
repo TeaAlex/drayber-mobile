@@ -6,6 +6,7 @@ import PersonSvg from "../assets/icons/person.svg";
 import MenuItem from "./MenuItem";
 import { ScrollView } from "react-native-gesture-handler";
 import { api } from "../utils/api";
+import moment from "moment";
 
 
 const Profile = ({navigation}) => {
@@ -59,7 +60,7 @@ const Profile = ({navigation}) => {
                 
                 <Text style={tailwind('mr-3')}>Téléphone</Text>
               </MenuItem>
-              <MenuItem text={user.user.birth_date}  >
+              <MenuItem text={moment(user.user.birth_date.toString()).format('DD-MM-YYYY')}  >
                 
                 <Text style={tailwind('mr-3')}>Date de Naissance</Text>
               </MenuItem>
