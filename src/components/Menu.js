@@ -104,14 +104,14 @@ const Menu = ({navigation}) => {
           </MenuItem>
         </TouchableHighlight>
 
-        {user.driver.is_searching === true &&
+        {user.driver && user.driver.is_searching === true &&
         <TouchableHighlight onPress={() => switchMode()}><MenuItem text={"Mode Client"}>
             <Swap width={24} height={24} fill={color} />
           </MenuItem>
         </TouchableHighlight>
         }
 
-        {user.driver.is_searching === false &&
+        {user.driver && user.driver.is_searching === false &&
         <TouchableHighlight onPress={() => switchMode()}><MenuItem text={"Mode Driver"}>
             <Swap width={24} height={24} fill={color} />
           </MenuItem>
