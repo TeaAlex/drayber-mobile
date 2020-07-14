@@ -1,22 +1,16 @@
-import React, {useContext, useState} from 'react';
+import React, { useState} from 'react';
 import tailwind from 'tailwind-rn';
 import {
-  Text,
   StyleSheet,
-  TouchableOpacity,
-  View,
-  TextInput,
-  TouchableHighlight,
+  View
 } from 'react-native';
-import {UserContext} from '../context/UserContext';
 import {api} from '../utils/api';
-import {showMessage, hideMessage} from 'react-native-flash-message';
-import Input from './Input';
+import {showMessage} from 'react-native-flash-message';
 import Button from './Button';
 import {ScrollView} from 'react-native-gesture-handler';
+import Input from "./Input";
 
 const ForgotPassword = ({navigation}) => {
-  const {user} = useContext(UserContext);
   const [email, setEmail] = useState('');
 
   const onPress = async () => {
@@ -50,18 +44,25 @@ const ForgotPassword = ({navigation}) => {
     }
   };
 
+  const gotoNewPass = () => {
+    navigation.navigate('NewPassword')
+  };
+
+
   return (
     <ScrollView>
-      <View style={tailwind('w-full flex items-center mt-12')}>
-        <Input
-          label={'Email'}
-          value={email}
-          onChange={setEmail}
-          placeholder={'email@email.com'}
-        />
+       <View style={tailwind('w-full flex items-center mt-12')}>
+      
+       <Input label={"Email"} value={email} onChange={setEmail} placeholder={"email@email.com"}/>
+       <View  style={tailwind('mt-2')}>
         <Button title="Envoyer" onPress={onPress} />
       </View>
+        <View  style={tailwind('mt-40')}>
+        <Button title="Vous avez déjà un Token?" onPress={ gotoNewPass} />
+      </View>
+    </View>
     </ScrollView>
+    
   );
 };
 

@@ -31,6 +31,9 @@ function HomeScreen ({navigation}) {
 
   useEffect(() => {
     console.log(user);
+    console.log('user.driver', user.driver);
+    console.log(user.driver && user.driver.is_searching === false);
+    console.log(user.driver === null || (user.driver && user.driver.is_searching === false))
     async function getMode () {
       setMode(await AsyncStorage.getItem('changeMode'));
     }
@@ -72,7 +75,7 @@ function HomeScreen ({navigation}) {
 
   return (
     <View style={tailwind('h-full w-full')}>
-      {user.driver &&
+      {user.driver && user.driver.active_driver === true && user.driver.is_searching && 
         <TouchableOpacity
           style={{position: 'absolute', top: 40, right: 20, zIndex: 100}}
           onPress={() => navigation.navigate('Menu')}>
@@ -104,7 +107,7 @@ function HomeScreen ({navigation}) {
 
       <View style={{...tailwind('w-full items-center relative bg-gray-900 rounded-t-lg'), 'height': '20%'}}>
 
-        { user.driver && user.driver.is_searching &&
+        { user.driver && user.driver.active_driver === true && user.driver.is_searching &&
           <TouchableHighlight style={tailwind('items-center p-3 w-2/3 bg-white rounded-lg p-4 mt-10')}>
             <View>
               <Text style={tailwind('text-gray-700 font-bold text-center text-lg')}>
@@ -115,8 +118,9 @@ function HomeScreen ({navigation}) {
           </TouchableHighlight>
         }
 
+
         {
-          user.driver === null || user.driver.is_searching === false &&
+          (!user.driver || user.driver && user.driver.active_driver === false || (user.driver && user.driver.active_driver === true && user.driver.is_searching === false)) &&
             <TouchableHighlight
               style={{
                 ...tailwind('items-center p-3 w-10/12 bg-white p-6 rounded-lg absolute'),
@@ -143,7 +147,7 @@ function HomeScreen ({navigation}) {
         }
 
         {
-          (user.driver === null || user.driver.is_searching === false) && (user.user.address) &&
+          (!user.driver || user.driver && user.driver.active_driver === false || (user.driver && user.driver.active_driver === true && user.driver.is_searching === false)) && (user.user.address) &&
             <TouchableHighlight
               style={{...tailwind('bg-white rounded-lg p-4 absolute'), top: '45%'}}
               onPress={goHome}
