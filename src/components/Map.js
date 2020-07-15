@@ -15,6 +15,14 @@ const Map = ({navigation}) => {
   const {status, setStatus, driverName, arrivalTime, driver} = useContext(TripContext);
   const ratings = [1, 2, 3, 4, 5];
   const [offer, setOffer] = useState(null);
+  
+  useEffect(() => {
+    if (status === DRIVER_NOT_FOUND) {
+      setTimeout(() => {
+        setStatus(null);
+      }, 3000)
+    }
+  }, [status])
 
   const onPress = async () => {
     const {distance, duration, price, startAddress, endAddress, encodedPolyline} = tripInfo
