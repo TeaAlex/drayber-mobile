@@ -245,10 +245,13 @@ const Offer = ({route, navigation}) => {
               // && <ProgressBar onCompletion={() => navigation.goBack()} timeout={1000} />
             }
             <View>
-              <Text style={tailwind('text-indigo-800 font-bold text-lg text-center py-6')}>{stepStatus}</Text>
-              {
-                phone && <Text>{phone}</Text>
-              }
+              <View style={tailwind('py-4')}>
+                <Text style={tailwind('text-indigo-800 font-bold text-lg text-center')}>{stepStatus}</Text>
+                {
+                  phone && <Text style={tailwind('text-gray-700 text-center text-base font-bold')}>{phone}</Text>
+                }
+              </View>
+
               {
                 startAddress.show &&
                 <View style={tailwind('bg-white p-4 border-l-4 border-teal-500')}>
