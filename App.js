@@ -41,7 +41,7 @@ function App() {
               initialRouteName="Login"
               screenOptions={{
                 headerStyle: {
-                  backgroundColor: getColor('indigo-500'),
+                  backgroundColor: getColor('indigo-700'),
                 },
                 headerTintColor: getColor('gray-100'),
               }}
