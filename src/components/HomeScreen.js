@@ -26,7 +26,7 @@ function HomeScreen ({navigation}) {
     latitudeDelta: 0.04,
     longitudeDelta: 0.04,
   });
-  
+
 
   useEffect(() => {
     const setPosition = async () => {
@@ -72,7 +72,7 @@ function HomeScreen ({navigation}) {
       setCurrentAddress(addresses[0].formatted_address);
     }
   }
-  
+
   const goHome = async () => {
     const userAddress = user.user.address;
     const {from, to, tripInfo} = await search(currentAddress, userAddress);
@@ -90,7 +90,7 @@ function HomeScreen ({navigation}) {
           onPress={() => navigation.navigate('Menu')}>
           <View style={tailwind('items-center p-3  bg-indigo-800 p-4 rounded-full')}>
             <Text style={tailwind('text-indigo-100 font-bold text-center text-base')}>
-              {user.driver.credit} €
+              {parseInt(user.driver.credit / 100)} €
             </Text>
           </View>
         </TouchableOpacity>
