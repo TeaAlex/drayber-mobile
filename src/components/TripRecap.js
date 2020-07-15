@@ -24,9 +24,11 @@ const TripRecap = ({route, navigation}) => {
       setTrip(trip);
       setDriver(driver);
       setClient(client);
-      await api('POST', '/trip/pay', {
-        trip_id: trip.id
-      })
+      if (client.id === user.user.id) {
+        await api('POST', '/trip/pay', {
+          trip_id: trip.id
+        })
+      }
     }
     init();
   }, [])
