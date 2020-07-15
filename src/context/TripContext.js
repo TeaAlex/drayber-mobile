@@ -13,6 +13,7 @@ const TripProvider = ({children}) => {
   const [driver, setDriver] = useState(null);
   const [arrivalTime, setArrivalTime] = useState(null);
   const [tripRecap, setTripRecap] = useState(null);
+  const [phoneNumber, setPhoneNumber] = useState(null);
 
   const value = {
     status,
@@ -24,7 +25,9 @@ const TripProvider = ({children}) => {
     driver,
     setDriver,
     tripRecap,
-    setTripRecap
+    setTripRecap,
+    phoneNumber,
+    setPhoneNumber
   }
 
   return (

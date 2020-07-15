@@ -1,21 +1,19 @@
 import React, { useContext, useState, useEffect } from 'react'
 import MapView, { PROVIDER_GOOGLE, Polyline } from "react-native-maps";
 import { View, Text, TouchableHighlight, TouchableOpacity, ActivityIndicator } from "react-native";
-import tailwind, { getColor } from "tailwind-rn";
+import tailwind from "tailwind-rn";
 import { SearchContext } from "../context/SearchContext";
 import MenuToggle from "../assets/icons/menu-toggle.svg";
 import { api } from "../utils/api";
 import { TripContext, DRIVER_FOUND, TRIP_END, SEARCHING, DRIVER_NOT_FOUND } from "../context/TripContext";
-import CheckMark from '../assets/icons/check-mark.svg'
 import {showMessage} from "react-native-flash-message";
 
 const Map = ({navigation}) => {
 
   const {from, to, tripInfo} = useContext(SearchContext);
-  const {status, setStatus, driverName, arrivalTime, driver} = useContext(TripContext);
-  const ratings = [1, 2, 3, 4, 5];
+  const {status, setStatus, driverName, arrivalTime, phoneNumber} = useContext(TripContext);
   const [offer, setOffer] = useState(null);
-  
+
   useEffect(() => {
     if (status === DRIVER_NOT_FOUND) {
       setTimeout(() => {
@@ -108,37 +106,7 @@ const Map = ({navigation}) => {
                   <Text style={tailwind('text-indigo-800 font-bold text-lg mb-2')}>CHAUFFEUR EN ROUTE</Text>
                   <Text style={tailwind('text-gray-700 font-bold mb-1 text-base')}>{driverName}</Text>
                   <Text style={tailwind('text-gray-600 text-base')}>Arrivé prévu à {arrivalTime}</Text>
-                </View>
-              </View>
-            }
-            {
-              status === TRIP_END &&
-              <View style={{...tailwind('flex flex-row justify-center w-full absolute z-50'), 'top': '20%'}}>
-                <View style={tailwind('w-3/4 bg-white border-red-100 p-6 border-t-4 border-green-400 rounded')}>
-                  <View style={tailwind('flex flex-row')}>
-                    <Text style={tailwind('text-green-500 font-bold text-lg mb-2 mr-2')}>
-                      COURSE TERMINÉE
-                    </Text>
-                    <CheckMark width={24} height={24} fill={getColor('green-500')}/>
-                  </View>
-                  <Text style={tailwind('text-gray-700 font-bold mb-1 text-base')}>{driverName}</Text>
-                  <Text style={tailwind('text-gray-600 text-base mb-3')}>Notez votre chauffeur</Text>
-                  <View style={tailwind('flex flex-row justify-around items-center')}>
-                    {
-                      ratings.map(r => {
-                        return (<TouchableOpacity key={r} onPress={() => rate(r)}>
-                          <Text
-                            style={tailwind('font-bold text-center bg-yellow-200 rounded-full w-10 h-10 p-2 mb-3 text-yellow-500 text-base')}>{r}</Text>
-                        </TouchableOpacity>)
-                      })
-                    }
-                  </View>
-                  <TouchableOpacity onPress={() => {
-                    setStatus(null);
-                    navigation.navigate('Home');
-                  }}>
-                    <Text style={tailwind('text-gray-700 font-bold text-base')}>Passer</Text>
-                  </TouchableOpacity>
+                  <Text style={tailwind('text-gray-600 text-base')}>{phoneNumber}</Text>
                 </View>
               </View>
             }

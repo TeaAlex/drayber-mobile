@@ -13,7 +13,7 @@ const FirebaseNotifHandler = () => {
 
   const navigation = useNavigation();
   const {user} = useContext(UserContext);
-  const {setDriverName, setArrivalTime, setStatus, setDriver} = useContext(TripContext);
+  const {setDriverName, setArrivalTime, setStatus, setDriver, setPhoneNumber} = useContext(TripContext);
 
   useEffect(() => {
     const unsubscribe = messaging().onMessage(async remoteMessage => {
@@ -31,10 +31,12 @@ const FirebaseNotifHandler = () => {
       if (type === "TRIP_CREATE") {
         const driver = JSON.parse(remoteMessage.data.driver);
         const arrivalTime = remoteMessage.data.arrivalTime;
+        const phoneNumber = remoteMessage.data.phoneNumber;
         setDriver(driver);
         setDriverName(`${driver.firstname} ${driver.lastname}`);
         setArrivalTime(arrivalTime);
         setStatus(DRIVER_FOUND);
+        setPhoneNumber(phoneNumber);
         navigation.navigate('Map');
       }
       if (type === "TRIP_END") {
