@@ -44,8 +44,8 @@ def flipper_post_install(installer)
   end
 end
 
-target 'mobile' do
-  # Pods for mobile
+target 'drayber' do
+  # Pods for drayber
   pod 'FBLazyVector', :path => "../node_modules/react-native/Libraries/FBLazyVector"
   pod 'FBReactNativeSpec', :path => "../node_modules/react-native/Libraries/FBReactNativeSpec"
   pod 'RCTRequired', :path => "../node_modules/react-native/Libraries/RCTRequired"
@@ -79,7 +79,7 @@ target 'mobile' do
 
   pod 'react-native-location', :path => '../node_modules/react-native-location'
 
-  target 'mobileTests' do
+  target 'drayberTests' do
     inherit! :complete
     # Pods for testing
   end
@@ -96,10 +96,10 @@ target 'mobile' do
   end
 end
 
-target 'mobile-tvOS' do
-  # Pods for mobile-tvOS
+target 'drayber-tvOS' do
+  # Pods for drayber-tvOS
 
-  target 'mobile-tvOSTests' do
+  target 'drayber-tvOSTests' do
     inherit! :search_paths
     # Pods for testing
   end

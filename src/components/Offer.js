@@ -149,6 +149,9 @@ const Offer = ({route, navigation}) => {
     try {
       const {offer: updatedOffer} = await api('POST', `/offer/${offer.id}/reject`);
       await api('POST', `/offer/${updatedOffer.id}/find-driver`);
+      await api('PUT', '/users/update', {
+        is_searching: true
+      })
     } catch (e) {
       console.error(e);
     }
@@ -169,6 +172,9 @@ const Offer = ({route, navigation}) => {
     console.log('trip end');
     try {
       await api('POST', `/offer/${offer.id}/trip_end`);
+      await api('PUT', '/users/update', {
+        is_searching: true
+      })
     } catch (e) {
       console.error(e);
     }
