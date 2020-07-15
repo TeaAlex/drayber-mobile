@@ -15,11 +15,10 @@ const Profile = ({navigation}) => {
   
   useEffect(() => {
     try {
-      if (user.user.profile_picture_url != "") {
+      if (user.user.profile_picture_url != null) {
         api('GET', '/users/getUpload/' + user.user.profile_picture_url)
         .then(body => {
           if (body != undefined) {
-            console.log("je suis la");
             setBase64Image(body.exists);
           }
         });
