@@ -1,4 +1,4 @@
-import React, {useContext, useEffect} from 'react'
+import React, {useContext, useEffect, useState} from 'react'
 import {END, SearchContext, START} from "../context/SearchContext";
 import {View, TouchableOpacity} from 'react-native'
 import InputAddress from "./InputAddress";
@@ -9,8 +9,11 @@ import {search} from "../utils/geolocation";
 import Button from "./Button";
 import CloseSvg from "../assets/icons/close-outline.svg";
 import {showMessage} from "react-native-flash-message";
+import { UserContext } from '../context/UserContext';
 
 const Search = (props) => {
+  const {user,setUser} = useContext(UserContext);
+  const [card, setCard] = useState(user.user.client_stripe_payment_method);
   const {navigation} = props;
   const {from, setFrom, to, setTo, fromSelected, toSelected, setFromSelected, setToSelected, tripInfo, setTripInfo} = useContext(SearchContext);
   
@@ -24,12 +27,16 @@ const Search = (props) => {
         icon: 'danger',
       });
     }
-    search(from, to).then(({from, to, tripInfo}) => {
-      setFrom(from);
-      setTo(to);
-      setTripInfo(tripInfo);
-    })
-    navigation.navigate('Map');
+    if(card !== null){
+      search(from, to).then(({from, to, tripInfo}) => {
+        setFrom(from);
+        setTo(to);
+        setTripInfo(tripInfo);
+      })
+      navigation.navigate('Map');
+    }else{
+      navigation.navigate('PaymentFormView');
+    }
   }
 
   return (
