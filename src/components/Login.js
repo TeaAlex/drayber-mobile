@@ -8,6 +8,7 @@ import {showMessage, hideMessage} from 'react-native-flash-message';
 import Input from "./Input";
 import Button from './Button'
 import tailwind from 'tailwind-rn'
+import { ScrollView } from 'react-native-gesture-handler';
 
 
 const Login = ({navigation}) => {
@@ -59,6 +60,7 @@ const Login = ({navigation}) => {
 
 
     return (
+      <ScrollView>
         <View style={tailwind('w-full flex items-center mt-16')}>
             <Image source={require('../assets/drayberandlogo.png')}></Image>
             <Input label={"Email"} value={email} onChange={setEmail} placeholder={"email@email.com"}/>
@@ -77,6 +79,7 @@ const Login = ({navigation}) => {
               </View>
             </View>
         </View>
+        </ScrollView>
     );
 
 };
