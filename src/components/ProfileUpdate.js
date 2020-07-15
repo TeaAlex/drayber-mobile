@@ -63,7 +63,7 @@ const ProfileUpdate = ({navigation}) => {
   }
 
   const onPress = async () => {
-    let body = {}
+    let body = {};
         if(profile_picture_url === null){
              body = {
                 "email": email,
@@ -91,6 +91,7 @@ const ProfileUpdate = ({navigation}) => {
                 "birth_date": birth_date,
                 "profile_picture_url":profile_picture_url.name
             }
+          }    
 
     try {
       await api('PUT', '/users/update', body);
