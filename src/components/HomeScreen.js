@@ -1,6 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { UserContext } from '../context/UserContext';
-import AsyncStorage from '@react-native-community/async-storage';
 import { Text, View, TouchableOpacity, TouchableHighlight, ActivityIndicator } from 'react-native';
 import FirebaseNotifHandler from './FirebaseNotifHandler';
 import tailwind, { getColor } from 'tailwind-rn';
@@ -27,7 +26,7 @@ function HomeScreen ({navigation}) {
     latitudeDelta: 0.04,
     longitudeDelta: 0.04,
   });
-
+  
 
   useEffect(() => {
     const setPosition = async () => {
@@ -44,19 +43,13 @@ function HomeScreen ({navigation}) {
         latitudeDelta: 0.01,
         longitudeDelta: 0.01
       });
-      const addresses = await geoCoding({
-        lat: latitude,
-        lon: longitude
-      });
-      if (addresses.length > 0) {
-        setCurrentAddress(addresses[0].formatted_address);
-      }
+      await computeAddress(latitude, longitude);
     }
     setPosition();
   }, [])
 
   useEffect(() => {
-    Geolocation.watchPosition(({coords}) => {
+    const id = Geolocation.watchPosition(({coords}) => {
         const {latitude, longitude} = coords;
         setCurrentPosition(coords);
         setRegion({...region, latitude, longitude});
@@ -66,9 +59,20 @@ function HomeScreen ({navigation}) {
         enableHighAccuracy: true,
         distanceFilter: 200,
       })
+    return Geolocation.clearWatch(id);
   }, [])
 
 
+  const computeAddress = async (latitude, longitude) => {
+    const addresses = await geoCoding({
+      lat: latitude,
+      lon: longitude
+    });
+    if (addresses.length > 0) {
+      setCurrentAddress(addresses[0].formatted_address);
+    }
+  }
+  
   const goHome = async () => {
     const userAddress = user.user.address;
     const {from, to, tripInfo} = await search(currentAddress, userAddress);
@@ -139,7 +143,12 @@ function HomeScreen ({navigation}) {
                 shadowRadius: 6.27,
                 elevation: 10,
               }}
-              onPress={() => navigation.navigate('Search')}>
+              onPress={async () => {
+                const {latitude, longitude} = currentPosition;
+                await computeAddress(latitude, longitude);
+                setFrom(currentAddress);
+                navigation.navigate('Search')
+              }}>
               <View style={tailwind('flex flex-row justify-center w-full relative')}>
                 <View style={{...tailwind('absolute w-full'), 'left': '2%'}}>
                   <SearchIcon width={24} height={24} fill={getColor('gray-700')}/>

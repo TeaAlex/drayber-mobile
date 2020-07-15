@@ -174,7 +174,6 @@ const Map = ({navigation}) => {
                 <Text style={tailwind('text-indigo-800 font-bold text-lg text-center py-6')}>Récapitulatif de la
                   course
                 </Text>
-                <Text>{status}</Text>
                 <View>
                   <View style={tailwind('bg-white p-4')}>
                     <Text style={tailwind('text-gray-700 font-bold')}>Départ</Text>

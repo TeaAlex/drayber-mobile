@@ -14,11 +14,6 @@ const Search = (props) => {
   const {navigation} = props;
   const {from, setFrom, to, setTo, fromSelected, toSelected, setFromSelected, setToSelected, tripInfo, setTripInfo} = useContext(SearchContext);
   
-  useEffect(() => {
-    if (Object.keys(tripInfo).length > 0) {
-      navigation.navigate('Map');
-    }
-  }, [tripInfo])
   
   const computeTrip = () => {
     if (!from || !to) {
@@ -34,6 +29,7 @@ const Search = (props) => {
       setTo(to);
       setTripInfo(tripInfo);
     })
+    navigation.navigate('Map');
   }
 
   return (
