@@ -49,7 +49,7 @@ export const search = async (from, to) => {
   const tripInfo = {
     distance: leg.distance.text,
     duration: leg.duration.text,
-    price: parseInt(leg.distance.text) * 2,
+    price: parseInt(leg.distance.text) * 1.5,
     startAddress: {
       name: leg.start_address,
       coords: {
