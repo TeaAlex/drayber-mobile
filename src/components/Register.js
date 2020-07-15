@@ -73,20 +73,35 @@ const Register = ({navigation}) => {
       }
 
     const onPress = async () => {
-        const body = {
-            "email": email,
-            "password": password,
-            "password_confirmation": password_confirmation,
-            "firstname": firstname,
-            "lastname": lastname,
-            "phone_number":phone_number,
-            "address": address,
-            "zip_code": zip_code,
-            "city": city,
-            "birth_date": birth_date,
-            "profile_picture_url":profile_picture_url.name
+        let body = {}
+        if(profile_picture_url === null){
+             body = {
+                "email": email,
+                "password": password,
+                "password_confirmation": password_confirmation,
+                "firstname": firstname,
+                "lastname": lastname,
+                "phone_number":phone_number,
+                "address": address,
+                "zip_code": zip_code,
+                "city": city,
+                "birth_date": birth_date,
+            }
+        }else{
+             body = {
+                "email": email,
+                "password": password,
+                "password_confirmation": password_confirmation,
+                "firstname": firstname,
+                "lastname": lastname,
+                "phone_number":phone_number,
+                "address": address,
+                "zip_code": zip_code,
+                "city": city,
+                "birth_date": birth_date,
+                "profile_picture_url":profile_picture_url.name
+            }
         }
-        console.log(profile_picture_url.name);
         var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
         if(!re.test(email) || email.length === 0 ){
