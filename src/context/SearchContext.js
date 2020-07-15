@@ -6,13 +6,16 @@ export const START = "start"
 export const END = "end"
 
 const SearchProvider = ({children}) => {
+  
+  let home = "24 rue des hirondelles, pontault-combault"
+  let gare = "gare d'emerainville pontault-combault";
   const [addresses, setAddresses] = useState([])
   const [from, setFrom] = useState("")
   const [to, setTo] = useState("")
   const [selectedAddress, setSelectedAddress] = useState("")
   const [currentForm, setCurrentForm] = useState("")
-  const [fromSelected, setFromSelected] = useState(false)
-  const [toSelected, setToSelected] = useState(false)
+  const [fromSelected, setFromSelected] = useState(true)
+  const [toSelected, setToSelected] = useState(true)
   const [tripInfo, setTripInfo] = useState({})
 
   const value = {

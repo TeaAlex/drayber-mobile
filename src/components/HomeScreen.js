@@ -11,14 +11,14 @@ import HomeIcon from '../assets/icons/home-outline.svg'
 import { getCurrentPosition, requestLocationPermission, search } from "../utils/geolocation";
 import {SearchContext} from "../context/SearchContext";
 import {geoCoding} from "../utils/googleAPI";
+import { api } from "../utils/api";
+import Geolocation from "@react-native-community/geolocation";
 
 
 function HomeScreen ({navigation}) {
-  const color = '#586CD9';
 
   const {user} = useContext(UserContext);
   const {setTo, setFrom, setTripInfo} = useContext(SearchContext);
-  const [mode, setMode] = useState('');
   const [currentPosition, setCurrentPosition] = useState(null);
   const [currentAddress, setCurrentAddress] = useState(null);
   const [region, setRegion] = useState({
@@ -30,23 +30,14 @@ function HomeScreen ({navigation}) {
 
 
   useEffect(() => {
-    console.log(user);
-    console.log('user.driver', user.driver);
-    console.log(user.driver && user.driver.is_searching === false);
-    console.log(user.driver === null || (user.driver && user.driver.is_searching === false))
-    async function getMode () {
-      setMode(await AsyncStorage.getItem('changeMode'));
-    }
-
-    getMode();
-  }, []);
-
-  useEffect(() => {
     const setPosition = async () => {
       await requestLocationPermission();
       const {latitude, longitude} = await getCurrentPosition;
-      console.log({latitude, longitude})
       setCurrentPosition({latitude, longitude});
+      await api('PUT', '/users/update', {
+        lat: latitude,
+        lng: longitude
+      })
       setRegion({
         latitude,
         longitude,
@@ -64,6 +55,20 @@ function HomeScreen ({navigation}) {
     setPosition();
   }, [])
 
+  useEffect(() => {
+    Geolocation.watchPosition(({coords}) => {
+        const {latitude, longitude} = coords;
+        setCurrentPosition(coords);
+        setRegion({...region, latitude, longitude});
+      },
+      (e) => console.log(e),
+      {
+        enableHighAccuracy: true,
+        distanceFilter: 200,
+      })
+  }, [])
+
+
   const goHome = async () => {
     const userAddress = user.user.address;
     const {from, to, tripInfo} = await search(currentAddress, userAddress);
@@ -75,7 +80,7 @@ function HomeScreen ({navigation}) {
 
   return (
     <View style={tailwind('h-full w-full')}>
-      {user.driver && user.driver.active_driver === true && user.driver.is_searching && 
+      {user.driver && user.driver.active_driver === true && user.driver.is_searching &&
         <TouchableOpacity
           style={{position: 'absolute', top: 40, right: 20, zIndex: 100}}
           onPress={() => navigation.navigate('Menu')}>

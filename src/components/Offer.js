@@ -167,15 +167,14 @@ const Offer = ({route, navigation}) => {
 
   const tripEnd = async () => {
     console.log('trip end');
-    setStatus(TRIP_END);
     try {
       await api('POST', `/offer/${offer.id}/trip_end`);
     } catch (e) {
       console.error(e);
     }
+    navigation.navigate('Home');
     return showMessage({
-      message: 'Succès',
-      description: "Course terminée. ",
+      message: 'Course terminée',
       type: 'success',
       icon: 'success',
     });
