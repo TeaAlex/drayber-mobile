@@ -1,7 +1,7 @@
 import React, { useEffect, useContext } from 'react';
 import { View } from "react-native";
 import messaging from "@react-native-firebase/messaging";
-import { TripContext, DRIVER_FOUND, SEARCHING, TRIP_END, DRIVER_NOT_FOUND } from "../context/TripContext";
+import { TripContext, DRIVER_FOUND, TRIP_END, DRIVER_NOT_FOUND } from "../context/TripContext";
 import { UserContext } from "../context/UserContext";
 import { useNavigation } from '@react-navigation/native';
 import {api} from "../utils/api";
@@ -38,7 +38,7 @@ const FirebaseNotifHandler = () => {
       if (type === "TRIP_END") {
         console.log(remoteMessage);
         const trip = JSON.parse(remoteMessage.data.trip);
-        setStatus(TRIP_END);
+        setStatus(null);
         navigation.navigate('TripRecap', {tripId: trip.id});
       }
       if (type === "UPDATE_GEOLOCATION") {
