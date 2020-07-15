@@ -21,6 +21,9 @@ const FirebaseNotifHandler = () => {
       console.log(remoteMessage);
       if (type === "OFFER_CREATE") {
         const offer = JSON.parse(remoteMessage.data.offer);
+        await api('PUT', '/users/update', {
+          is_searching: false
+        })
         navigation.navigate('Offer', {offer})
       }
       if (type === "TRIP_CREATE") {
@@ -57,6 +60,9 @@ const FirebaseNotifHandler = () => {
         navigation.navigate('Map');
       }
       if (type === "TRIP_CANCEL") {
+        await api('PUT', '/users/update', {
+          is_searching: true
+        })
         navigation.navigate('Home');
         showMessage({
           message: 'Annulation',
