@@ -1,5 +1,5 @@
 import React, {useState, useContext} from 'react'
-import {View, TextInput, Text, ScrollView, StyleSheet,Image } from "react-native";
+import {View, TextInput, Text, ScrollView, StyleSheet,Image, Keyboard } from "react-native";
 import {api} from "../utils/api";
 import ImagePicker from 'react-native-image-picker'
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -34,8 +34,9 @@ const Register = ({navigation}) => {
        const currentDate = selectedDate || date;
        
        const reformated = moment(currentDate).format('DD-MM-YYYY');
-       setBirthSate(reformated);
        setShow(false);
+       setBirthSate(reformated);
+       
       }else{
        setShow(false);
       }
@@ -176,7 +177,7 @@ const Register = ({navigation}) => {
                 <Input label={"Adresse"} value={address} onChange={setAddress} />
                 <Input label={"Code postal"} value={zip_code} onChange={setZipCode} keyboardType={"numeric"}/>
                 <Input label={"Ville"} value={city} onChange={setCity} />
-                <Input label={"Date de naissance"} onFocus={showDatepicker} value={birth_date.toString()}  />
+                <Input label={"Date de naissance"} onFocus={() => {Keyboard.dismiss(); showDatepicker()}} value={birth_date.toString()}  />
                         {show && (
                         <DateTimePicker
                         testID="dateTimePicker"

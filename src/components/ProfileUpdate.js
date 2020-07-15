@@ -1,5 +1,5 @@
 import React, {useState, useContext, useEffect} from 'react'
-import {View, TextInput, Text, ScrollView, StyleSheet,Image, Keyboard } from "react-native";
+import {View, TextInput, Text, ScrollView, StyleSheet,Image, Keyboard} from "react-native";
 import {api} from "../utils/api";
 import {UserContext} from "../context/UserContext";
 import ImagePicker from 'react-native-image-picker'
@@ -8,6 +8,7 @@ import moment from "moment";
 import Input from "./Input";
 import Button from './Button'
 import tailwind from 'tailwind-rn'
+import { TouchableHighlight } from 'react-native-gesture-handler';
 
 const ProfileUpdate = ({navigation}) => {
   const {user, setUser} = useContext(UserContext);
@@ -26,7 +27,7 @@ const ProfileUpdate = ({navigation}) => {
     
     try {
       
-      if(user.user.profile_picture_url != ""){
+      if(user.user.profile_picture_url != null){
         api('GET', '/users/getUpload/'+user.user.profile_picture_url)
         .then(body => {
           if(body != undefined){
@@ -62,16 +63,34 @@ const ProfileUpdate = ({navigation}) => {
   }
 
   const onPress = async () => {
-    const body = {
-      "firstname": firstname,
-      "lastname": lastname,
-      "phone_number":phone_number,
-      "address": address,
-      "zip_code": zip_code,
-      "city": city,
-      "birth_date": birth_date,
-      "profile_picture_url":profile_picture_url.name
-    }
+    let body = {}
+        if(profile_picture_url === null){
+             body = {
+                "email": email,
+                "password": password,
+                "password_confirmation": password_confirmation,
+                "firstname": firstname,
+                "lastname": lastname,
+                "phone_number":phone_number,
+                "address": address,
+                "zip_code": zip_code,
+                "city": city,
+                "birth_date": birth_date,
+            }
+        }else{
+             body = {
+                "email": email,
+                "password": password,
+                "password_confirmation": password_confirmation,
+                "firstname": firstname,
+                "lastname": lastname,
+                "phone_number":phone_number,
+                "address": address,
+                "zip_code": zip_code,
+                "city": city,
+                "birth_date": birth_date,
+                "profile_picture_url":profile_picture_url.name
+            }
 
     try {
       await api('PUT', '/users/update', body);
@@ -91,15 +110,17 @@ const ProfileUpdate = ({navigation}) => {
    const [show, setShow] = useState(false);
    
 
-   const onChange = (event, selectedDate) => {
+   const onChange = async (event, selectedDate) => {
      if(event.type == "set"){
       const currentDate = selectedDate || date;
       
       const reformated = moment(currentDate).format('DD-MM-YYYY')
-      setBirthSate(reformated);
       setShow(false);
+      setBirthSate(reformated);
+
      }else{
       setShow(false);
+      
      }
    };
 
@@ -111,8 +132,6 @@ const ProfileUpdate = ({navigation}) => {
    const showDatepicker = () => {
      showMode('date');
    };
-   
-
   return (
     <ScrollView>
       <View style={tailwind('w-full flex items-center mt-12')}>
@@ -129,7 +148,7 @@ const ProfileUpdate = ({navigation}) => {
       <Input label={"Adresse"} value={address} onChange={setAddress} />
       <Input label={"Code postal"} value={zip_code} onChange={setZipCode} keyboardType={"numeric"}/>
       <Input label={"Ville"} value={city} onChange={setCity} />
-      <Input label={"Date de naissance"} onFocus={showDatepicker} value={birth_date} />
+      <Input label={"Date de naissance"} onFocus={() => {Keyboard.dismiss(); showDatepicker()}} value={birth_date} onBlur={() => console.log("focus lost")} keyboardType={"numeric"}/>
                         {show && (
                         <DateTimePicker
                         testID="dateTimePicker"
@@ -140,7 +159,6 @@ const ProfileUpdate = ({navigation}) => {
                         onChange={onChange}
                         />
                     )} 
-      
       <Button title="Modifier mes infos" onPress={onPress}/>
     </View>
     </ScrollView>
