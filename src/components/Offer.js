@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { View, Text, TouchableOpacity, TouchableHighlight, ActivityIndicator } from 'react-native';
 import { api } from "../utils/api";
 import tailwind, { getColor } from "tailwind-rn";
@@ -11,6 +11,7 @@ import Geolocation from '@react-native-community/geolocation';
 import {showMessage} from 'react-native-flash-message';
 import { getComputedTime } from "../utils/getComputedTime";
 import {getCurrentPosition, requestLocationPermission} from "../utils/geolocation";
+import {TripContext} from "../context/TripContext";
 
 
 const Offer = ({route, navigation}) => {
@@ -55,6 +56,8 @@ const Offer = ({route, navigation}) => {
   const [showCurrentToStartCoords, setShowCurrentToStartCoords] = useState(true);
 
   const [currentToStartInfo, setCurrentToStartInfo] = useState(null);
+
+  const {setTripRecap} = useContext(TripContext);
 
   // EFFECTS
 
@@ -170,20 +173,30 @@ const Offer = ({route, navigation}) => {
 
   const tripEnd = async () => {
     console.log('trip end');
+    const { leg } = await directionAPI(offer.address_from, currentPosition);
+    const { duration, distance, end_address, start_address } = leg;
     try {
-      await api('POST', `/offer/${offer.id}/trip_end`);
+      const {trip} = await api('PUT', `/trip/update/${offer.id}`, {
+        duration: duration.text,
+        distance: distance.text,
+        end_address,
+        start_address,
+        price: 2
+      })
+      await api('POST', `/trip/${trip.id}/trip_end`);
       await api('PUT', '/users/update', {
         is_searching: true
       })
+      navigation.navigate('TripRecap', { tripId: trip.id });
+      return showMessage({
+        message: 'Course terminée',
+        type: 'success',
+        icon: 'success',
+      });
     } catch (e) {
       console.error(e);
     }
-    navigation.navigate('Home');
-    return showMessage({
-      message: 'Course terminée',
-      type: 'success',
-      icon: 'success',
-    });
+
   };
 
   return (

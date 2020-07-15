@@ -36,10 +36,10 @@ const FirebaseNotifHandler = () => {
         navigation.navigate('Map');
       }
       if (type === "TRIP_END") {
-        const driver = JSON.parse(remoteMessage.data.driver);
-        setDriverName(`${driver.firstname} ${driver.lastname}`);
+        console.log(remoteMessage);
+        const trip = JSON.parse(remoteMessage.data.trip);
         setStatus(TRIP_END);
-        navigation.navigate('Map');
+        navigation.navigate('TripRecap', {tripId: trip.id});
       }
       if (type === "UPDATE_GEOLOCATION") {
         getCurrentPosition.then(({latitude, longitude}) => {

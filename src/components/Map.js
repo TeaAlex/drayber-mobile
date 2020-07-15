@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 import MapView, { PROVIDER_GOOGLE, Polyline } from "react-native-maps";
 import { View, Text, TouchableHighlight, TouchableOpacity, ActivityIndicator } from "react-native";
 import tailwind, { getColor } from "tailwind-rn";
@@ -42,7 +42,7 @@ const Map = ({navigation}) => {
       console.log(e);
     }
   }
-  
+
   const rate = async (value) => {
     try {
       console.log(driver.id, value);
@@ -56,7 +56,7 @@ const Map = ({navigation}) => {
     }
     navigation.navigate('Home');
   }
-  
+
   const cancel = async () => {
     try {
       await api('PUT', `/offer/${offer.id}/update`, {
