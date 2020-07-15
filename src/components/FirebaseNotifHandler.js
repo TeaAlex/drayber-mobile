@@ -21,10 +21,12 @@ const FirebaseNotifHandler = () => {
       console.log(remoteMessage);
       if (type === "OFFER_CREATE") {
         const offer = JSON.parse(remoteMessage.data.offer);
+        const phone = remoteMessage.data.phone;
         await api('PUT', '/users/update', {
           is_searching: false
         })
-        navigation.navigate('Offer', {offer})
+        console.log(phone);
+        navigation.navigate('Offer', {offer, phone})
       }
       if (type === "TRIP_CREATE") {
         const driver = JSON.parse(remoteMessage.data.driver);

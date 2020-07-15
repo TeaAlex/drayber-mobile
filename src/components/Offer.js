@@ -29,7 +29,7 @@ const Offer = ({route, navigation}) => {
   const DESTINATION = 'Se rendre à la destination'
 
   // STATE
-  const {offer} = route.params;
+  const {offer, phone} = route.params;
   const [status, setStatus] = useState(INITIAL);
   const [stepStatus, setStepStatus] = useState(NEW_COURSE);
   const [currentPosition, setCurrentPosition] = useState(null);
@@ -246,6 +246,9 @@ const Offer = ({route, navigation}) => {
             }
             <View>
               <Text style={tailwind('text-indigo-800 font-bold text-lg text-center py-6')}>{stepStatus}</Text>
+              {
+                phone && <Text>{phone}</Text>
+              }
               {
                 startAddress.show &&
                 <View style={tailwind('bg-white p-4 border-l-4 border-teal-500')}>
