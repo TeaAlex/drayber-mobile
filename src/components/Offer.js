@@ -181,7 +181,7 @@ const Offer = ({route, navigation}) => {
         distance: distance.text,
         end_address,
         start_address,
-        price: parseInt(distance.text) * 1.5
+        price: parseInt(distance.text) * 1.5 > 0 ? parseInt(distance.text) * 1.5 : 1
       })
       await api('POST', `/trip/${trip.id}/trip_end`);
       await api('PUT', '/users/update', {
