@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { View, Text, TouchableOpacity, TouchableHighlight, ActivityIndicator } from 'react-native';
+import { View, Text, TouchableOpacity, TouchableHighlight, ActivityIndicator, ScrollView } from 'react-native';
 import { api } from "../utils/api";
 import tailwind, { getColor } from "tailwind-rn";
 import MenuToggle from "../assets/icons/menu-toggle.svg";
@@ -200,128 +200,130 @@ const Offer = ({route, navigation}) => {
   };
 
   return (
-    <View style={tailwind('flex justify-center items-center')}>
-      {
-        currentPosition !== null ?
-          <View style={tailwind('bg-white h-full w-full')}>
-          <TouchableOpacity
-            style={{position: 'absolute', top: 40, left: 20, zIndex: 100}}
-            onPress={() => navigation.navigate('Menu')}
-          >
-            <MenuToggle/>
-          </TouchableOpacity>
-          <MapView
-            style={{...tailwind('w-full flex-grow'), 'minHeight': '45%'}}
-            provider={PROVIDER_GOOGLE}
-            region={region}
-            showsUserLocation={true}
-            loadingEnabled={true}
-            onUserLocationChange={onUserLocationChange}
-          >
-            <Marker
-              coordinate={region}
-            />
+    <ScrollView>
+      <View style={tailwind('flex justify-center items-center')}>
+        {
+          currentPosition !== null ?
+            <View style={tailwind('bg-white h-full w-full')}>
+              <TouchableOpacity
+                style={{position: 'absolute', top: 40, left: 20, zIndex: 100}}
+                onPress={() => navigation.navigate('Menu')}
+              >
+                <MenuToggle/>
+              </TouchableOpacity>
+              <MapView
+                style={{...tailwind('w-full flex-grow'), 'minHeight': '45%'}}
+                provider={PROVIDER_GOOGLE}
+                region={region}
+                showsUserLocation={true}
+                loadingEnabled={true}
+                onUserLocationChange={onUserLocationChange}
+              >
+                <Marker
+                  coordinate={region}
+                />
 
-            {
-              (currentToStartCoords && showCurrentToStartCoords) &&
-              <Polyline
-                coordinates={currentToStartCoords}
-                strokeColor={getColor('teal-500')}
-                strokeWidth={5}
-              />
-            }
-            {
-              (startToEndCoords && showStartToEndCoords) &&
-              <Polyline
-                coordinates={startToEndCoords}
-                strokeColor={getColor('indigo-500')}
-                strokeWidth={5}
-              />
-            }
-          </MapView>
-          <View style={{...tailwind('bg-gray-100 w-full pb-6')}}>
-            {
-              status === INIT
-              // && <ProgressBar onCompletion={() => navigation.goBack()} timeout={1000} />
-            }
-            <View>
-              <View style={tailwind('py-4')}>
-                <Text style={tailwind('text-indigo-800 font-bold text-lg text-center')}>{stepStatus}</Text>
                 {
-                  phone && <Text style={tailwind('text-gray-700 text-center text-base font-bold')}>{phone}</Text>
+                  (currentToStartCoords && showCurrentToStartCoords) &&
+                  <Polyline
+                    coordinates={currentToStartCoords}
+                    strokeColor={getColor('teal-500')}
+                    strokeWidth={5}
+                  />
                 }
-              </View>
+                {
+                  (startToEndCoords && showStartToEndCoords) &&
+                  <Polyline
+                    coordinates={startToEndCoords}
+                    strokeColor={getColor('indigo-500')}
+                    strokeWidth={5}
+                  />
+                }
+              </MapView>
+              <View style={{...tailwind('bg-gray-100 w-full pb-6')}}>
+                {
+                  status === INIT
+                  // && <ProgressBar onCompletion={() => navigation.goBack()} timeout={1000} />
+                }
+                <View>
+                  <View style={tailwind('py-4')}>
+                    <Text style={tailwind('text-indigo-800 font-bold text-lg text-center')}>{stepStatus}</Text>
+                    {
+                      phone && <Text style={tailwind('text-gray-700 text-center text-base font-bold')}>{phone}</Text>
+                    }
+                  </View>
 
-              {
-                startAddress.show &&
-                <View style={tailwind('bg-white p-4 border-l-4 border-teal-500')}>
-                  <Text style={tailwind('text-gray-700 font-bold')}>{startAddress.label}</Text>
-                  <Text style={tailwind('text-gray-600 text-sm')}>{startAddress.text}</Text>
+                  {
+                    startAddress.show &&
+                    <View style={tailwind('bg-white p-4 border-l-4 border-teal-500')}>
+                      <Text style={tailwind('text-gray-700 font-bold')}>{startAddress.label}</Text>
+                      <Text style={tailwind('text-gray-600 text-sm')}>{startAddress.text}</Text>
+                    </View>
+                  }
+                  {
+                    endAddress.show &&
+                    <View style={tailwind('bg-white p-4 border-l-4 border-indigo-500')}>
+                      <Text style={tailwind('text-gray-700 font-bold')}>{endAddress.label}</Text>
+                      <Text style={tailwind('text-gray-600 text-sm')}>{endAddress.text}</Text>
+                    </View>
+                  }
                 </View>
-              }
-              {
-                endAddress.show &&
-                <View style={tailwind('bg-white p-4 border-l-4 border-indigo-500')}>
-                  <Text style={tailwind('text-gray-700 font-bold')}>{endAddress.label}</Text>
-                  <Text style={tailwind('text-gray-600 text-sm')}>{endAddress.text}</Text>
+                <View style={tailwind('flex justify-center items-center my-4')}>
+                  {
+                    currentToStartInfo && startAddress.show &&
+                    <Text style={tailwind('text-center text-teal-500 font-bold text-base')}>
+                      {currentToStartInfo.distance.text}· {currentToStartInfo.duration.text}
+                    </Text>
+                  }
+                  {
+                    endAddress.show &&
+                    <Text style={tailwind('text-center text-indigo-800 font-bold text-base')}>
+                      {offer.distance} km · {offer.duration} mins
+                    </Text>
+                  }
+                  <Text style={tailwind('text-center text-gray-800 font-bold text-lg')}>
+                    Total de la course : {offer.price} €
+                  </Text>
                 </View>
-              }
+                <View style={tailwind('flex flex-row justify-center items-center')}>
+                  {
+                    status === INIT &&
+                    <>
+                      <TouchableHighlight style={{...tailwind('bg-green-200 p-4 rounded mr-4')}} onPress={accept}>
+                        <Text style={tailwind('text-green-500 font-bold text-center text-lg')}> Accepter </Text>
+                      </TouchableHighlight>
+                      <TouchableHighlight style={{...tailwind('bg-red-200 p-4 rounded')}}>
+                        <Text style={tailwind('text-red-500 font-bold text-center text-lg')} onPress={decline}> Refuser </Text>
+                      </TouchableHighlight>
+                    </>
+                  }
+                  {
+                    status === ACCEPTED &&
+                    <TouchableHighlight style={{...tailwind('bg-teal-200 p-4 rounded mr-4')}} onPress={clientPickedUp}>
+                      <Text style={tailwind('text-teal-500 font-bold text-center text-lg')}> Client récuperé </Text>
+                    </TouchableHighlight>
+                  }
+                  {
+                    status === CLIENT_PICKED_UP &&
+                    <TouchableHighlight style={{...tailwind('bg-indigo-200 p-4 rounded mr-4')}} onPress={tripStart}>
+                      <Text style={tailwind('text-indigo-500 font-bold text-center text-lg')}> Demarrer la course </Text>
+                    </TouchableHighlight>
+                  }
+                  {
+                    status === TRIP_START &&
+                    <>
+                      <TouchableHighlight style={{...tailwind('bg-orange-200 p-4 rounded mr-4')}} onPress={tripEnd}>
+                        <Text style={tailwind('text-orange-500 font-bold text-center text-lg')}> Terminer la course </Text>
+                      </TouchableHighlight>
+                    </>
+                  }
+                </View>
+              </View>
             </View>
-            <View style={tailwind('flex justify-center items-center my-4')}>
-              {
-                currentToStartInfo && startAddress.show &&
-                  <Text style={tailwind('text-center text-teal-500 font-bold text-base')}>
-                    {currentToStartInfo.distance.text}· {currentToStartInfo.duration.text}
-                  </Text>
-              }
-              {
-                endAddress.show &&
-                  <Text style={tailwind('text-center text-indigo-800 font-bold text-base')}>
-                    {offer.distance} km · {offer.duration} mins
-                  </Text>
-              }
-              <Text style={tailwind('text-center text-gray-800 font-bold text-lg')}>
-                Total de la course : {offer.price} €
-              </Text>
-            </View>
-            <View style={tailwind('flex flex-row justify-center items-center')}>
-              {
-                status === INIT &&
-                <>
-                  <TouchableHighlight style={{...tailwind('bg-green-200 p-4 rounded mr-4')}} onPress={accept}>
-                    <Text style={tailwind('text-green-500 font-bold text-center text-lg')}> Accepter </Text>
-                  </TouchableHighlight>
-                  <TouchableHighlight style={{...tailwind('bg-red-200 p-4 rounded')}}>
-                    <Text style={tailwind('text-red-500 font-bold text-center text-lg')} onPress={decline}> Refuser </Text>
-                  </TouchableHighlight>
-                </>
-              }
-              {
-                status === ACCEPTED &&
-                <TouchableHighlight style={{...tailwind('bg-teal-200 p-4 rounded mr-4')}} onPress={clientPickedUp}>
-                  <Text style={tailwind('text-teal-500 font-bold text-center text-lg')}> Client récuperé </Text>
-                </TouchableHighlight>
-              }
-              {
-                status === CLIENT_PICKED_UP &&
-                <TouchableHighlight style={{...tailwind('bg-indigo-200 p-4 rounded mr-4')}} onPress={tripStart}>
-                  <Text style={tailwind('text-indigo-500 font-bold text-center text-lg')}> Demarrer la course </Text>
-                </TouchableHighlight>
-              }
-              {
-                status === TRIP_START &&
-                <>
-                  <TouchableHighlight style={{...tailwind('bg-orange-200 p-4 rounded mr-4')}} onPress={tripEnd}>
-                    <Text style={tailwind('text-orange-500 font-bold text-center text-lg')}> Terminer la course </Text>
-                  </TouchableHighlight>
-                </>
-              }
-            </View>
-          </View>
-        </View>
-          : <ActivityIndicator size={"large"}/>
-      }
-    </View>
+            : <ActivityIndicator size={"large"}/>
+        }
+      </View>
+    </ScrollView>
   )
 
 
