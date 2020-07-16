@@ -24,7 +24,7 @@ const Register = ({navigation}) => {
     const [password_confirmation, setPasswordConfirm] = useState('');
     const [base64Image, setBase64Image]=useState(null)
     const [isSelected,setSelected] = useState(false);
-    const [date, setDate] = useState('');
+    const [date, setDate] = useState(new Date());
     const [mode, setMode] = useState('');
     const [show, setShow] = useState(false);
     
