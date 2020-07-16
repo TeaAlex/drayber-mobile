@@ -15,6 +15,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import {UserContext} from "../context/UserContext";
 import {showMessage} from 'react-native-flash-message';
 import {api} from "../utils/api";
+import { ScrollView } from 'react-native-gesture-handler';
 
 const Menu = ({navigation}) => {
   const color = '#586CD9';
@@ -90,6 +91,7 @@ const Menu = ({navigation}) => {
   
   
   return (
+    <ScrollView>
     <View style={tailwind('bg-gray-100 h-full items-center w-full')}>
       {/*<View style={tailwind('flex flex-row items-center justify-start w-full px-2')}>*/}
       {/*  <MenuBackButton onPress={() => navigation.navigate('Map')}/>*/}
@@ -155,6 +157,7 @@ const Menu = ({navigation}) => {
         </TouchableHighlight>
       </View>
     </View>
+    </ScrollView>
   );
 };
 

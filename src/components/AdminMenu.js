@@ -4,12 +4,14 @@ import {TouchableHighlight, View} from 'react-native';
 import MenuItem from './MenuItem';
 import CreditCardSvg from '../assets/icons/credit-card-outline.svg';
 import CarSvg from '../assets/icons/automobile.svg';
+import { ScrollView } from 'react-native-gesture-handler';
 
 const AdminMenu = ({navigation}) => {
   const color = '#586CD9';
 
 
   return (
+    <ScrollView>
     <View style={tailwind('bg-gray-100 h-full items-center w-full')}>
       <View style={tailwind('bg-blue-500 w-full')}>
         <TouchableHighlight onPress={() => navigation.navigate('DriverValidation')}>
@@ -24,6 +26,7 @@ const AdminMenu = ({navigation}) => {
         </TouchableHighlight>
       </View>
     </View>
+    </ScrollView>
   );
 };
 

@@ -1,13 +1,14 @@
 import React, {useContext, useState, useEffect} from 'react';
 import CreditCardSvg from '../assets/icons/credit-card-outline.svg';
 import tailwind from 'tailwind-rn';
-import {StyleSheet, Text, View, Button, TouchableHighlight, Alert} from 'react-native';
+import {StyleSheet, Text, View, TouchableHighlight, Alert} from 'react-native';
 import MenuItem from './MenuItem';
 import {CreditCardInput} from 'react-native-credit-card-input';
 import {UserContext} from '../context/UserContext';
 import {api} from "../utils/api";
 import { YOUR_STRIPE_PUBLIC_KEY, YOUR_STRIPE_PRIVATE_KEY } from 'react-native-dotenv';
 import { showMessage } from 'react-native-flash-message';
+import Button from './Button'
 
 //import stripe from 'tipsi-stripe';
 
@@ -25,7 +26,7 @@ const PaymentFormView = ({navigation}) => {
   const {user,setUser} = useContext(UserContext);
   const [card, setCard] = useState(user.card);
   const loggeduser = user.user;
-  
+  console.log(card)
   const handleChange = (form) => {
     console.log(form.values);
     setCard(form.values);
@@ -274,7 +275,7 @@ const PaymentFormView = ({navigation}) => {
           />
         </View>
         <View style={styles.buttonWrapper}>
-          <Button onPress={saveCard} title="Ajouter" />
+        <Button onPress={() => {saveCard()}} title="Ajouter" />
         </View>
       </View>
     );

@@ -1,5 +1,5 @@
 import React, {useState, useContext} from 'react'
-import {View, TextInput, Text, ScrollView, StyleSheet,Image, Keyboard } from "react-native";
+import {View, TextInput, Text, ScrollView, Linking,CheckBox,Image, Keyboard } from "react-native";
 import {api} from "../utils/api";
 import ImagePicker from 'react-native-image-picker'
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -11,21 +11,21 @@ import tailwind from 'tailwind-rn'
 
 
 const Register = ({navigation}) => {
-    const [email, setEmail] = useState('@a.fr');
-    const [password, setPassword] = useState('aaa');
-    const [firstname, setFirstname] = useState('reds');
-    const [lastname, setLastname] = useState('rods');
-    const [phone_number, setPhone_number] = useState('0612345678');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [firstname, setFirstname] = useState('');
+    const [lastname, setLastname] = useState('');
+    const [phone_number, setPhone_number] = useState('');
     const [profile_picture_url, setProfilePictureUrl] = useState(null);
-    const [address, setAddress] = useState('1 rue de Saint Denis');
-    const [zip_code, setZipCode] = useState('75001');
-    const [city, setCity] = useState('Paris');
-    const [birth_date, setBirthSate] = useState('1990-10-10');
+    const [address, setAddress] = useState('');
+    const [zip_code, setZipCode] = useState('');
+    const [city, setCity] = useState('');
+    const [birth_date, setBirthSate] = useState('');
     const [password_confirmation, setPasswordConfirm] = useState('');
     const [base64Image, setBase64Image]=useState(null)
-
-    const [date, setDate] = useState(new Date());
-    const [mode, setMode] = useState('date');
+    const [isSelected,setSelected] = useState(false);
+    const [date, setDate] = useState('');
+    const [mode, setMode] = useState('');
     const [show, setShow] = useState(false);
     
  
@@ -140,6 +140,14 @@ const Register = ({navigation}) => {
             });  
             //return alert("Les deux mots de passe ne correspondent pas");
         }
+        if(isSelected === false){
+            return showMessage({
+                message: 'Erreur',
+                description: 'Vous devez accepter les conditions générales d\'utilisation.',
+                type: 'danger',
+                icon: 'danger',
+            });  
+        }
 
         try {
             await api('POST', '/register', body);
@@ -190,6 +198,13 @@ const Register = ({navigation}) => {
                     )} 
                 <Input label={"Mot de passe"} value={password} onChange={setPassword} placeholder={"*****"} secureTextEntry={true} />
                 <Input label={"Confirmer votre mot de passe"} value={password_confirmation} onChange={setPasswordConfirm} placeholder={"*****"} secureTextEntry={true} />
+               <View style={tailwind('flex-row items-center')}>
+               <CheckBox
+                   value={isSelected}
+                   onValueChange={setSelected}
+                   />
+                    <Text >J'accepte les</Text><Text style={tailwind('text-blue-500')} onPress={ ()=> Linking.openURL('https://redha95.github.io/vue-project-esgi/')} > conditions générales d'utilisations</Text>
+               </View>
                 <Button title="S'inscrire" onPress={onPress} />
             </View>
         </ScrollView>
