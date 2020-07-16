@@ -66,9 +66,6 @@ const ProfileUpdate = ({navigation}) => {
     let body = {};
         if(profile_picture_url === null){
              body = {
-                "email": email,
-                "password": password,
-                "password_confirmation": password_confirmation,
                 "firstname": firstname,
                 "lastname": lastname,
                 "phone_number":phone_number,
@@ -79,9 +76,6 @@ const ProfileUpdate = ({navigation}) => {
             }
         }else{
              body = {
-                "email": email,
-                "password": password,
-                "password_confirmation": password_confirmation,
                 "firstname": firstname,
                 "lastname": lastname,
                 "phone_number":phone_number,
