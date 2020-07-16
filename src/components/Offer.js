@@ -200,7 +200,6 @@ const Offer = ({route, navigation}) => {
   };
 
   return (
-    <ScrollView>
       <View style={tailwind('flex justify-center items-center')}>
         {
           currentPosition !== null ?
@@ -240,7 +239,8 @@ const Offer = ({route, navigation}) => {
                   />
                 }
               </MapView>
-              <View style={{...tailwind('bg-gray-100 w-full pb-6')}}>
+            <ScrollView>
+            <View style={{...tailwind('bg-gray-100 w-full pb-6')}}>
                 {
                   status === INIT
                   // && <ProgressBar onCompletion={() => navigation.goBack()} timeout={1000} />
@@ -319,11 +319,12 @@ const Offer = ({route, navigation}) => {
                   }
                 </View>
               </View>
-            </View>
+           
+            </ScrollView>
+             </View>
             : <ActivityIndicator size={"large"}/>
         }
       </View>
-    </ScrollView>
   )
 
 
