@@ -11,13 +11,11 @@ const InputAddress = (props) => {
   const {placeholder, value, setValue, currentForm, isSelected, setIsSelected} = props;
   const debouncedValue = useDebounce(value, 0);
   const {setAddresses, setCurrentForm} = useContext(SearchContext);
-  const [url, setUrl] = useState();
 
   useEffect(() => {
       if (debouncedValue && !isSelected) {
         const autocomplete = async (text) => {
           const url = `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${text}&language=fr&key=${GOOGLE_API_KEY}&sessiontoken=123`;
-          setUrl(url);
           const response = await fetch(url);
           const data = await response.json();
           const addresses = data.predictions.map(({id, structured_formatting}) => {
@@ -51,9 +49,6 @@ const InputAddress = (props) => {
           setIsSelected(false)
         }}
       />
-      {
-        url && <Text>{url}</Text>
-      }
     </>
   )
 
