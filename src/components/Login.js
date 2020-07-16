@@ -13,8 +13,8 @@ import { ScrollView } from 'react-native-gesture-handler';
 
 const Login = ({navigation}) => {
 
-  const [email, setEmail] = useState('test@test.fr');
-  const [password, setPassword] = useState('test');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const {setUser} = useContext(UserContext);
 
   const onPress = async () => {
