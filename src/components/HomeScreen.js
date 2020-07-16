@@ -144,9 +144,6 @@ function HomeScreen ({navigation}) {
                 elevation: 10,
               }}
               onPress={async () => {
-                const {latitude, longitude} = currentPosition;
-                await computeAddress(latitude, longitude);
-                setFrom(currentAddress);
                 navigation.navigate('Search')
               }}>
               <View style={tailwind('flex flex-row justify-center w-full relative')}>
